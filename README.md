@@ -6,8 +6,6 @@
 
 App Android de entrenamiento en casa **sin equipamiento**: rutinas por zona del cuerpo, nivel y tiempo disponible, temporizador con descansos, demostraciones de técnica y seguimiento local del progreso.
 
-Proyecto original creado en [AI Studio](https://ai.studio/apps/16630dfc-3d9f-4214-a1bc-d017663846b6).
-
 ## Qué incluye
 
 - **Inicio**: racha de días, minutos y calorías acumuladas, acceso rápido a zonas del cuerpo e historial reciente.
