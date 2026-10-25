@@ -8,10 +8,18 @@ App Android de entrenamiento en casa **sin equipamiento**: rutinas por zona del 
 
 ## Capturas
 
-| | | |
-|:---:|:---:|:---:|
-| <img src="docs/screenshots/01-inicio.png" width="240" height="521" alt="Inicio con recomendación del día y gráfico semanal de kilocalorías"><br><sub>Inicio</sub> | <img src="docs/screenshots/02-configurador.png" width="240" height="521" alt="Configurador de entrenamiento: grupo muscular, intensidad y duración"><br><sub>Configurar</sub> | <img src="docs/screenshots/03-entrenamiento.png" width="240" height="521" alt="Pantalla de entrenamiento con temporizador y demostración de técnica"><br><sub>Entrenamiento</sub> |
-| <img src="docs/screenshots/04-descanso.png" width="240" height="521" alt="Pantalla de descanso con opción de saltar o añadir 20 segundos"><br><sub>Descanso</sub> | <img src="docs/screenshots/05-resumen.png" width="240" height="521" alt="Resumen al completar el entrenamiento: duración, calorías y ejercicios"><br><sub>Resumen</sub> | <img src="docs/screenshots/06-lista-ejercicios.png" width="240" height="521" alt="Lista de ejercicios del plan con orden y duración"><br><sub>Lista de ejercicios</sub> |
+<table>
+  <tr>
+    <td align="center" width="33%"><img src="docs/screenshots/01-inicio.png" width="240" height="521" alt="Inicio con recomendación del día y gráfico semanal de kilocalorías"><br><sub>Inicio</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/02-configurador.png" width="240" height="521" alt="Configurador de entrenamiento: grupo muscular, intensidad y duración"><br><sub>Configurar</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/03-entrenamiento.png" width="240" height="521" alt="Pantalla de entrenamiento con temporizador y demostración de técnica"><br><sub>Entrenamiento</sub></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="docs/screenshots/04-descanso.png" width="240" height="521" alt="Pantalla de descanso con opción de saltar o añadir 20 segundos"><br><sub>Descanso</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/05-resumen.png" width="240" height="521" alt="Resumen al completar el entrenamiento: duración, calorías y ejercicios"><br><sub>Resumen</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/06-lista-ejercicios.png" width="240" height="521" alt="Lista de ejercicios del plan con orden y duración"><br><sub>Lista de ejercicios</sub></td>
+  </tr>
+</table>
 
 ## Qué incluye
 
