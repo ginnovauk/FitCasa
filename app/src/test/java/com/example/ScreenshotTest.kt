@@ -63,7 +63,10 @@ class ScreenshotTest {
         val exercises = ExerciseCatalog.getExercisesByBodyPart(BodyPart.BRAZOS)
             .filter { it.bodyPart == BodyPart.BRAZOS }
             .take(8)
-            .map { it.copy(defaultDurationSeconds = 30) }
+            // Robolectric no decodifica los GIF de Coil (la captura sale vacía):
+            // para las capturas se usa la animación biomecánica de respaldo,
+            // que sí dibuja y es una función real de la app.
+            .map { it.copy(defaultDurationSeconds = 30, demonstratorMediaUrl = null) }
 
         WorkoutPlan(
             title = "Rutina de Brazos - Intermedio",
