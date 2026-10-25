@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FitCasa</string>
+    <string name="tagline">Entrenamiento en Casa sin Equipamiento</string>
+    <string name="nav_home">Inicio</string>
+    <string name="nav_workouts">Rutinas</string>
+    <string name="nav_history">Progreso</string>
+</resources>

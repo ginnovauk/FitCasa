@@ -1,0 +1,41 @@
+*.iml
+.gradle
+.kotlin
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+.env
+debug.keystore
+
+# Artefactos de build y logs locales
+build*.log
+jstack.txt
+FitCasa-debug.apk
+app/build/screenshots/
+
+# Artefactos temporales de recuperación del catálogo (tools/)
+tools/cp.txt
+tools/cp-real.txt
+tools/catalog-dump.txt
+tools/DumpCatalog.java
+tools/dump/
+tools/cp-libs/
+
+# Material de búsqueda/descarga de ejercicios (no forma parte de la app)
+demos/
+
+# Helper de build local (rutas hardcodeadas de esta máquina)
+tools/build-apk.ps1
+
+# Residual de la plantilla original: menciona una capacidad Gemini que ya no existe
+metadata.json

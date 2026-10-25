@@ -1,0 +1,13 @@
+Attribution / Atribucion
+========================
+
+Las animaciones de demostracion de ejercicios (archivos .gif de esta carpeta)
+provienen del dataset publico "exercises-dataset" de hasaneyldrm y son
+propiedad de Gym visual.
+
+  (c) Gym visual - https://gymvisual.com/
+
+Se distribuyen a 180x180 px, tal como exige la licencia del titular.
+El codigo de la aplicacion es independiente de ese material: si se retiran
+estos archivos, la app sigue funcionando con las animaciones vectoriales
+generadas en el propio telefono.

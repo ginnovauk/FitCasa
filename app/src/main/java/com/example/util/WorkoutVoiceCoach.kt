@@ -1,0 +1,503 @@
+package com.example.util
+
+import android.content.Context
+import android.media.AudioAttributes
+import android.media.AudioFocusRequest
+import android.media.AudioManager
+import android.os.Build
+import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
+import android.speech.tts.Voice
+import android.util.Log
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import java.util.Locale
+import java.util.concurrent.atomic.AtomicInteger
+
+/**
+ * Una voz concreta disponible en el motor de texto a voz del dispositivo.
+ * El identificador es el nombre interno del motor (por ejemplo "es-es-x-eea-local").
+ */
+data class VoiceOption(
+    val id: String,
+    val displayName: String,
+    val qualityLabel: String,
+    val requiresNetwork: Boolean
+)
+
+/**
+ * Estado que consume la interfaz para mostrar el panel de configuración de la voz.
+ */
+data class VoiceCoachUiState(
+    val isEnabled: Boolean = true,
+    val isReady: Boolean = false,
+    val engineLabel: String = "Detectando motor de voz…",
+    val voices: List<VoiceOption> = emptyList(),
+    val selectedVoiceId: String? = null,
+    val speechRate: Float = DEFAULT_RATE,
+    val needsSpanishVoiceData: Boolean = false,
+    val errorMessage: String? = null
+) {
+    companion object {
+        const val DEFAULT_RATE = 1.0f
+        val RATE_OPTIONS = listOf(0.9f, 1.0f, 1.12f)
+    }
+}
+
+/**
+ * Entrenador por voz basado en el motor TTS de Android.
+ *
+ * Mejoras respecto a la primera versión:
+ *  - Usa explícitamente el motor de voz de Google cuando está instalado, con vuelta atrás al motor del sistema.
+ *  - Selecciona automáticamente la mejor voz en español instalada (sin conexión, de mayor calidad y de España).
+ *  - Envía el audio como "voz" a través de atributos de audio, con foco temporal que atenúa la música del usuario.
+ *  - Permite elegir otra voz y la velocidad, y recuerda la preferencia entre sesiones.
+ *  - Evita que los subtítulos desaparezcan cuando una frase interrumpe a la anterior.
+ *  - Avisa cuando faltan las voces en español para poder descargarlas.
+ */
+class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
+
+    private val appContext = context.applicationContext
+    private val prefs = appContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private val audioManager = appContext.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
+
+    private val audioAttributes: AudioAttributes = AudioAttributes.Builder()
+        .setUsage(AudioAttributes.USAGE_MEDIA)
+        .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+        .build()
+
+    private var tts: TextToSpeech? = null
+    private var isInitialized = false
+    private var usingGoogleEngine = false
+    private var triedDefaultEngine = false
+    private var pendingPreview = false
+
+    private var hasAudioFocus = false
+    private var audioFocusRequest: AudioFocusRequest? = null
+
+    private val utteranceCounter = AtomicInteger(0)
+    private var currentUtteranceId: String? = null
+
+    private val _uiState = MutableStateFlow(
+        VoiceCoachUiState(
+            isEnabled = prefs.getBoolean(KEY_ENABLED, true),
+            speechRate = prefs.getFloat(KEY_RATE, VoiceCoachUiState.DEFAULT_RATE)
+        )
+    )
+    val uiState: StateFlow<VoiceCoachUiState> = _uiState.asStateFlow()
+
+    private val _currentVoiceMessage = MutableStateFlow<String?>(null)
+    val currentVoiceMessage: StateFlow<String?> = _currentVoiceMessage.asStateFlow()
+
+    private val spanishVoiceComparator = compareByDescending<Voice> { !it.isNetworkConnectionRequired }
+        .thenByDescending { it.locale.country.equals("ES", ignoreCase = true) }
+        .thenByDescending { it.quality }
+        .thenBy { it.name }
+
+    // ---------------------------------------------------------------------------------
+    // Inicialización del motor
+    // ---------------------------------------------------------------------------------
+
+    private fun createEngine(preferGoogle: Boolean) {
+        tts?.shutdown()
+        tts = null
+        isInitialized = false
+        usingGoogleEngine = preferGoogle
+        tts = TextToSpeech(
+            appContext,
+            this,
+            if (preferGoogle) GOOGLE_TTS_ENGINE else null
+        )
+    }
+
+    @Suppress("DEPRECATION")
+    private fun isGoogleEngineInstalled(): Boolean = try {
+        appContext.packageManager.getPackageInfo(GOOGLE_TTS_ENGINE, 0)
+        true
+    } catch (_: Exception) {
+        false
+    }
+
+    override fun onInit(status: Int) {
+        if (status != TextToSpeech.SUCCESS) {
+            // Si el motor de Google está instalado pero rechaza la inicialización,
+            // reintentamos una sola vez con el motor predeterminado del sistema.
+            if (usingGoogleEngine && !triedDefaultEngine) {
+                triedDefaultEngine = true
+                Log.w(TAG, "El motor de Google no respondió; usando el motor del sistema.")
+                createEngine(preferGoogle = false)
+                return
+            }
+
+            Log.w(TAG, "No se pudo iniciar el motor de voz (status=$status)")
+            _uiState.update {
+                it.copy(
+                    isReady = false,
+                    engineLabel = "Motor de voz no disponible",
+                    needsSpanishVoiceData = true,
+                    errorMessage = "Este dispositivo no tiene un motor de voz compatible. Descarga las voces de Google para escuchar al entrenador."
+                )
+            }
+            return
+        }
+
+        val engine = tts ?: return
+        isInitialized = true
+
+        engine.setAudioAttributes(audioAttributes)
+        engine.setPitch(1.0f)
+        engine.setSpeechRate(_uiState.value.speechRate)
+        engine.setOnUtteranceProgressListener(progressListener)
+
+        val needsVoiceData = configureSpanishVoice(engine)
+
+        _uiState.update {
+            it.copy(
+                isReady = true,
+                engineLabel = if (usingGoogleEngine) "Motor de voz de Google" else "Motor de voz del sistema",
+                needsSpanishVoiceData = needsVoiceData,
+                errorMessage = if (needsVoiceData) {
+                    "No encontramos una voz en español instalada. Descarga las voces de Google para escuchar al entrenador."
+                } else {
+                    null
+                }
+            )
+        }
+
+        if (pendingPreview) {
+            pendingPreview = false
+            previewVoice()
+        }
+    }
+
+    /**
+     * Aplica la voz guardada o la mejor voz en español disponible.
+     * Devuelve true cuando el dispositivo no tiene datos de voz en español.
+     */
+    private fun configureSpanishVoice(engine: TextToSpeech): Boolean {
+        val storedVoiceId = prefs.getString(KEY_VOICE_ID, null)
+
+        val spanishVoices = engine.voices.orEmpty()
+            .filter { it.locale.language.equals("es", ignoreCase = true) }
+            .filterNot { it.isMissingData() }
+            .sortedWith(spanishVoiceComparator)
+
+        val chosenVoice = spanishVoices.firstOrNull { it.name == storedVoiceId }
+            ?: spanishVoices.firstOrNull()
+
+        if (chosenVoice != null && engine.setVoice(chosenVoice) == TextToSpeech.SUCCESS) {
+            publishVoices(engine, spanishVoices)
+            return false
+        }
+
+        // Vuelta atrás: pedimos el idioma en lugar de una voz concreta.
+        val result = engine.setLanguage(Locale("es", "ES"))
+        val needsVoiceData = result == TextToSpeech.LANG_MISSING_DATA ||
+            result == TextToSpeech.LANG_NOT_SUPPORTED
+
+        if (needsVoiceData) {
+            engine.setLanguage(Locale("es"))
+        }
+
+        publishVoices(engine, spanishVoices)
+        return needsVoiceData
+    }
+
+    private fun publishVoices(engine: TextToSpeech, voices: List<Voice>) {
+        val options = voices.map { voice ->
+            VoiceOption(
+                id = voice.name,
+                displayName = displayNameFor(voice, voices),
+                qualityLabel = qualityLabel(voice.quality),
+                requiresNetwork = voice.isNetworkConnectionRequired
+            )
+        }
+
+        val activeVoiceId = engine.voice?.name?.takeIf { id -> voices.any { it.name == id } }
+
+        _uiState.update {
+            it.copy(
+                voices = options,
+                selectedVoiceId = activeVoiceId
+            )
+        }
+    }
+
+    private fun Voice.isMissingData(): Boolean =
+        features?.contains(TextToSpeech.Engine.KEY_FEATURE_NOT_INSTALLED) == true
+
+    private fun displayNameFor(voice: Voice, allVoices: List<Voice>): String {
+        val localeName = when (voice.locale.country.uppercase(Locale.ROOT)) {
+            "ES" -> "Español (España)"
+            "US" -> "Español (EE. UU.)"
+            "MX" -> "Español (México)"
+            "AR" -> "Español (Argentina)"
+            "CO" -> "Español (Colombia)"
+            "CL" -> "Español (Chile)"
+            else -> voice.locale.displayName.replaceFirstChar { it.uppercase() }
+        }
+
+        val sameLocale = allVoices.filter { it.locale.country == voice.locale.country }
+        return if (sameLocale.size > 1) {
+            "$localeName · Voz ${sameLocale.indexOf(voice) + 1}"
+        } else {
+            localeName
+        }
+    }
+
+    private fun qualityLabel(quality: Int): String = when {
+        quality >= Voice.QUALITY_VERY_HIGH -> "Calidad máxima"
+        quality >= Voice.QUALITY_HIGH -> "Alta calidad"
+        quality >= Voice.QUALITY_NORMAL -> "Calidad estándar"
+        else -> "Calidad básica"
+    }
+
+    // ---------------------------------------------------------------------------------
+    // Configuración expuesta a la interfaz
+    // ---------------------------------------------------------------------------------
+
+    fun toggleVoice() {
+        val newState = !_uiState.value.isEnabled
+        _uiState.update { it.copy(isEnabled = newState) }
+        prefs.edit().putBoolean(KEY_ENABLED, newState).apply()
+
+        if (!newState) {
+            stop()
+        } else {
+            speak("Entrenador por voz activado.", force = true)
+        }
+    }
+
+    fun selectVoice(voiceId: String) {
+        val engine = tts ?: return
+        val voice = engine.voices?.firstOrNull { it.name == voiceId } ?: return
+
+        if (engine.setVoice(voice) == TextToSpeech.SUCCESS) {
+            prefs.edit().putString(KEY_VOICE_ID, voiceId).apply()
+            _uiState.update {
+                it.copy(
+                    selectedVoiceId = voiceId,
+                    needsSpanishVoiceData = false,
+                    errorMessage = null
+                )
+            }
+            previewVoice()
+        }
+    }
+
+    fun setSpeechRate(rate: Float) {
+        val clamped = rate.coerceIn(0.7f, 1.4f)
+        tts?.setSpeechRate(clamped)
+        prefs.edit().putFloat(KEY_RATE, clamped).apply()
+        _uiState.update { it.copy(speechRate = clamped) }
+        previewVoice()
+    }
+
+    fun previewVoice() {
+        if (!isInitialized) {
+            pendingPreview = true
+            return
+        }
+        speakInternal(PREVIEW_PHRASE, force = true, showSubtitle = false)
+    }
+
+    // ---------------------------------------------------------------------------------
+    // Reproducción de voz
+    // ---------------------------------------------------------------------------------
+
+    fun speak(text: String, force: Boolean = false) {
+        speakInternal(text, force = force)
+    }
+
+    private fun speakInternal(
+        text: String,
+        force: Boolean = false,
+        showSubtitle: Boolean = true
+    ) {
+        if (!force && !_uiState.value.isEnabled) return
+
+        val engine = tts
+        if (!isInitialized || engine == null) return
+
+        val utteranceId = "fitcasa_${utteranceCounter.incrementAndGet()}"
+        currentUtteranceId = utteranceId
+
+        if (showSubtitle) {
+            _currentVoiceMessage.value = text
+        }
+
+        requestAudioFocus()
+
+        val params = Bundle().apply {
+            putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, 1f)
+        }
+
+        val result = engine.speak(text, TextToSpeech.QUEUE_FLUSH, params, utteranceId)
+        if (result == TextToSpeech.ERROR && utteranceId == currentUtteranceId) {
+            currentUtteranceId = null
+            _currentVoiceMessage.value = null
+            abandonAudioFocus()
+        }
+    }
+
+    fun speakExerciseStart(exerciseName: String, durationOrReps: String) {
+        speakInternal("Empezamos con ${nameForSpeech(exerciseName)}. $durationOrReps. ¡Vamos con fuerza!")
+    }
+
+    fun speakHalfway() {
+        speakInternal("¡Vas por la mitad! Mantén el ritmo y no olvides respirar.")
+    }
+
+    fun speakTenSecondsLeft() {
+        speakInternal("¡Últimos diez segundos! ¡Resiste!")
+    }
+
+    fun speakCountdown(seconds: Int) {
+        speakInternal(countdownWord(seconds))
+    }
+
+    fun speakRestStart(restSeconds: Int, nextExerciseName: String) {
+        speakInternal("¡Bien hecho! Descansa $restSeconds segundos. Ahora sigue: ${nameForSpeech(nextExerciseName)}.")
+    }
+
+    fun speakPrepareNext(nextExerciseName: String) {
+        speakInternal("Prepárate para ${nameForSpeech(nextExerciseName)}. Comenzamos en tres, dos, uno.")
+    }
+
+    fun speakWorkoutCompleted(calories: Int, minutes: Int) {
+        speakInternal(
+            "¡Entrenamiento completado! Quemaste aproximadamente $calories calorías en $minutes minutos. ¡Excelente trabajo!"
+        )
+    }
+
+    fun speakPaused() {
+        speakInternal("Entrenamiento en pausa.")
+    }
+
+    fun speakResumed() {
+        speakInternal("Continuamos. ¡A por todas!")
+    }
+
+    private fun countdownWord(seconds: Int): String = when (seconds) {
+        1 -> "Uno"
+        2 -> "Dos"
+        3 -> "Tres"
+        else -> seconds.toString()
+    }
+
+    /**
+     * Los nombres del catálogo incluyen aclaraciones entre paréntesis
+     * ("Saltos de Tijera (Jumping Jacks)"). Al hablar suenan mejor sin ellas.
+     */
+    private fun nameForSpeech(name: String): String =
+        name.substringBefore("(").trim().ifBlank { name }
+
+    private val progressListener = object : UtteranceProgressListener() {
+        override fun onStart(utteranceId: String?) = Unit
+
+        override fun onDone(utteranceId: String?) {
+            finishUtterance(utteranceId)
+        }
+
+        @Deprecated("Deprecated in Java")
+        override fun onError(utteranceId: String?) {
+            finishUtterance(utteranceId)
+        }
+
+        override fun onError(utteranceId: String?, errorCode: Int) {
+            finishUtterance(utteranceId)
+        }
+
+        override fun onStop(utteranceId: String?, interrupted: Boolean) {
+            finishUtterance(utteranceId)
+        }
+    }
+
+    private fun finishUtterance(utteranceId: String?) {
+        // Si una frase nueva ya tomó el relevo, la anterior no debe borrar los subtítulos.
+        if (utteranceId != currentUtteranceId) return
+
+        currentUtteranceId = null
+        _currentVoiceMessage.value = null
+        abandonAudioFocus()
+    }
+
+    // Se crea al final para que todos los campos de la clase ya estén inicializados
+    // cuando el motor invoque la devolución de llamada onInit.
+    init {
+        createEngine(preferGoogle = isGoogleEngineInstalled())
+    }
+
+    // ---------------------------------------------------------------------------------
+    // Foco de audio: baja el volumen de la música mientras habla el entrenador
+    // ---------------------------------------------------------------------------------
+
+    private fun requestAudioFocus() {
+        if (hasAudioFocus) return
+        val manager = audioManager ?: return
+
+        hasAudioFocus = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val request = audioFocusRequest ?: AudioFocusRequest.Builder(
+                AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
+            )
+                .setAudioAttributes(audioAttributes)
+                .setOnAudioFocusChangeListener { }
+                .build()
+                .also { audioFocusRequest = it }
+
+            manager.requestAudioFocus(request) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+        } else {
+            @Suppress("DEPRECATION")
+            manager.requestAudioFocus(
+                null,
+                AudioManager.STREAM_MUSIC,
+                AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
+            ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+        }
+    }
+
+    private fun abandonAudioFocus() {
+        if (!hasAudioFocus) return
+        hasAudioFocus = false
+
+        val manager = audioManager ?: return
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            audioFocusRequest?.let { manager.abandonAudioFocusRequest(it) }
+        } else {
+            @Suppress("DEPRECATION")
+            manager.abandonAudioFocus(null)
+        }
+    }
+
+    // ---------------------------------------------------------------------------------
+    // Ciclo de vida
+    // ---------------------------------------------------------------------------------
+
+    fun stop() {
+        currentUtteranceId = null
+        tts?.stop()
+        _currentVoiceMessage.value = null
+        abandonAudioFocus()
+    }
+
+    fun shutdown() {
+        stop()
+        tts?.shutdown()
+        tts = null
+        isInitialized = false
+    }
+
+    private companion object {
+        const val TAG = "WorkoutVoiceCoach"
+        const val PREFS_NAME = "fitcasa_voice_coach"
+        const val KEY_ENABLED = "voice_enabled"
+        const val KEY_VOICE_ID = "voice_id"
+        const val KEY_RATE = "voice_rate"
+        const val GOOGLE_TTS_ENGINE = "com.google.android.tts"
+        const val PREVIEW_PHRASE =
+            "Hola, soy tu entrenador de FitCasa. Empezamos con sentadillas. ¡Vamos con fuerza!"
+    }
+}
