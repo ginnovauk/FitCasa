@@ -1,6 +1,8 @@
 package com.example.ui.components
 
 import android.os.Build
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,10 +42,54 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.ImageLoader
 import coil.compose.SubcomposeAsyncImage
+import coil.decode.DecodeResult
+import coil.decode.Decoder
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
+import coil.decode.ImageSource
+import coil.fetch.SourceResult
 import coil.request.ImageRequest
+import coil.request.Options
 import com.example.data.model.Exercise
+
+/**
+ * Robolectric (los tests JVM) no puede dibujar [android.graphics.drawable.AnimatedImageDrawable]
+ * y [android.graphics.Movie] devuelve null, así que en ese entorno los GIF se
+ * decodifican como primer fotograma estático con BitmapFactory, que sí funciona.
+ * Solo afecta a las capturas de tests; en el teléfono real no se registra.
+ */
+private val isRobolectricEnvironment: Boolean =
+    Build.FINGERPRINT.contains("robolectric", ignoreCase = true)
+
+/**
+ * Decoder que decodifica el primer fotograma de un GIF como imagen estática.
+ * Solo se registra bajo Robolectric (ver [isRobolectricEnvironment]).
+ */
+private class FirstFrameGifDecoder(
+    private val source: ImageSource,
+    private val options: Options
+) : Decoder {
+
+    override suspend fun decode(): DecodeResult? {
+        val bytes = source.source().readByteArray()
+        if (bytes.size < 6) return null
+        val header = bytes.copyOfRange(0, 6).toString(Charsets.US_ASCII)
+        if (header != "GIF87a" && header != "GIF89a") return null
+        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size) ?: return null
+        return DecodeResult(
+            drawable = BitmapDrawable(options.context.resources, bitmap),
+            isSampled = false
+        )
+    }
+
+    class Factory : Decoder.Factory {
+        override fun create(
+            result: SourceResult,
+            options: Options,
+            imageLoader: ImageLoader
+        ): Decoder = FirstFrameGifDecoder(result.source, options)
+    }
+}
 
 @Composable
 fun ExerciseMediaView(
@@ -53,16 +99,23 @@ fun ExerciseMediaView(
 ) {
     val context = LocalContext.current
 
+    // El crossfade se dibuja con el reloj de Compose, que en los tests está
+    // congelado y deja la imagen en alpha 0 (captura en blanco): en Robolectric
+    // se desactiva; en el teléfono real no cambia nada.
+    val crossfadeEnabled = !isRobolectricEnvironment
+
     val imageLoader = remember {
         ImageLoader.Builder(context)
             .components {
-                if (Build.VERSION.SDK_INT >= 28) {
+                if (isRobolectricEnvironment) {
+                    add(FirstFrameGifDecoder.Factory())
+                } else if (Build.VERSION.SDK_INT >= 28) {
                     add(ImageDecoderDecoder.Factory())
                 } else {
                     add(GifDecoder.Factory())
                 }
             }
-            .crossfade(true)
+            .crossfade(crossfadeEnabled)
             .build()
     }
 
@@ -99,7 +152,7 @@ fun ExerciseMediaView(
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(context)
                     .data(mediaUrl)
-                    .crossfade(true)
+                    .crossfade(crossfadeEnabled)
                     .build(),
                 imageLoader = imageLoader,
                 contentDescription = "Demostración de ${exercise.name}",

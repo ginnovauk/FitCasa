@@ -11,11 +11,9 @@ App Android de entrenamiento en casa **sin equipamiento**: rutinas por zona del 
 | | | |
 |:---:|:---:|:---:|
 | **Inicio** | **Configurar** | **Entrenamiento** |
-| <img src="docs/screenshots/01-inicio.png" width="240" alt="Inicio con recomendación del día y gráfico semanal de kilocalorías"> | <img src="docs/screenshots/02-configurador.png" width="240" alt="Configurador de entrenamiento: grupo muscular, intensidad y duración"> | <img src="docs/screenshots/03-entrenamiento.png" width="240" alt="Pantalla de entrenamiento con temporizador y demostración de técnica"> |
+| <img src="docs/screenshots/01-inicio.png" width="240" height="521" alt="Inicio con recomendación del día y gráfico semanal de kilocalorías"> | <img src="docs/screenshots/02-configurador.png" width="240" height="521" alt="Configurador de entrenamiento: grupo muscular, intensidad y duración"> | <img src="docs/screenshots/03-entrenamiento.png" width="240" height="521" alt="Pantalla de entrenamiento con temporizador y demostración de técnica"> |
 | **Descanso** | **Resumen** | **Lista de ejercicios** |
-| <img src="docs/screenshots/04-descanso.png" width="240" alt="Pantalla de descanso con opción de saltar o añadir 20 segundos"> | <img src="docs/screenshots/05-resumen.png" width="240" alt="Resumen al completar el entrenamiento: duración, calorías y ejercicios"> | <img src="docs/screenshots/06-lista-ejercicios.png" width="240" alt="Lista de ejercicios del plan con orden y duración"> |
-
-> Las capturas de entrenamiento muestran la animación biomecánica de respaldo (en el teléfono la demostración es el GIF empaquetado).
+| <img src="docs/screenshots/04-descanso.png" width="240" height="521" alt="Pantalla de descanso con opción de saltar o añadir 20 segundos"> | <img src="docs/screenshots/05-resumen.png" width="240" height="521" alt="Resumen al completar el entrenamiento: duración, calorías y ejercicios"> | <img src="docs/screenshots/06-lista-ejercicios.png" width="240" height="521" alt="Lista de ejercicios del plan con orden y duración"> |
 
 ## Qué incluye
 

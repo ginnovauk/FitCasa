@@ -63,10 +63,8 @@ class ScreenshotTest {
         val exercises = ExerciseCatalog.getExercisesByBodyPart(BodyPart.BRAZOS)
             .filter { it.bodyPart == BodyPart.BRAZOS }
             .take(8)
-            // Robolectric no decodifica los GIF de Coil (la captura sale vacía):
-            // para las capturas se usa la animación biomecánica de respaldo,
-            // que sí dibuja y es una función real de la app.
-            .map { it.copy(defaultDurationSeconds = 30, demonstratorMediaUrl = null) }
+            // (para las capturas se usa el GIF real; GifDecoder dibuja en Robolectric)
+            .map { it.copy(defaultDurationSeconds = 30) }
 
         WorkoutPlan(
             title = "Rutina de Brazos - Intermedio",
@@ -252,9 +250,14 @@ class ScreenshotTest {
             }
         }
 
-        // Compone y avanza frames acotados: las pantallas con transición
-        // (entrenamiento ↔ descanso) necesitan tiempo para asentarse.
-        composeRule.mainClock.advanceTimeBy(1600)
+        // Coil decodifica los GIF en hilos reales y publica el resultado en el
+        // main looper, que Robolectric mantiene pausado: drena y avanza frames
+        // para que la captura no salga con el spinner de carga.
+        repeat(6) {
+            Thread.sleep(500)
+            org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+            composeRule.mainClock.advanceTimeBy(500)
+        }
         composeRule.mainClock.advanceTimeByFrame()
 
         after()
