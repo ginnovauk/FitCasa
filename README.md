@@ -1,7 +1,7 @@
 # FitCasa
 
 <p align="center">
-  <img src="app/src/main/res/drawable/ic_app_icon_fg.jpg" alt="Icono de FitCasa" width="160">
+  <img src="docs/fitcasa-icon.svg" alt="Icono de FitCasa" width="160">
 </p>
 
 App Android de entrenamiento en casa **sin equipamiento**: rutinas por zona del cuerpo, nivel y tiempo disponible, temporizador con descansos, demostraciones de técnica y seguimiento local del progreso.
