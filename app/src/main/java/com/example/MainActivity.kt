@@ -177,16 +177,15 @@ fun FitCasaApp(
                                 totalMinutes = totalMinutes,
                                 totalCalories = totalCalories,
                                 recentWorkouts = history,
-                                onSelectBodyPart = { bodyPart ->
-                                    viewModel.selectBodyPart(bodyPart)
-                                    selectedTab = MainTab.BUILDER
-                                },
                                 onStartQuickWorkout = { plan ->
                                     viewModel.startWorkout(plan)
                                     currentScreen = ScreenState.ACTIVE_WORKOUT
                                 },
                                 onNavigateToBuilder = {
                                     selectedTab = MainTab.BUILDER
+                                },
+                                onNavigateToHistory = {
+                                    selectedTab = MainTab.HISTORY
                                 }
                             )
                         }

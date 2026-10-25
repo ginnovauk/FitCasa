@@ -48,9 +48,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.local.WorkoutEntity
-import com.example.data.model.BodyPart
 import com.example.data.model.IntensityLevel
 import com.example.data.model.WorkoutPlan
+import com.example.ui.components.WeeklyCaloriesChart
 import com.example.ui.theme.AthleticGreenDark
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -62,9 +62,9 @@ fun HomeScreen(
     totalMinutes: Int,
     totalCalories: Int,
     recentWorkouts: List<WorkoutEntity>,
-    onSelectBodyPart: (BodyPart) -> Unit,
     onStartQuickWorkout: (WorkoutPlan) -> Unit,
     onNavigateToBuilder: () -> Unit,
+    onNavigateToHistory: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -256,41 +256,16 @@ fun HomeScreen(
             }
         }
 
-        // Section: Grupos Musculares
+        // Section: Gráfico semanal de kilocalorías (tipo fitness)
         item {
-            Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Zonas del Cuerpo",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                    Text(
-                        text = "Configurar",
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .clickable(onClick = onNavigateToBuilder)
-                            .testTag("open_builder_text")
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                BodyPart.values().forEach { bodyPart ->
-                    HomeBodyPartItem(
-                        bodyPart = bodyPart,
-                        onClick = { onSelectBodyPart(bodyPart) }
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-            }
+            WeeklyCaloriesChart(
+                history = recentWorkouts,
+                onSeeAll = onNavigateToHistory,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 14.dp)
+                    .testTag("weekly_calories_chart")
+            )
         }
 
         // Section: Historial Reciente
@@ -333,7 +308,7 @@ fun HomeScreen(
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = "Selecciona un grupo muscular arriba para comenzar tu primera rutina de hoy.",
+                                text = "Cuando completes tu primera rutina, aquí verás la actividad de cada día en el gráfico semanal.",
                                 fontSize = 13.sp,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 lineHeight = 18.sp
@@ -386,62 +361,6 @@ fun QuickStatItem(
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}
-
-@Composable
-fun HomeBodyPartItem(
-    bodyPart: BodyPart,
-    onClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .testTag("home_body_part_${bodyPart.id}"),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
-    ) {
-        Row(
-            modifier = Modifier.padding(14.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Surface(
-                modifier = Modifier.size(42.dp),
-                shape = RoundedCornerShape(12.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(
-                        imageVector = bodyPart.icon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(22.dp)
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.width(14.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = bodyPart.displayName,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = bodyPart.subtitle,
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            Icon(
-                imageVector = Icons.Default.ChevronRight,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(20.dp)
             )
         }
     }

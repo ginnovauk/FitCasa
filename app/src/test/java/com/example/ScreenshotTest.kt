@@ -55,7 +55,9 @@ class ScreenshotTest {
     @get:Rule
     val composeRule = createAndroidComposeRule<ComponentActivity>()
 
-    private val now = 1_760_000_000_000L
+    // Fecha real: así las sesiones caen dentro de la semana en curso y el
+    // gráfico semanal del inicio muestra barras con datos.
+    private val now = System.currentTimeMillis()
 
     private val plan = run {
         val exercises = ExerciseCatalog.getExercisesByBodyPart(BodyPart.BRAZOS)
@@ -112,9 +114,9 @@ class ScreenshotTest {
             totalMinutes = 215,
             totalCalories = 1420,
             recentWorkouts = history,
-            onSelectBodyPart = {},
             onStartQuickWorkout = {},
-            onNavigateToBuilder = {}
+            onNavigateToBuilder = {},
+            onNavigateToHistory = {}
         )
     }
 
