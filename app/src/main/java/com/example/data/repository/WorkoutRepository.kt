@@ -72,10 +72,32 @@ class WorkoutRepository(
             .values
             .flatMap { it.shuffled() }
 
-        val orderedPool = primaryMatches + fallbackMatches
-        
-        for (i in 0 until exerciseCount) {
-            val exerciseTemplate = orderedPool[i % orderedPool.size]
+        val orderedPool = if (bodyPart == BodyPart.CUERPO_COMPLETO) {
+            // Circuito de cuerpo completo: las ráfagas de cardio (los ejercicios
+            // de "cuerpo completo" del catálogo) se reparten por toda la sesión
+            // en vez de quedarse todas al principio. Sin este reparto la sesión
+            // solo llevaba un 22% de cardio, mientras que zonas pequeñas repiten
+            // su pool y llegan al 44-50%; el cuerpo completo quedaba así por
+            // debajo de brazos en gasto, que es justo lo contrario de esperar.
+            val cardioSlots = maxOf(primaryMatches.size, exerciseCount * 9 / 20)
+            val cardioPositions = (0 until cardioSlots)
+                .map { it * exerciseCount / cardioSlots }
+                .toHashSet()
+            var otherIndex = 0
+            var cardioIndex = 0
+            (0 until exerciseCount).map { i ->
+                if (i in cardioPositions) {
+                    primaryMatches[cardioIndex++ % primaryMatches.size]
+                } else {
+                    fallbackMatches[otherIndex++ % fallbackMatches.size]
+                }
+            }
+        } else {
+            val full = primaryMatches + fallbackMatches
+            (0 until exerciseCount).map { i -> full[i % full.size] }
+        }
+
+        for (exerciseTemplate in orderedPool) {
             val adjusted = exerciseTemplate.copy(
                 defaultDurationSeconds = workSec,
                 defaultReps = (exerciseTemplate.defaultReps * intensity.workRatioMultiplier).roundToInt()

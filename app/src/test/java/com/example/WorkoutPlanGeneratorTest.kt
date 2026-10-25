@@ -196,4 +196,27 @@ class WorkoutPlanGeneratorTest {
             piernas > brazos
         )
     }
+
+    @Test
+    fun `el cuerpo completo supera claramente a los brazos`() {
+        // Regresión: el circuito de cuerpo completo repartía su cardio solo al
+        // principio (22% de la sesión), lo que lo empataba con brazos (74 vs 73).
+        // Ahora las ráfagas se distribuyen y el margen debe ser holgado.
+        fun mediaCalorias(parte: BodyPart): Double =
+            (1..8).map {
+                repository.generateWorkoutPlan(
+                    bodyPart = parte,
+                    intensity = IntensityLevel.INTERMEDIO,
+                    targetDurationMinutes = 15
+                ).estimatedCalories
+            }.average()
+
+        val completo = mediaCalorias(BodyPart.CUERPO_COMPLETO)
+        val brazos = mediaCalorias(BodyPart.BRAZOS)
+
+        assertTrue(
+            "Cuerpo completo (%.1f kcal) no supera claramente a brazos (%.1f kcal)".format(completo, brazos),
+            completo >= brazos + 5
+        )
+    }
 }
