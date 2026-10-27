@@ -2,10 +2,8 @@ package com.example.ui.screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,7 +25,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.RecordVoiceOver
 import androidx.compose.material.icons.filled.SettingsVoice
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
@@ -228,41 +226,6 @@ fun ActiveWorkoutScreen(
                 }
             }
 
-            // Dynamic Voice Coach Message Banner (Subtitles / Speech bubble)
-            AnimatedVisibility(
-                visible = !currentVoiceMessage.isNullOrEmpty(),
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
-            ) {
-                Surface(
-                    shape = RoundedCornerShape(12.dp),
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    modifier = Modifier
-                        .padding(top = 8.dp)
-                        .testTag("coach_speech_banner")
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.RecordVoiceOver,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = currentVoiceMessage ?: "",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-            }
-
             Spacer(modifier = Modifier.height(10.dp))
 
             // Exercise Title & Reps/Duration Info
@@ -310,13 +273,16 @@ fun ActiveWorkoutScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Real Human Trainer Video View
+            // Real Human Trainer Video View: ocupa el espacio libre entre el
+            // título y el temporizador, sin empujar los controles fuera.
             if (currentEx != null) {
                 ExerciseMediaView(
                     exercise = currentEx,
                     isPaused = state.isPaused,
                     modifier = Modifier
                         .fillMaxWidth()
+                        .weight(1f)
+                        .heightIn(min = 160.dp)
                         .testTag("exercise_media_container")
                 )
             }
@@ -330,8 +296,6 @@ fun ActiveWorkoutScreen(
                 isPaused = state.isPaused,
                 modifier = Modifier.testTag("circular_timer")
             )
-
-            Spacer(modifier = Modifier.weight(1f))
 
             // Controls Row (Previous, Play/Pause, Next)
             Row(

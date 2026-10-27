@@ -1,0 +1,8 @@
+{
+  "burpees": { "canvas": "dark", "zoom": 1.15, "anchor": "bottom" },
+  "jumping_jacks": { "canvas": "dark", "zoom": 1.12, "anchor": "bottom" },
+  "lunges_alternating": { "canvas": "light", "zoom": 1.12, "anchor": "bottom" },
+  "plank": { "canvas": "dark", "zoom": 1.28, "anchor": "center" },
+  "push_ups_standard": { "canvas": "dark", "zoom": 1.22, "anchor": "bottom" },
+  "squats_bodyweight": { "canvas": "dark", "zoom": 1.08, "anchor": "bottom" }
+}
