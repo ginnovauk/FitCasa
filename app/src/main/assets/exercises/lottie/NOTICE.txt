@@ -1,0 +1,21 @@
+Licencias / Licenses
+====================
+
+Las animaciones vectoriales (archivos .json de esta carpeta) provienen de la
+biblioteca gratuita de LottieFiles y se usan bajo la "Lottie Simple License"
+(https://lottiefiles.com/page/license), que permite el uso comercial, la
+modificacion y la distribucion dentro de una aplicacion, sin atribucion
+obligatoria.
+
+Autoras y autores (atribucion voluntaria):
+
+  - Push Up .............. Oyinloluwa
+  - Plank ................ Daksh
+  - Jumping Jack ......... Dinh Bui Xuan
+  - Squat Reach .......... Dinh Bui Xuan
+  - Burpee and Jump ...... Dinh Bui Xuan
+  - Lunges ............... Daksh
+
+Solo se ha eliminado la capa de fondo solido de cada animacion para
+integrarla en la interfaz de la aplicacion; el resto del contenido no se ha
+modificado.

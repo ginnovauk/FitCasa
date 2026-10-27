@@ -1,5 +1,6 @@
 package com.example.ui.components
 
+import android.content.Context
 import android.os.Build
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -50,7 +51,28 @@ import coil.decode.ImageSource
 import coil.fetch.SourceResult
 import coil.request.ImageRequest
 import coil.request.Options
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.data.model.Exercise
+
+/** Carpeta con las animaciones vectoriales (Lottie) dentro de assets. */
+private const val LOTTIE_ASSET_DIR = "exercises/lottie"
+
+/**
+ * Asset Lottie equivalente al GIF del ejercicio: mismo nombre de fichero con
+ * extensión .json. Si existe, se usa en lugar del GIF.
+ */
+private fun lottieAssetFor(mediaUrl: String?): String? =
+    mediaUrl
+        ?.substringAfterLast('/')
+        ?.takeIf { it.endsWith(".gif") }
+        ?.removeSuffix(".gif")
+        ?.let { "$LOTTIE_ASSET_DIR/$it.json" }
+
+private fun assetExists(context: Context, path: String): Boolean =
+    runCatching { context.assets.open(path).close() }.isSuccess
 
 /**
  * Robolectric (los tests JVM) no puede dibujar [android.graphics.drawable.AnimatedImageDrawable]
@@ -139,16 +161,36 @@ fun ExerciseMediaView(
     // se muestra la animación biomecánica generada en el propio teléfono.
     var mediaFailed by remember(mediaUrl) { mutableStateOf(mediaUrl.isNullOrEmpty()) }
 
+    // Animación vectorial (Lottie) si hay JSON para este ejercicio. Robolectric
+    // no rasteriza Lottie, así que en las capturas de test se sigue usando el GIF.
+    val lottieAsset = remember(mediaUrl) { lottieAssetFor(mediaUrl) }
+    val useLottie = remember(lottieAsset) {
+        lottieAsset != null && !isRobolectricEnvironment && assetExists(context, lottieAsset)
+    }
+
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(260.dp)
+            .height(340.dp)
             .clip(RoundedCornerShape(22.dp))
             .background(surfaceVariant.copy(alpha = 0.5f))
             .testTag("exercise_real_human_trainer_view"),
         contentAlignment = Alignment.Center
     ) {
-        if (!mediaUrl.isNullOrEmpty()) {
+        if (useLottie) {
+            val composition by rememberLottieComposition(
+                LottieCompositionSpec.Asset(lottieAsset!!)
+            )
+            LottieAnimation(
+                composition = composition,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(6.dp),
+                contentScale = ContentScale.Fit,
+                iterations = LottieConstants.IterateForever,
+                isPlaying = !isPaused
+            )
+        } else if (!mediaUrl.isNullOrEmpty()) {
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(context)
                     .data(mediaUrl)
@@ -198,7 +240,7 @@ fun ExerciseMediaView(
             )
         }
 
-        if (!mediaFailed) {
+        if (useLottie || !mediaFailed) {
             // Top Trainer Badge
             Surface(
                 shape = RoundedCornerShape(10.dp),
@@ -220,7 +262,11 @@ fun ExerciseMediaView(
                     )
                     Spacer(modifier = Modifier.width(5.dp))
                     Text(
-                        text = "Entrenador Real • Demostración HD",
+                        text = if (useLottie) {
+                            "Animación vectorial • HD"
+                        } else {
+                            "Entrenador Real • Demostración HD"
+                        },
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
                         color = textPrimary
