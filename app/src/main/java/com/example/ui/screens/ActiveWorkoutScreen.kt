@@ -61,6 +61,7 @@ import androidx.compose.ui.unit.sp
 import com.example.data.model.Exercise
 import com.example.ui.components.CircularTimerView
 import com.example.ui.components.ExerciseDetailSheet
+import com.example.ui.components.ExerciseGuideCard
 import com.example.ui.components.ExerciseMediaView
 import com.example.ui.components.RestIntervalOverlay
 import com.example.ui.components.VoiceCoachSettingsSheet
@@ -273,11 +274,13 @@ fun ActiveWorkoutScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Real Human Trainer Video View: ocupa el espacio libre entre el
-            // título y el temporizador, sin empujar los controles fuera.
-            if (currentEx != null) {
+            // Demostración vectorial: ocupa el espacio libre entre el título y
+            // el temporizador, sin empujar los controles fuera. Los ejercicios
+            // sin animación dejan ese hueco para que el temporizador no baile.
+            val currentExercise = currentEx
+            if (currentExercise != null && currentExercise.lottieAsset != null) {
                 ExerciseMediaView(
-                    exercise = currentEx,
+                    exercise = currentExercise,
                     isPaused = state.isPaused,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -285,6 +288,24 @@ fun ActiveWorkoutScreen(
                         .heightIn(min = 160.dp)
                         .testTag("exercise_media_container")
                 )
+            } else if (currentExercise != null) {
+                // Sin animación: los pasos escritos ocupan el mismo hueco, así
+                // la pantalla no queda vacía y el temporizador no se mueve.
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ExerciseGuideCard(
+                        exercise = currentExercise,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("exercise_guide_card")
+                    )
+                }
+            } else {
+                Spacer(modifier = Modifier.weight(1f))
             }
 
             Spacer(modifier = Modifier.height(14.dp))

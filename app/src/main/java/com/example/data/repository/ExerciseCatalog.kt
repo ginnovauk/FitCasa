@@ -2,7 +2,6 @@ package com.example.data.repository
 
 import com.example.data.model.BodyPart
 import com.example.data.model.Exercise
-import com.example.data.model.ExerciseAnimationType
 import com.example.data.model.IntensityLevel
 
 object ExerciseCatalog {
@@ -16,9 +15,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 30,
-            animationType = ExerciseAnimationType.JUMPING_JACKS,
             caloriesPerMinute = 9.3f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/jumping_jacks.gif",
+            lottieAsset = "exercises/lottie/jumping_jacks.json",
             instructions = listOf(
                 "Párate con los pies juntos y los brazos a los lados.",
                 "Da un salto abriendo las piernas a la anchura de los hombros mientras elevas las manos por encima de la cabeza.",
@@ -34,9 +32,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.INTERMEDIO,
             defaultDurationSeconds = 30,
             defaultReps = 24,
-            animationType = ExerciseAnimationType.MOUNTAIN_CLIMBERS,
             caloriesPerMinute = 9.3f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/mountain_climbers.gif",
+            lottieAsset = "exercises/lottie/mountain_climbers.json",
             instructions = listOf(
                 "Comienza en posición de plancha alta con las manos directamente bajo los hombros.",
                 "Lleva una rodilla hacia el pecho sin levantar la cadera.",
@@ -52,9 +49,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.INTERMEDIO,
             defaultDurationSeconds = 30,
             defaultReps = 35,
-            animationType = ExerciseAnimationType.HIGH_KNEES,
             caloriesPerMinute = 9.3f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/high_knees.gif",
+            lottieAsset = "exercises/lottie/high_knees.json",
             instructions = listOf(
                 "Corre en el lugar elevando las rodillas a la altura de la cadera.",
                 "Mantén el pecho erguido y acompaña el movimiento balanceando los brazos.",
@@ -70,9 +66,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.AVANZADO,
             defaultDurationSeconds = 30,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.BURPEES,
             caloriesPerMinute = 11.7f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/burpees.gif",
+            lottieAsset = "exercises/lottie/burpees.json",
             instructions = listOf(
                 "Desde posición de pie, agáchate y coloca las manos en el suelo.",
                 "Lanza los pies hacia atrás para quedar en posición de plancha.",
@@ -90,9 +85,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.PUSH_UP,
             caloriesPerMinute = 4.7f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/push_ups_knees.gif",
+            lottieAsset = "exercises/lottie/push_ups_knees.json",
             instructions = listOf(
                 "Apoya las rodillas y las palmas de las manos a una anchura superior a los hombros.",
                 "Mantén una línea recta desde la cabeza hasta las rodillas contrayendo el abdomen.",
@@ -108,9 +102,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.INTERMEDIO,
             defaultDurationSeconds = 35,
             defaultReps = 15,
-            animationType = ExerciseAnimationType.PUSH_UP,
             caloriesPerMinute = 7f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/push_ups_standard.gif",
+            lottieAsset = "exercises/lottie/push_ups_standard.json",
             instructions = listOf(
                 "Colócate en posición de plancha alta con los pies juntos y el abdomen firme.",
                 "Desciende controladamente hasta que el pecho quede a pocos centímetros del suelo.",
@@ -126,9 +119,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.AVANZADO,
             defaultDurationSeconds = 30,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.PUSH_UP,
             caloriesPerMinute = 7.6f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/push_ups_diamond.gif",
+            lottieAsset = "exercises/lottie/push_ups_diamond.json",
             instructions = listOf(
                 "Junta los dedos pulgares e índices en el suelo formando un triángulo o diamante bajo el pecho.",
                 "Baja el centro del pecho hacia el centro de las manos manteniendo los codos pegados.",
@@ -146,9 +138,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 18,
-            animationType = ExerciseAnimationType.CRUNCHES,
             caloriesPerMinute = 4.4f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/crunches.gif",
+            lottieAsset = "exercises/lottie/crunches.json",
             instructions = listOf(
                 "Acuéstate boca arriba con las rodillas dobladas y los pies firmes en el suelo.",
                 "Coloca las manos detrás de las orejas sin tirar del cuello.",
@@ -164,9 +155,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.INTERMEDIO,
             defaultDurationSeconds = 40,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.PLANK,
             caloriesPerMinute = 4.1f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/plank.gif",
+            lottieAsset = "exercises/lottie/plank.json",
             instructions = listOf(
                 "Apoya los antebrazos y las puntas de los pies en el suelo.",
                 "Forma una línea recta perfecta desde la cabeza hasta los talones.",
@@ -182,9 +172,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.AVANZADO,
             defaultDurationSeconds = 35,
             defaultReps = 24,
-            animationType = ExerciseAnimationType.BICYCLE_CRUNCHES,
             caloriesPerMinute = 5.8f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/bicycle_crunches.gif",
+            lottieAsset = "exercises/lottie/bicycle_crunches.json",
             instructions = listOf(
                 "Acuéstate boca arriba con las piernas levantadas en ángulo de 90 grados.",
                 "Lleva el codo derecho hacia la rodilla izquierda mientras extiendes la pierna derecha.",
@@ -202,9 +191,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 35,
             defaultReps = 16,
-            animationType = ExerciseAnimationType.SQUAT,
             caloriesPerMinute = 6.4f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/squats_bodyweight.gif",
+            lottieAsset = "exercises/lottie/squats_bodyweight.json",
             instructions = listOf(
                 "Párate con los pies separados al ancho de los hombros y puntas ligeramente abiertas.",
                 "Flexiona caderas y rodillas como si fueras a sentarte en una silla baja.",
@@ -220,9 +208,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.INTERMEDIO,
             defaultDurationSeconds = 35,
             defaultReps = 16,
-            animationType = ExerciseAnimationType.LUNGES,
             caloriesPerMinute = 5.8f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/lunges_alternating.gif",
+            lottieAsset = "exercises/lottie/lunges_alternating.json",
             instructions = listOf(
                 "Da un paso amplio hacia adelante con una pierna manteniendo el torso recto.",
                 "Flexiona ambas rodillas hasta que formen un ángulo de 90 grados.",
@@ -238,9 +225,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 35,
             defaultReps = 15,
-            animationType = ExerciseAnimationType.GLUTE_BRIDGE,
             caloriesPerMinute = 4.7f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/glute_bridge.gif",
+            lottieAsset = "exercises/lottie/glute_bridge.json",
             instructions = listOf(
                 "Acuéstate boca arriba con las rodillas dobladas y los pies planos cerca de los glúteos.",
                 "Eleva la pelvis contrayendo los glúteos hasta alinear rodillas, caderas y hombros.",
@@ -256,9 +242,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.INTERMEDIO,
             defaultDurationSeconds = 30,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.WALL_SIT,
             caloriesPerMinute = 5.2f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/wall_sit.gif",
+            lottieAsset = "exercises/lottie/wall_sit.json",
             instructions = listOf(
                 "Apoya la espalda plana contra una pared y deslízate hacia abajo.",
                 "Detente cuando los muslos formen un ángulo de 90 grados con el suelo.",
@@ -276,9 +261,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 14,
-            animationType = ExerciseAnimationType.TRICEPS_DIPS,
             caloriesPerMinute = 5.2f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/triceps_dips.gif",
+            lottieAsset = "exercises/lottie/triceps_dips.json",
             instructions = listOf(
                 "Apoya las palmas sobre una silla firme, sillón o en el suelo detrás de ti.",
                 "Con los codos apuntando hacia atrás, flexiónalos bajando la cadera cerca del soporte.",
@@ -296,9 +280,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 14,
-            animationType = ExerciseAnimationType.SUPERMAN,
             caloriesPerMinute = 4.1f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/superman.gif",
+            lottieAsset = "exercises/lottie/superman.json",
             instructions = listOf(
                 "Acuéstate boca abajo con brazos y piernas estirados completamente.",
                 "Eleva simultáneamente el pecho, los brazos y los muslos del suelo unos centímetros.",
@@ -314,9 +297,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.COBRA_STRETCH,
             caloriesPerMinute = 2.9f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/cobra_stretch.gif",
+            lottieAsset = "exercises/lottie/cobra_stretch.json",
             instructions = listOf(
                 "Acuéstate boca abajo con las palmas apoyadas a los lados del pecho.",
                 "Empuja suavemente extendiendo el tronco hacia arriba abriendo el pecho.",
@@ -334,9 +316,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.PUSH_UP,
             caloriesPerMinute = 4.1f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/wall_push_ups.gif",
+            lottieAsset = "exercises/lottie/wall_push_ups.json",
             instructions = listOf(
                 "Apoya las palmas en la pared a la altura de los hombros, un poco más separadas que el ancho de los hombros.",
                 "Da un paso atrás y mantén el cuerpo en línea recta desde la cabeza hasta los talones.",
@@ -352,9 +333,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.TRICEPS_DIPS,
             caloriesPerMinute = 4.7f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/triceps_dips_floor.gif",
+            lottieAsset = "exercises/lottie/triceps_dips_floor.json",
             instructions = listOf(
                 "Siéntate en el borde de una silla estable con las manos al lado de las caderas y los dedos hacia delante.",
                 "Desliza la cadera fuera del asiento con las piernas extendidas y la espalda cerca de la silla.",
@@ -370,9 +350,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.TRICEPS_EXTENSION,
             caloriesPerMinute = 3.5f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/kneeling_triceps_extension.gif",
+            lottieAsset = "exercises/lottie/kneeling_triceps_extension.json",
             instructions = listOf(
                 "Arrodíllate con las manos en el suelo bajo los hombros y los dedos hacia delante.",
                 "Mantén el cuerpo en línea recta desde la cabeza hasta las rodillas y el abdomen firme.",
@@ -388,9 +367,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 14,
-            animationType = ExerciseAnimationType.BICEPS_CURL,
             caloriesPerMinute = 3.5f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/biceps_self_resistance.gif",
+            lottieAsset = "exercises/lottie/biceps_self_resistance.json",
             instructions = listOf(
                 "Túmbate de lado con las piernas extendidas y la cabeza apoyada en el brazo de abajo.",
                 "Pega el brazo de arriba al costado y flexiona el codo llevando la mano hacia el hombro.",
@@ -406,9 +384,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.INTERMEDIO,
             defaultDurationSeconds = 30,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.PUSH_UP,
             caloriesPerMinute = 7f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/close_grip_push_ups.gif",
+            lottieAsset = "exercises/lottie/close_grip_push_ups.json",
             instructions = listOf(
                 "Colócate en plancha alta con las manos juntas bajo el pecho y el abdomen firme.",
                 "Baja el cuerpo manteniendo los codos pegados a las costillas.",
@@ -424,9 +401,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.INTERMEDIO,
             defaultDurationSeconds = 35,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.TRICEPS_DIPS,
             caloriesPerMinute = 5.8f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/elbow_dips.gif",
+            lottieAsset = "exercises/lottie/triceps_dips.json",
             instructions = listOf(
                 "Siéntate en el borde de una silla estable y agarra el borde con las manos junto a la cadera.",
                 "Desliza la cadera hacia fuera y apoya los talones en el suelo con las piernas semiflexionadas.",
@@ -442,9 +418,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.AVANZADO,
             defaultDurationSeconds = 30,
             defaultReps = 10,
-            animationType = ExerciseAnimationType.PUSH_UP,
             caloriesPerMinute = 5.2f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/side_push_up.gif",
+            lottieAsset = "exercises/lottie/side_push_up.json",
             instructions = listOf(
                 "Túmbate de lado con las piernas extendidas y una encima de la otra.",
                 "Apoya la mano de abajo bajo el hombro y empuja para levantar la cadera del suelo.",
@@ -460,9 +435,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.AVANZADO,
             defaultDurationSeconds = 30,
             defaultReps = 10,
-            animationType = ExerciseAnimationType.TRICEPS_DIPS,
             caloriesPerMinute = 7f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/body_up.gif",
+            lottieAsset = "exercises/lottie/body_up.json",
             instructions = listOf(
                 "Apoya las palmas en un banco firme o en el borde de una mesa estable, con los dedos hacia delante.",
                 "Extiende las piernas al frente apoyando los talones y mantén el cuerpo recto.",
@@ -480,9 +454,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 15,
-            animationType = ExerciseAnimationType.BODYWEIGHT_ROW,
             caloriesPerMinute = 5.8f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/towel_row.gif",
+            lottieAsset = "exercises/lottie/inverted_row_table.json",
             instructions = listOf(
                 "Sostén una toalla enrollada con las dos manos frente al pecho, con los pies al ancho de los hombros.",
                 "Flexiona un poco las rodillas e inclina el torso hacia delante manteniendo la espalda recta.",
@@ -498,9 +471,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 14,
-            animationType = ExerciseAnimationType.PRONE_ELBOW_LIFT,
             caloriesPerMinute = 3.5f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/prone_elbow_lift.gif",
+            lottieAsset = "exercises/lottie/prone_elbow_lift.json",
             instructions = listOf(
                 "Túmbate boca abajo con las piernas extendidas y las manos bajo los hombros.",
                 "Aprieta el abdomen y empuja suavemente con las palmas para separar el pecho del suelo.",
@@ -516,9 +488,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.PUSH_UP,
             caloriesPerMinute = 4.1f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/scapula_push_up.gif",
+            lottieAsset = "exercises/lottie/scapula_push_up.json",
             instructions = listOf(
                 "Colócate en plancha alta con los brazos estirados y el abdomen firme.",
                 "Sin doblar los codos, deja que el pecho descienda separando las escápulas.",
@@ -534,9 +505,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.COBRA_STRETCH,
             caloriesPerMinute = 2.9f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/sphinx_hold.gif",
+            lottieAsset = "exercises/lottie/sphinx_hold.json",
             instructions = listOf(
                 "Túmbate boca abajo con los antebrazos apoyados y los codos bajo los hombros.",
                 "Aprieta el abdomen y eleva el pecho separándolo del suelo sin encoger los hombros.",
@@ -552,9 +522,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.INTERMEDIO,
             defaultDurationSeconds = 35,
             defaultReps = 15,
-            animationType = ExerciseAnimationType.BODYWEIGHT_ROW,
             caloriesPerMinute = 7f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/towel_squat_row.gif",
+            lottieAsset = "exercises/lottie/towel_squat_row.json",
             instructions = listOf(
                 "Con la toalla en las manos, baja a media sentadilla manteniendo el pecho arriba.",
                 "Desde esa posición, tira de la toalla hacia el pecho llevando los codos hacia atrás.",
@@ -570,9 +539,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.INTERMEDIO,
             defaultDurationSeconds = 35,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.BODYWEIGHT_ROW,
             caloriesPerMinute = 7f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/inverted_row_table.gif",
+            lottieAsset = "exercises/lottie/inverted_row_table.json",
             instructions = listOf(
                 "Túmbate bajo una mesa robusta y agarra el borde con las manos algo más separadas que los hombros.",
                 "Apoya los talones en el suelo con las piernas semiflexionadas y el cuerpo recto.",
@@ -588,9 +556,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.AVANZADO,
             defaultDurationSeconds = 30,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.GLUTE_BRIDGE,
             caloriesPerMinute = 5.2f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/reverse_plank_leg_lift.gif",
+            lottieAsset = "exercises/lottie/reverse_plank_leg_lift.json",
             instructions = listOf(
                 "Siéntate con las rodillas flexionadas y las palmas apoyadas detrás de la cadera.",
                 "Empuja con las manos y los pies para elevar la cadera hasta formar una línea recta.",
@@ -606,9 +573,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 30,
             defaultReps = 12,
-            animationType = ExerciseAnimationType.COBRA_STRETCH,
             caloriesPerMinute = 2.9f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/upward_dog.gif",
+            lottieAsset = "exercises/lottie/cobra_stretch.json",
             instructions = listOf(
                 "Túmbate boca abajo con las piernas extendidas y las manos junto a las costillas bajas.",
                 "Empuja el suelo para elevar el torso y los muslos, abriendo el pecho.",
@@ -632,9 +598,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 20,
             defaultReps = 10,
-            animationType = ExerciseAnimationType.NONE,
             caloriesPerMinute = 2.3f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/ankle_circles.gif",
+            lottieAsset = "exercises/lottie/warmup_ankle_circles.json",
             instructions = listOf(
                 "Apóyate en una pared o apoyo ligero con un pie ligeramente elevado.",
                 "Gira el tobillo en círculos amplios, 10 veces en cada dirección.",
@@ -651,9 +616,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 20,
             defaultReps = 10,
-            animationType = ExerciseAnimationType.NONE,
             caloriesPerMinute = 2.3f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/wrist_circles.gif",
+            lottieAsset = "exercises/lottie/warmup_wrist_circles.json",
             instructions = listOf(
                 "Extiende los brazos a la altura de los hombros con las manos abiertas.",
                 "Gira las muñecas en círculos amplios, 10 veces hacia delante.",
@@ -670,9 +634,8 @@ object ExerciseCatalog {
             intensity = IntensityLevel.PRINCIPIANTE,
             defaultDurationSeconds = 25,
             defaultReps = 8,
-            animationType = ExerciseAnimationType.NONE,
             caloriesPerMinute = 2.7f,
-            demonstratorMediaUrl = "file:///android_asset/exercises/lateral_stretch.gif",
+            lottieAsset = "exercises/lottie/lateral_stretch.json",
             instructions = listOf(
                 "Párate erguido con los pies al ancho de los hombros.",
                 "Eleva un brazo y lleva el tronco lentamente al lado contrario, sintiendo el estiramiento lateral.",

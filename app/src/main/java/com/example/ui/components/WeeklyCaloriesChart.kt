@@ -184,12 +184,15 @@ fun WeeklyCaloriesChart(
 
             TrendBadge(total = week.totalKcal, previous = week.previousWeekKcal)
 
-            Spacer(modifier = Modifier.height(14.dp))
+            // Sin actividad la tarjeta se queda corta para el hueco del gráfico:
+            // 130 dp de barras vacías la empujaban fuera de la ventana.
+            val hasActivity = week.totalKcal > 0
+            Spacer(modifier = Modifier.height(if (hasActivity) 14.dp else 10.dp))
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(130.dp),
+                    .height(if (hasActivity) 130.dp else 58.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 week.days.forEachIndexed { index, day ->

@@ -55,21 +55,31 @@ class ExerciseCatalogTest {
     }
 
     @Test
-    fun `cada ejercicio trae su animacion empaquetada en la app`() {
-        exercises.forEach { exercise ->
-            val url = exercise.demonstratorMediaUrl
-            assertNotNull("${exercise.id} no tiene demostración", url)
-            assertTrue(
-                "${exercise.id} no apunta a un asset local: $url",
-                url!!.startsWith("file:///android_asset/exercises/")
-            )
-            assertTrue("${exercise.id} no apunta a un gif: $url", url.endsWith(".gif"))
+    fun `cada animacion empaquetada existe y tiene su lienzo`() {
+        val lottieDir = File("src/main/assets/exercises/lottie")
+        val canvas = File(lottieDir, "canvas.json").readText()
+        val withMedia = exercises.filter { it.lottieAsset != null }
 
-            val assetName = url.substringAfterLast('/')
-            val assetFile = File("src/main/assets/exercises/$assetName")
-            assertTrue("Falta el archivo empaquetado $assetName", assetFile.exists())
-            assertTrue("El archivo $assetName está vacío", assetFile.length() > 10_000)
+        assertTrue("ningún ejercicio tiene animación", withMedia.size >= 10)
+        withMedia.forEach { exercise ->
+            val path = exercise.lottieAsset!!
+            assertTrue("${exercise.id} no apunta a un asset local: $path", path.startsWith("exercises/lottie/"))
+            assertTrue("${exercise.id} no apunta a un json: $path", path.endsWith(".json"))
+
+            val assetFile = File("src/main/assets/$path")
+            assertTrue("Falta el archivo empaquetado $path", assetFile.exists())
+            assertTrue("El archivo $path está vacío", assetFile.length() > 1_000)
+            assertTrue("El archivo $path no es json", assetFile.readText().trimStart().startsWith("{"))
+
+            val name = path.substringAfterLast('/').removeSuffix(".json")
+            assertTrue("Falta el lienzo de $name en canvas.json", canvas.contains("\"$name\""))
         }
+    }
+
+    @Test
+    fun `no quedan gifs empaquetados`() {
+        val leftovers = File("src/main/assets/exercises").listFiles { f -> f.extension == "gif" }
+        assertTrue("quedan GIF en assets: ${leftovers?.joinToString { it.name }}", leftovers.isNullOrEmpty())
     }
 
     @Test

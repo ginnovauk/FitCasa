@@ -61,14 +61,16 @@ fun ExerciseDetailSheet(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Real Trainer Video & Anatomical Guide View
-            ExerciseMediaView(
-                exercise = exercise,
-                isPaused = false,
-                modifier = Modifier.fillMaxWidth()
-            )
+            // Demostración vectorial, solo si el ejercicio tiene animación.
+            if (exercise.lottieAsset != null) {
+                ExerciseMediaView(
+                    exercise = exercise,
+                    isPaused = false,
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-            Spacer(modifier = Modifier.height(18.dp))
+                Spacer(modifier = Modifier.height(18.dp))
+            }
 
             // Steps
             Text(

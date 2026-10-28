@@ -1,11 +1,11 @@
 Licencias / Licenses
 ====================
 
-Las animaciones vectoriales (archivos .json de esta carpeta) provienen de la
-biblioteca gratuita de LottieFiles y se usan bajo la "Lottie Simple License"
-(https://lottiefiles.com/page/license), que permite el uso comercial, la
-modificacion y la distribucion dentro de una aplicacion, sin atribucion
-obligatoria.
+Las animaciones vectoriales (archivos .json de esta carpeta) provienen en su
+mayoria de la biblioteca gratuita de LottieFiles y se usan bajo la "Lottie
+Simple License" (https://lottiefiles.com/page/license), que permite el uso
+comercial, la modificacion y la distribucion dentro de una aplicacion, sin
+atribucion obligatoria. Las demas son creaciones propias de FitCasa.
 
 Autoras y autores (atribucion voluntaria):
 
@@ -15,7 +15,38 @@ Autoras y autores (atribucion voluntaria):
   - Squat Reach .......... Dinh Bui Xuan
   - Burpee and Jump ...... Dinh Bui Xuan
   - Lunges ............... Daksh
+  - High Knees Workout ... Bashir
+  - Abs Crunches ......... saagar shrestha
+  - Wall Sitting ......... saagar shrestha
+  - Triceps Dips ......... saagar shrestha
+  - Biceps Curl .......... saagar shrestha
+  - Glute Bridge ......... 1147
+  - Cobras ............... Dinh Bui Xuan
+  - Bent-over Row ........ Aswathy
+  - Stretch (side bend) .. kat
+  - Esfinge (yoga) ....... IB
+  - Push Up (manos juntas) Blinix
 
-Solo se ha eliminado la capa de fondo solido de cada animacion para
-integrarla en la interfaz de la aplicacion; el resto del contenido no se ha
-modificado.
+Animaciones propias (dibujadas para FitCasa, sin material de terceros):
+
+  - Superman Lumbar ....... propia (FitCasa)
+  - Flexiones con rodillas  propia (FitCasa)
+  - Flexiones diamante .... propia (FitCasa)
+  - Flexiones en la pared . propia (FitCasa)
+  - Escaladores ........... propia (FitCasa)
+  - Abdominales bicicleta . propia (FitCasa)
+  - Fondos de tríceps suelo propia (FitCasa)
+  - Extensión tríceps ..... propia (FitCasa)
+  - Flexiones laterales ... propia (FitCasa)
+  - Fondos elevados ....... propia (FitCasa)
+  - Elevación de codos .... propia (FitCasa)
+  - Flexiones escapulares . propia (FitCasa)
+  - Remo con toalla ....... propia (FitCasa)
+  - Plancha inversa ....... propia (FitCasa)
+  - Círculos de tobillos .. propia (FitCasa)
+  - Círculos de muñecas ... propia (FitCasa)
+
+Para las animaciones ajenas se ha eliminado la capa de fondo solido de cada
+archivo y se han incrustado las imagenes que el propio .lottie traia aparte;
+el resto del contenido no se ha modificado. Las propias se han generado
+integramente en formato Lottie dentro de este proyecto.

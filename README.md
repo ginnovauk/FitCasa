@@ -30,13 +30,11 @@ App Android de entrenamiento en casa **sin equipamiento**: rutinas por zona del 
 
 ## Catálogo de ejercicios
 
-33 ejercicios sin equipamiento, todos con demostración **empaquetada en la app** (funciona sin conexión) y una animación biomecánica vectorial como respaldo: 4 de cuerpo completo, 3 de pecho, 3 de abdomen, 4 de piernas, 9 de brazos y 10 de espalda.
+36 ejercicios sin equipamiento: 7 de cuerpo completo, 3 de pecho, 3 de abdomen, 4 de piernas, 9 de brazos y 10 de espalda.
 
-Cada demostración está verificada contra el nombre real del movimiento en el dataset de origen, para que coincida con el ejercicio y no requiera máquinas.
+Los 36 tienen demostración propia en formato vectorial (Lottie) empaquetada en la app, así que funcionan sin conexión y se ven nítidas en cualquier pantalla. Cada una se acompaña de las instrucciones paso a paso, la respiración y los errores comunes.
 
-**Créditos:** las demostraciones en GIF son propiedad de Gym visual (https://gymvisual.com/) y se distribuyen a 180×180 px según su licencia. Ver `app/src/main/assets/exercises/NOTICE.txt`.
-
-**Animaciones vectoriales:** los ejercicios ya migrados usan animaciones de LottieFiles bajo la *Lottie Simple License* (permite uso comercial), con los PNG originales incrustados en el propio JSON. Ver `app/src/main/assets/exercises/lottie/NOTICE.txt`.
+**Créditos:** 20 animaciones provienen de LottieFiles bajo la *Lottie Simple License* (permite uso comercial) y las otras 16 están dibujadas para FitCasa, sin material de terceros. Ver `app/src/main/assets/exercises/lottie/NOTICE.txt`.
 
 ## Estimación de calorías
 
@@ -77,7 +75,7 @@ Queda en `app/build/outputs/apk/debug/app-debug.apk`. Para instalarlo en el tel�
 
 ## Sin servicios externos
 
-La app **no usa Firebase, ni cuentas, ni claves de API**: todo funciona en el teléfono y sin conexión (rutinas, GIFs, voz, historial). La única parte que necesita internet es la descarga de voces en español del sistema.
+La app **no usa Firebase, ni cuentas, ni claves de API**: todo funciona en el teléfono y sin conexión (rutinas, animaciones, voz, historial). La única parte que necesita internet es la descarga de voces en español del sistema.
 
 ## Estructura
 

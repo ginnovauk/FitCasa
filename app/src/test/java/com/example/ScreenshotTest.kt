@@ -250,9 +250,9 @@ class ScreenshotTest {
             }
         }
 
-        // Coil decodifica los GIF en hilos reales y publica el resultado en el
+        // Las animaciones cargan en hilos reales y publican el resultado en el
         // main looper, que Robolectric mantiene pausado: drena y avanza frames
-        // para que la captura no salga con el spinner de carga.
+        // para que la captura no salga a medio componer.
         repeat(6) {
             Thread.sleep(500)
             org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
