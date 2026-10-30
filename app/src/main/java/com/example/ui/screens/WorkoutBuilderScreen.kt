@@ -149,7 +149,7 @@ fun WorkoutBuilderScreen(
         ) {
             // Step 1: Zona del Cuerpo
             item {
-                SectionHeader(title = "1. Selecciona Grupo Muscular")
+                SectionHeader(title = "1. Selecciona el Grupo")
                 Spacer(modifier = Modifier.height(8.dp))
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     BodyPart.values().forEach { bp ->

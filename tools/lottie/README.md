@@ -1,8 +1,8 @@
 # Animaciones Lottie propias de FitCasa
 
-Generador de las 16 animaciones vectoriales que no vienen de LottieFiles
-(calentamiento, abdomen, pecho, tríceps, espalda y cuerpo completo). Los JSON
-resultantes están en `app/src/main/assets/exercises/lottie/`.
+Generador de las 26 animaciones vectoriales que no vienen de LottieFiles
+(calentamiento, abdomen, pecho, tríceps, espalda, cuerpo completo y palo). Los
+JSON resultantes están en `app/src/main/assets/exercises/lottie/`.
 
 ## Regenerar
 
@@ -20,6 +20,7 @@ Cada `gen-*.ps1` reescribe sus JSON completos:
 | `gen-triceps.ps1` | `triceps_dips_floor`, `kneeling_triceps_extension`, `side_push_up`, `body_up` |
 | `gen-wallpush.ps1` | `wall_push_ups` |
 | `gen-misc.ps1` | `towel_squat_row`, `warmup_ankle_circles`, `warmup_wrist_circles` |
+| `gen-stick.ps1` | `stick_shoulder_pass`, `stick_torso_twist`, `stick_overhead_press`, `stick_side_bend`, `stick_good_morning`, `stick_back_squat`, `stick_shoulder_windmill`, `stick_woodchopper`, `stick_wrist_rolls`, `stick_knee_raise` |
 
 Si se toca una animación ya aprobada, conviene comprobar con `git status` que el
 resto de JSON del script no ha cambiado.

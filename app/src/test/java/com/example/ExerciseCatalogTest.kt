@@ -151,6 +151,16 @@ class ExerciseCatalogTest {
     }
 
     @Test
+    fun `la rutina de palo solo usa ejercicios con palo`() {
+        val pool = ExerciseCatalog.getExercisesByBodyPart(BodyPart.PALO)
+        assertTrue("Sin ejercicios de palo", pool.isNotEmpty())
+        assertTrue(
+            "Se colaron ejercicios sin palo: ${pool.map { it.id }}",
+            pool.all { it.bodyPart == BodyPart.PALO }
+        )
+    }
+
+    @Test
     fun `se puede buscar un ejercicio por su identificador`() {
         exercises.forEach { exercise ->
             assertEquals(exercise, ExerciseCatalog.getExerciseById(exercise.id))

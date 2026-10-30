@@ -79,6 +79,7 @@ fun ActiveWorkoutScreen(
     onSelectVoicePitch: (Float) -> Unit,
     onPreviewVoice: () -> Unit,
     onTogglePause: () -> Unit,
+    onStartStep: () -> Unit,
     onSkipRest: () -> Unit,
     onAdd20SecondsToRest: () -> Unit,
     onNextExercise: () -> Unit,
@@ -311,11 +312,25 @@ fun ActiveWorkoutScreen(
 
             Spacer(modifier = Modifier.height(14.dp))
 
+            // Aviso de que el cronómetro espera: el tiempo no corre hasta que el
+            // usuario está colocado y pulsa play.
+            if (state.isWaitingToStart) {
+                Text(
+                    text = "Cuando estés listo, pulsa play",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .padding(bottom = 6.dp)
+                        .testTag("waiting_to_start_hint")
+                )
+            }
+
             // Interactive Circular Countdown Timer
             CircularTimerView(
                 remainingSeconds = state.remainingSeconds,
                 totalSeconds = state.totalSecondsForCurrentStep,
-                isPaused = state.isPaused,
+                isPaused = state.isPaused || state.isWaitingToStart,
                 modifier = Modifier.testTag("circular_timer")
             )
 
@@ -345,7 +360,7 @@ fun ActiveWorkoutScreen(
 
                 // Main Play/Pause Button
                 FilledIconButton(
-                    onClick = onTogglePause,
+                    onClick = if (state.isWaitingToStart) onStartStep else onTogglePause,
                     modifier = Modifier
                         .size(72.dp)
                         .testTag("toggle_pause_button"),
@@ -356,8 +371,16 @@ fun ActiveWorkoutScreen(
                     shape = CircleShape
                 ) {
                     Icon(
-                        imageVector = if (state.isPaused) Icons.Default.PlayArrow else Icons.Default.Pause,
-                        contentDescription = if (state.isPaused) "Reanudar" else "Pausar",
+                        imageVector = if (state.isPaused || state.isWaitingToStart) {
+                            Icons.Default.PlayArrow
+                        } else {
+                            Icons.Default.Pause
+                        },
+                        contentDescription = when {
+                            state.isWaitingToStart -> "Empezar ejercicio"
+                            state.isPaused -> "Reanudar"
+                            else -> "Pausar"
+                        },
                         modifier = Modifier.size(36.dp)
                     )
                 }

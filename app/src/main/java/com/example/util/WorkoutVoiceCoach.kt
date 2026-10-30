@@ -81,6 +81,7 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
     private var pendingPreview = false
     private var encouragementIndex = 0
     private var networkFallbackDone = false
+    private var lastCueAtMillis = 0L
 
     private var hasAudioFocus = false
     private var audioFocusRequest: AudioFocusRequest? = null
@@ -100,8 +101,12 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
     private val _currentVoiceMessage = MutableStateFlow<String?>(null)
     val currentVoiceMessage: StateFlow<String?> = _currentVoiceMessage.asStateFlow()
 
-    private val spanishVoiceComparator = compareByDescending<Voice> { !it.isNetworkConnectionRequired }
-        .thenByDescending { it.locale.country.equals("ES", ignoreCase = true) }
+    private val spanishVoiceComparator = compareByDescending<Voice> {
+        it.locale.country.equals("ES", ignoreCase = true)
+    }
+        // Las voces de red del motor de Google son las que suenan naturales;
+        // si fallan (sin datos), fallbackToLocalVoice cambia a una local.
+        .thenByDescending { it.isNetworkConnectionRequired }
         .thenByDescending { it.quality }
         .thenBy { it.name }
 
@@ -191,6 +196,9 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
         val spanishVoices = engine.voices.orEmpty()
             .filter { it.locale.language.equals("es", ignoreCase = true) }
             .filterNot { it.isMissingData() }
+            // El motor expone entradas "es-ES-language" que no son voces reales:
+            // al elegirlas la calidad cae y el entrenador suena metálico.
+            .filterNot { it.name.endsWith("-language", ignoreCase = true) }
             .sortedWith(spanishVoiceComparator)
 
         val chosenVoice = spanishVoices.firstOrNull { it.name == storedVoiceId }
@@ -352,6 +360,12 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
         // lo que el entrenador esté diciendo: si ya está hablando, se omite.
         if (optional && isTalking()) return
 
+        // Con las voces de red el motor a veces informa de que no habla mientras
+        // aún suena: tampoco se permite pisar un aviso recién empezado.
+        if (optional && System.currentTimeMillis() - lastCueAtMillis < OPTIONAL_CUE_GAP_MS) {
+            return
+        }
+
         val utteranceId = "fitcasa_${utteranceCounter.incrementAndGet()}"
         currentUtteranceId = utteranceId
 
@@ -360,6 +374,7 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
         }
 
         requestAudioFocus()
+        lastCueAtMillis = System.currentTimeMillis()
 
         val params = Bundle().apply {
             putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, 1f)
@@ -388,11 +403,18 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
     }
 
     /**
-     * Una sola locución para "tres, dos, uno". Si se enviaran los números por
-     * separado, cada uno cortaría al anterior y con voces de red se oirían a medias.
+     * Un número por segundo, para que "tres… dos… uno…" suene al ritmo de la
+     * pantalla. Cada número es tan corto que le da tiempo a terminar antes de que
+     * llegue el siguiente, aunque la voz sea de red.
      */
-    fun speakCountdown() {
-        speakInternal("Tres, dos, uno.")
+    fun speakCountdownNumber(number: Int) {
+        val word = when (number) {
+            3 -> "Tres"
+            2 -> "Dos"
+            1 -> "Uno"
+            else -> return
+        }
+        speakInternal(word)
     }
 
     fun speakRestStart(restSeconds: Int, nextExerciseName: String) {
@@ -573,6 +595,7 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
         const val KEY_RATE = "voice_rate"
         const val KEY_PITCH = "voice_pitch"
         const val GOOGLE_TTS_ENGINE = "com.google.android.tts"
+        const val OPTIONAL_CUE_GAP_MS = 5_000L
         val ENCOURAGEMENTS = listOf(
             "¡Vamos con fuerza!",
             "¡Tú puedes!",

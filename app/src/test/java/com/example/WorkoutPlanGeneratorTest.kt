@@ -94,6 +94,22 @@ class WorkoutPlanGeneratorTest {
     }
 
     @Test
+    fun `la rutina de palo no mezcla cardio`() {
+        val plan = repository.generateWorkoutPlan(
+            bodyPart = BodyPart.PALO,
+            intensity = IntensityLevel.PRINCIPIANTE,
+            targetDurationMinutes = 15
+        )
+
+        val principal = plan.exercises.filter { !it.isWarmUp }
+        assertTrue("Sin ejercicios de palo", principal.isNotEmpty())
+        assertTrue(
+            "La rutina de palo mezcla otros ejercicios: ${principal.map { it.id }}",
+            principal.all { it.bodyPart == BodyPart.PALO }
+        )
+    }
+
+    @Test
     fun `la rutina prioriza ejercicios del nivel elegido`() {
         for (parte in BodyPart.values()) {
             val poolPropio = com.example.data.repository.ExerciseCatalog

@@ -3,6 +3,7 @@ package com.example.ui.viewmodel
 import android.app.Application
 import android.content.Context
 import android.os.Build
+import android.os.SystemClock
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
@@ -37,6 +38,7 @@ data class ActiveWorkoutUiState(
     val totalSecondsForCurrentStep: Int = 30,
     val isResting: Boolean = false,
     val isPaused: Boolean = false,
+    val isWaitingToStart: Boolean = false,
     val isCompleted: Boolean = false,
     val elapsedTotalSeconds: Int = 0,
     val exercisesCompletedCount: Int = 0,
@@ -203,24 +205,59 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             totalSecondsForCurrentStep = firstExercise.defaultDurationSeconds,
             isResting = false,
             isPaused = false,
+            isWaitingToStart = true,
             isCompleted = false,
             elapsedTotalSeconds = 0,
             exercisesCompletedCount = 0
         )
 
+        // El entrenador avisa del ejercicio y espera: así da tiempo a colocarse
+        // antes de que empiece a correr el tiempo.
         vibrateShort(120)
-        val repOrDuration = if (firstExercise.isTimeBased) "${firstExercise.defaultDurationSeconds} segundos" else "${firstExercise.defaultReps} repeticiones"
-        voiceCoach.speakExerciseStart(firstExercise.name, repOrDuration)
+        voiceCoach.speakPrepareNext(firstExercise.name)
         startTimerLoop()
+    }
+
+    /** El usuario ya está en posición: empieza a contar el ejercicio actual. */
+    fun startCurrentStep() {
+        val state = _activeWorkoutState.value
+        if (!state.isWaitingToStart) return
+        val exercise = state.currentExercise ?: return
+        val repOrDuration = if (exercise.isTimeBased) {
+            "${exercise.defaultDurationSeconds} segundos"
+        } else {
+            "${exercise.defaultReps} repeticiones"
+        }
+        voiceCoach.speakExerciseStart(exercise.name, repOrDuration)
+        _activeWorkoutState.update {
+            it.copy(
+                isWaitingToStart = false,
+                isResting = false,
+                remainingSeconds = exercise.defaultDurationSeconds,
+                totalSecondsForCurrentStep = exercise.defaultDurationSeconds
+            )
+        }
     }
 
     private fun startTimerLoop() {
         timerJob?.cancel()
         timerJob = viewModelScope.launch {
+            // Los segundos se cuentan contra un reloj monótono: cada vuelta del
+            // bucle tardaba algo más de un segundo y la cuenta atrás se retrasaba,
+            // así que el "tres, dos, uno" de la voz no cuadraba con la pantalla.
+            var nextTick = SystemClock.elapsedRealtime() + TICK_MS
             while (isActive) {
-                delay(1000)
+                val now = SystemClock.elapsedRealtime()
+                // Si el móvil estuvo bloqueado, no se aceleran los segundos de golpe.
+                if (now - nextTick > 2 * TICK_MS) {
+                    nextTick = now + TICK_MS
+                }
+                delay((nextTick - SystemClock.elapsedRealtime()).coerceAtLeast(0))
+                nextTick += TICK_MS
                 val currentState = _activeWorkoutState.value
-                if (currentState.isPaused || currentState.isCompleted || currentState.plan == null) {
+                if (currentState.isPaused || currentState.isCompleted ||
+                    currentState.isWaitingToStart || currentState.plan == null
+                ) {
                     continue
                 }
 
@@ -230,15 +267,15 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 // Voice cues during active workout
                 if (!currentState.isResting) {
                     val halfTime = currentState.totalSecondsForCurrentStep / 2
-                    if (newRemaining == halfTime && halfTime > 5) {
+                    // En pasos cortos el aviso de la mitad chocaría con el de los
+                    // últimos diez segundos: solo se dice en pasos largos.
+                    if (newRemaining == halfTime && halfTime > 20) {
                         voiceCoach.speakHalfway()
                     } else if (newRemaining == 10 && currentState.totalSecondsForCurrentStep > 15) {
                         voiceCoach.speakTenSecondsLeft()
                     } else if (newRemaining in 1..3) {
                         vibrateShort(60)
-                        if (newRemaining == 3) {
-                            voiceCoach.speakCountdown()
-                        }
+                        voiceCoach.speakCountdownNumber(newRemaining)
                     }
                 } else {
                     // Voice cues during rest
@@ -270,14 +307,14 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         val plan = state.plan ?: return
 
         if (state.isResting) {
-            // Finished rest, move to current exercise
+            // Descanso terminado: se avisa del ejercicio y se espera al play.
             val exercise = plan.exercises[state.currentExerciseIndex]
             vibrateDouble()
-            val repOrDuration = if (exercise.isTimeBased) "${exercise.defaultDurationSeconds} segundos" else "${exercise.defaultReps} repeticiones"
-            voiceCoach.speakExerciseStart(exercise.name, repOrDuration)
+            voiceCoach.speakPrepareNext(exercise.name)
             _activeWorkoutState.update {
                 it.copy(
                     isResting = false,
+                    isWaitingToStart = true,
                     remainingSeconds = exercise.defaultDurationSeconds,
                     totalSecondsForCurrentStep = exercise.defaultDurationSeconds,
                     elapsedTotalSeconds = updatedElapsed
@@ -348,6 +385,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun togglePause() {
+        // Mientras espera al play no hay nada que pausar.
+        if (_activeWorkoutState.value.isWaitingToStart) return
         val willPause = !_activeWorkoutState.value.isPaused
         _activeWorkoutState.update { it.copy(isPaused = willPause) }
         if (willPause) {
@@ -362,11 +401,11 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         val plan = state.plan ?: return
         if (state.isResting && state.currentExerciseIndex < plan.exercises.size) {
             val nextExercise = plan.exercises[state.currentExerciseIndex]
-            val repOrDuration = if (nextExercise.isTimeBased) "${nextExercise.defaultDurationSeconds} segundos" else "${nextExercise.defaultReps} repeticiones"
-            voiceCoach.speakExerciseStart(nextExercise.name, repOrDuration)
+            voiceCoach.speakPrepareNext(nextExercise.name)
             _activeWorkoutState.update {
                 it.copy(
                     isResting = false,
+                    isWaitingToStart = true,
                     remainingSeconds = nextExercise.defaultDurationSeconds,
                     totalSecondsForCurrentStep = nextExercise.defaultDurationSeconds
                 )
@@ -392,12 +431,12 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         val nextIdx = state.currentExerciseIndex + 1
         if (nextIdx < plan.exercises.size) {
             val ex = plan.exercises[nextIdx]
-            val repOrDuration = if (ex.isTimeBased) "${ex.defaultDurationSeconds} segundos" else "${ex.defaultReps} repeticiones"
-            voiceCoach.speakExerciseStart(ex.name, repOrDuration)
+            voiceCoach.speakPrepareNext(ex.name)
             _activeWorkoutState.update {
                 it.copy(
                     currentExerciseIndex = nextIdx,
                     isResting = false,
+                    isWaitingToStart = true,
                     remainingSeconds = ex.defaultDurationSeconds,
                     totalSecondsForCurrentStep = ex.defaultDurationSeconds
                 )
@@ -412,12 +451,12 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         val plan = state.plan ?: return
         val prevIdx = (state.currentExerciseIndex - 1).coerceAtLeast(0)
         val ex = plan.exercises[prevIdx]
-        val repOrDuration = if (ex.isTimeBased) "${ex.defaultDurationSeconds} segundos" else "${ex.defaultReps} repeticiones"
-        voiceCoach.speakExerciseStart(ex.name, repOrDuration)
+        voiceCoach.speakPrepareNext(ex.name)
         _activeWorkoutState.update {
             it.copy(
                 currentExerciseIndex = prevIdx,
                 isResting = false,
+                isWaitingToStart = true,
                 remainingSeconds = ex.defaultDurationSeconds,
                 totalSecondsForCurrentStep = ex.defaultDurationSeconds
             )
@@ -479,3 +518,5 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         voiceCoach.shutdown()
     }
 }
+
+private const val TICK_MS = 1000L

@@ -1,13 +1,13 @@
-# Rutas portables: el repo se deduce de la ubicacion del script y los
-# temporales de revision van a %TEMP%, nunca dentro del repo.
-$repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-$work = Join-Path $env:TEMP 'fitcasa-lottie'
 param(
   [string]$keys = 'mountain_climbers,prone_elbow_lift,scapula_push_up',
   [string]$outName = 'check.png',
   [int]$cellW = 460,
   [int]$cols = 6
 )
+# Rutas portables: el repo se deduce de la ubicacion del script y los
+# temporales de revision van a %TEMP%, nunca dentro del repo.
+$repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+$work = Join-Path $env:TEMP 'fitcasa-lottie'
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 . (Join-Path $PSScriptRoot 'preview.ps1')

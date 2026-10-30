@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.DirectionsRun
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.SportsGymnastics
+import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.filled.Whatshot
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -50,5 +51,11 @@ enum class BodyPart(
         displayName = "Espalda y Hombros",
         subtitle = "Corrección postural y cadena posterior",
         icon = Icons.Default.SportsGymnastics
+    ),
+    PALO(
+        id = "palo",
+        displayName = "Palo y Movilidad",
+        subtitle = "Movilidad articular, postura y fuerza con un palo",
+        icon = Icons.Default.Straighten
     )
 }

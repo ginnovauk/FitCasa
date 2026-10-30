@@ -582,6 +582,178 @@ object ExerciseCatalog {
             ),
             breathingTips = "Inhala al abrir el pecho, exhala al bajar.",
             commonMistakes = "Comprimir la zona lumbar; reparte el estiramiento entre pecho y espalda alta."
+        ),
+
+        // PALO Y MOVILIDAD (palo, bastón o mango de escoba)
+        Exercise(
+            id = "stick_shoulder_pass",
+            name = "Pases de Palo sobre la Cabeza",
+            bodyPart = BodyPart.PALO,
+            intensity = IntensityLevel.PRINCIPIANTE,
+            defaultDurationSeconds = 30,
+            defaultReps = 12,
+            caloriesPerMinute = 3.5f,
+            lottieAsset = "exercises/lottie/stick_shoulder_pass.json",
+            instructions = listOf(
+                "Sujeta el palo con las dos manos, más separadas que los hombros, delante de los muslos.",
+                "Sube el palo por delante hasta pasarlo por encima de la cabeza y llévalo detrás de la espalda sin doblar los codos.",
+                "Deshaz el camino con control hasta la posición inicial."
+            ),
+            breathingTips = "Inhala al subir el palo, exhala al bajarlo por detrás.",
+            commonMistakes = "Arquear la zona lumbar o abrir las manos de golpe; si cuesta, amplía el agarre."
+        ),
+        Exercise(
+            id = "stick_torso_twist",
+            name = "Giros de Tronco con Palo",
+            bodyPart = BodyPart.PALO,
+            intensity = IntensityLevel.PRINCIPIANTE,
+            defaultDurationSeconds = 30,
+            defaultReps = 16,
+            caloriesPerMinute = 3.5f,
+            lottieAsset = "exercises/lottie/stick_torso_twist.json",
+            instructions = listOf(
+                "Apoya el palo sobre los hombros, sujeto con las manos y los codos hacia delante.",
+                "Gira el tronco despacio hacia un lado sin mover la cadera ni los pies.",
+                "Vuelve al centro y repite hacia el otro lado."
+            ),
+            breathingTips = "Exhala al girar, inhala al volver al centro.",
+            commonMistakes = "Girar solo los brazos o forzar la lumbar; el giro nace del pecho."
+        ),
+        Exercise(
+            id = "stick_overhead_press",
+            name = "Empuje Vertical con Palo",
+            bodyPart = BodyPart.PALO,
+            intensity = IntensityLevel.PRINCIPIANTE,
+            defaultDurationSeconds = 35,
+            defaultReps = 12,
+            caloriesPerMinute = 4.1f,
+            lottieAsset = "exercises/lottie/stick_overhead_press.json",
+            instructions = listOf(
+                "Sujeta el palo por delante del pecho con las manos al ancho de los hombros.",
+                "Empuja el palo hacia arriba hasta estirar los brazos, sin sacar las costillas.",
+                "Baja despacio hasta la altura del pecho manteniendo el abdomen firme."
+            ),
+            breathingTips = "Exhala al empujar hacia arriba, inhala al bajar.",
+            commonMistakes = "Arquear la espalda o encoger los hombros hacia las orejas."
+        ),
+        Exercise(
+            id = "stick_side_bend",
+            name = "Inclinación Lateral con Palo",
+            bodyPart = BodyPart.PALO,
+            intensity = IntensityLevel.PRINCIPIANTE,
+            defaultDurationSeconds = 30,
+            defaultReps = 12,
+            caloriesPerMinute = 2.9f,
+            lottieAsset = "exercises/lottie/stick_side_bend.json",
+            instructions = listOf(
+                "Con el palo por encima de la cabeza y los brazos estirados, separa un poco las manos.",
+                "Inclina el tronco hacia un lado manteniendo la cadera en el sitio.",
+                "Vuelve al centro y repite hacia el otro lado."
+            ),
+            breathingTips = "Exhala al inclinarte, inhala al volver al centro.",
+            commonMistakes = "Girar el tronco o levantar un pie; el movimiento es solo lateral."
+        ),
+        Exercise(
+            id = "stick_good_morning",
+            name = "Buenos Días con Palo",
+            bodyPart = BodyPart.PALO,
+            intensity = IntensityLevel.PRINCIPIANTE,
+            defaultDurationSeconds = 35,
+            defaultReps = 12,
+            caloriesPerMinute = 4.1f,
+            lottieAsset = "exercises/lottie/stick_good_morning.json",
+            instructions = listOf(
+                "Coloca el palo sobre la espalda alta, sujeto con las manos y los codos abiertos.",
+                "Con las rodillas algo flexionadas, lleva la cadera hacia atrás manteniendo la espalda recta.",
+                "Baja hasta notar el estiramiento en los femorales y vuelve apretando los glúteos."
+            ),
+            breathingTips = "Inhala al llevar la cadera atrás, exhala al subir.",
+            commonMistakes = "Redondear la espalda o doblar las rodillas como en una sentadilla."
+        ),
+        Exercise(
+            id = "stick_back_squat",
+            name = "Sentadilla con Palo en la Espalda",
+            bodyPart = BodyPart.PALO,
+            intensity = IntensityLevel.PRINCIPIANTE,
+            defaultDurationSeconds = 35,
+            defaultReps = 14,
+            caloriesPerMinute = 5.2f,
+            lottieAsset = "exercises/lottie/stick_back_squat.json",
+            instructions = listOf(
+                "Apoya el palo sobre los omóplatos, con las manos sujetándolo a los lados.",
+                "Separa los pies al ancho de los hombros y baja la cadera hacia atrás.",
+                "Mantén el pecho alto y sube empujando con los talones."
+            ),
+            breathingTips = "Inhala al bajar, exhala al subir.",
+            commonMistakes = "Perder el contacto del palo con la espalda o dejar caer las rodillas hacia dentro."
+        ),
+        Exercise(
+            id = "stick_shoulder_windmill",
+            name = "Molino de Hombro con Palo",
+            bodyPart = BodyPart.PALO,
+            intensity = IntensityLevel.PRINCIPIANTE,
+            defaultDurationSeconds = 30,
+            defaultReps = 10,
+            caloriesPerMinute = 3.5f,
+            lottieAsset = "exercises/lottie/stick_shoulder_windmill.json",
+            instructions = listOf(
+                "Sujeta el palo en vertical con una mano, apoyado en el suelo o a la altura de la cadera.",
+                "Con el brazo estirado, dibuja un círculo amplio con el palo por delante y por detrás.",
+                "Cambia de brazo a mitad del ejercicio."
+            ),
+            breathingTips = "Respira de forma continua y acompaña el círculo sin bloquear el hombro.",
+            commonMistakes = "Mover todo el torso en vez del hombro o hacer círculos tan pequeños que no movilicen."
+        ),
+        Exercise(
+            id = "stick_woodchopper",
+            name = "Leñador con Palo",
+            bodyPart = BodyPart.PALO,
+            intensity = IntensityLevel.PRINCIPIANTE,
+            defaultDurationSeconds = 35,
+            defaultReps = 14,
+            caloriesPerMinute = 4.7f,
+            lottieAsset = "exercises/lottie/stick_woodchopper.json",
+            instructions = listOf(
+                "Sujeta el palo con las dos manos en diagonal, por encima del hombro derecho.",
+                "Baja el palo hacia la cadera izquierda girando el tronco y flexionando las rodillas.",
+                "Vuelve arriba con control y cambia de lado a mitad del ejercicio."
+            ),
+            breathingTips = "Exhala al bajar el palo, inhala al volver a subir.",
+            commonMistakes = "Tirar solo con los brazos o girar la cadera de golpe; reparte el giro por todo el tronco."
+        ),
+        Exercise(
+            id = "stick_wrist_rolls",
+            name = "Rotaciones de Muñeca con Palo",
+            bodyPart = BodyPart.PALO,
+            intensity = IntensityLevel.PRINCIPIANTE,
+            defaultDurationSeconds = 30,
+            defaultReps = 16,
+            caloriesPerMinute = 2.9f,
+            lottieAsset = "exercises/lottie/stick_wrist_rolls.json",
+            instructions = listOf(
+                "Sujeta el palo por los extremos con las palmas hacia abajo y los brazos estirados al frente.",
+                "Gira las muñecas para enrollar el palo hacia ti y desenróllalo hacia delante.",
+                "Alterna el sentido manteniendo los codos quietos."
+            ),
+            breathingTips = "Respira con calma y mantén los hombros bajos.",
+            commonMistakes = "Mover los codos o encoger los hombros; solo deben girar las muñecas."
+        ),
+        Exercise(
+            id = "stick_knee_raise",
+            name = "Elevación de Rodillas con Palo",
+            bodyPart = BodyPart.PALO,
+            intensity = IntensityLevel.PRINCIPIANTE,
+            defaultDurationSeconds = 30,
+            defaultReps = 20,
+            caloriesPerMinute = 4.3f,
+            lottieAsset = "exercises/lottie/stick_knee_raise.json",
+            instructions = listOf(
+                "Apoya el palo sobre los hombros, sujeto con las manos, y mantén la espalda recta.",
+                "Levanta una rodilla hasta la altura de la cadera sin inclinarte hacia atrás.",
+                "Baja el pie con control y repite con la otra pierna al mismo ritmo."
+            ),
+            breathingTips = "Exhala al subir la rodilla, inhala al bajar el pie.",
+            commonMistakes = "Arquear la espalda o echar el tronco atrás; el abdomen se mantiene firme."
         )
     )
 
@@ -648,10 +820,14 @@ object ExerciseCatalog {
     )
 
     fun getExercisesByBodyPart(bodyPart: BodyPart): List<Exercise> {
-        return if (bodyPart == BodyPart.CUERPO_COMPLETO) {
-            allExercises
-        } else {
-            allExercises.filter { it.bodyPart == bodyPart || it.bodyPart == BodyPart.CUERPO_COMPLETO }
+        return when (bodyPart) {
+            BodyPart.CUERPO_COMPLETO -> allExercises
+            // La sesión de palo es de movilidad: no debe mezclar el cardio de
+            // cuerpo completo (saltos, burpees) con el trabajo con bastón.
+            BodyPart.PALO -> allExercises.filter { it.bodyPart == BodyPart.PALO }
+            else -> allExercises.filter {
+                it.bodyPart == bodyPart || it.bodyPart == BodyPart.CUERPO_COMPLETO
+            }
         }
     }
 

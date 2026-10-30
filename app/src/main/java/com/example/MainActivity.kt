@@ -238,6 +238,7 @@ fun FitCasaApp(
                         onSelectVoicePitch = { viewModel.setVoicePitch(it) },
                         onPreviewVoice = { viewModel.previewVoice() },
                         onTogglePause = { viewModel.togglePause() },
+                        onStartStep = { viewModel.startCurrentStep() },
                         onSkipRest = { viewModel.skipRest() },
                         onAdd20SecondsToRest = { viewModel.add20SecondsToRest() },
                         onNextExercise = { viewModel.nextExercise() },
