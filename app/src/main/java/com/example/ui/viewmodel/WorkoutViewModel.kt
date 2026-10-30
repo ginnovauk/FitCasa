@@ -10,9 +10,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.local.WorkoutDatabase
 import com.example.data.local.WorkoutEntity
+import com.example.data.local.UserProfileStore
 import com.example.data.model.BodyPart
 import com.example.data.model.Exercise
 import com.example.data.model.IntensityLevel
+import com.example.data.model.UserProfile
 import com.example.data.model.WorkoutPlan
 import com.example.data.repository.WorkoutRepository
 import com.example.util.VoiceCoachUiState
@@ -125,6 +127,11 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _configuredPlan = MutableStateFlow<WorkoutPlan?>(null)
     val configuredPlan: StateFlow<WorkoutPlan?> = _configuredPlan.asStateFlow()
 
+    // Perfil del usuario: ajusta las kcal de los planes nuevos.
+    private val profileStore = UserProfileStore(application)
+    private val _profile = MutableStateFlow(profileStore.load())
+    val profile: StateFlow<UserProfile> = _profile.asStateFlow()
+
     init {
         updateConfiguredPlan()
     }
@@ -148,9 +155,21 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         val plan = repository.generateWorkoutPlan(
             bodyPart = _selectedBodyPart.value,
             intensity = _selectedIntensity.value,
-            targetDurationMinutes = _selectedDurationMinutes.value
+            targetDurationMinutes = _selectedDurationMinutes.value,
+            profile = _profile.value
         )
         _configuredPlan.value = plan
+    }
+
+    /**
+     * Guarda el perfil y regenera el plan visible para que las kcal reflejen
+     * el nuevo cuerpo. El orden manual de los ejercicios se pierde al regenerar.
+     */
+    fun saveProfile(profile: UserProfile) {
+        val clean = profile.sanitized()
+        _profile.value = clean
+        profileStore.save(clean)
+        updateConfiguredPlan()
     }
 
     /**

@@ -115,6 +115,7 @@ class ScreenshotTest {
             totalMinutes = 215,
             totalCalories = 1420,
             recentWorkouts = history,
+            onOpenProfile = {},
             onStartQuickWorkout = {},
             onNavigateToBuilder = {},
             onNavigateToHistory = {}

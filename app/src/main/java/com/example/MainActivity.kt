@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.data.model.WorkoutPlan
+import com.example.ui.components.ProfileSheet
 import com.example.ui.screens.ActiveWorkoutScreen
 import com.example.ui.screens.HomeScreen
 import com.example.ui.screens.ProgressHistoryScreen
@@ -84,6 +85,7 @@ fun FitCasaApp(
 ) {
     var currentScreen by remember { mutableStateOf(ScreenState.TABS) }
     var selectedTab by remember { mutableStateOf(MainTab.HOME) }
+    var showProfileSheet by remember { mutableStateOf(false) }
 
     val activeState by viewModel.activeWorkoutState.collectAsStateWithLifecycle()
     val history by viewModel.workoutHistory.collectAsStateWithLifecycle()
@@ -98,6 +100,7 @@ fun FitCasaApp(
     val selectedIntensity by viewModel.selectedIntensity.collectAsStateWithLifecycle()
     val selectedDurationMinutes by viewModel.selectedDurationMinutes.collectAsStateWithLifecycle()
     val configuredPlan by viewModel.configuredPlan.collectAsStateWithLifecycle()
+    val profile by viewModel.profile.collectAsStateWithLifecycle()
 
     // Automatically navigate to summary when workout is completed
     LaunchedEffect(activeState.isCompleted, currentScreen) {
@@ -177,6 +180,7 @@ fun FitCasaApp(
                                 totalMinutes = totalMinutes,
                                 totalCalories = totalCalories,
                                 recentWorkouts = history,
+                                onOpenProfile = { showProfileSheet = true },
                                 onStartQuickWorkout = { plan ->
                                     viewModel.startWorkout(plan)
                                     currentScreen = ScreenState.ACTIVE_WORKOUT
@@ -256,5 +260,16 @@ fun FitCasaApp(
                 }
             }
         }
+    }
+
+    if (showProfileSheet) {
+        ProfileSheet(
+            profile = profile,
+            onDismiss = { showProfileSheet = false },
+            onSave = { newProfile ->
+                viewModel.saveProfile(newProfile)
+                showProfileSheet = false
+            }
+        )
     }
 }

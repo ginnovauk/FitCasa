@@ -40,7 +40,9 @@ Los 36 tienen demostración propia en formato vectorial (Lottie) empaquetada en 
 
 Cada ejercicio tiene un valor **MET** (Compendium of Physical Activities) convertido a kcal/min con un peso de referencia de 70 kg. La estimación de la sesión suma el tiempo activo al ritmo de cada ejercicio más un ritmo suave de recuperación durante los descansos. Así, entrenar piernas o cuerpo completo estima más gasto que entrenar brazos o core, en lugar de dar el mismo número genérico para todo.
 
-Es una estimación orientativa (no usa tu peso real); sirve para comparar sesiones entre sí.
+El perfil (peso, estatura, edad y sexo, desde el icono de perfil de Inicio) ajusta esas tasas: se calcula el metabolismo basal con Mifflin-St Jeor y se escala el gasto respecto al cuerpo de referencia. Pesar o medir más sube la estimación; cumplir años la baja. Las sesiones ya guardadas conservan las kcal con las que se registraron.
+
+Es una estimación orientativa; sirve para comparar sesiones entre sí, no sustituye una medición.
 
 ## Voz del entrenador
 

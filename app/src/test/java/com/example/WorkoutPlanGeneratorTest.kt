@@ -4,6 +4,7 @@ import com.example.data.local.WorkoutDao
 import com.example.data.local.WorkoutEntity
 import com.example.data.model.BodyPart
 import com.example.data.model.IntensityLevel
+import com.example.data.model.UserProfile
 import com.example.data.repository.ExerciseCatalog
 import com.example.data.repository.WorkoutRepository
 import kotlinx.coroutines.flow.Flow
@@ -217,6 +218,32 @@ class WorkoutPlanGeneratorTest {
         assertTrue(
             "Cuerpo completo (%.1f kcal) no supera claramente a brazos (%.1f kcal)".format(completo, brazos),
             completo >= brazos + 5
+        )
+    }
+
+    @Test
+    fun `el perfil ajusta las calorias de la misma lista`() {
+        val ejercicios = listOf(
+            ExerciseCatalog.getExerciseById("squats_bodyweight")!!
+                .copy(defaultDurationSeconds = 30)
+        )
+
+        val ligero = repository.estimateSessionCalories(
+            exercises = ejercicios,
+            restSecondsBetween = 20,
+            targetDurationMinutes = 1,
+            profile = UserProfile(weightKg = 55f)
+        )
+        val pesado = repository.estimateSessionCalories(
+            exercises = ejercicios,
+            restSecondsBetween = 20,
+            targetDurationMinutes = 1,
+            profile = UserProfile(weightKg = 95f)
+        )
+
+        assertTrue(
+            "El perfil no ajusta el gasto: 55 kg=$ligero, 95 kg=$pesado",
+            pesado > ligero
         )
     }
 }

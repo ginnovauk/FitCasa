@@ -5,6 +5,7 @@ import com.example.data.local.WorkoutEntity
 import com.example.data.model.BodyPart
 import com.example.data.model.Exercise
 import com.example.data.model.IntensityLevel
+import com.example.data.model.UserProfile
 import com.example.data.model.WorkoutPlan
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -40,7 +41,8 @@ class WorkoutRepository(
     fun generateWorkoutPlan(
         bodyPart: BodyPart,
         intensity: IntensityLevel,
-        targetDurationMinutes: Int
+        targetDurationMinutes: Int,
+        profile: UserProfile = UserProfile()
     ): WorkoutPlan {
         val pool = ExerciseCatalog.getExercisesByBodyPart(bodyPart)
             .filter { !it.isWarmUp }
@@ -114,7 +116,8 @@ class WorkoutRepository(
         val estimatedCalories = estimateSessionCalories(
             exercises = selectedExercises,
             restSecondsBetween = restSec,
-            targetDurationMinutes = targetDurationMinutes
+            targetDurationMinutes = targetDurationMinutes,
+            profile = profile
         )
 
         val title = "Rutina de ${bodyPart.displayName} - ${intensity.displayName}"
@@ -139,38 +142,47 @@ class WorkoutRepository(
      * cada bloque (workSec) al generar el plan, así que aquí no se vuelve a
      * multiplicar: hacerlo contaría el mismo esfuerzo dos veces.
      *
+     * El perfil escala esas tasas según su metabolismo basal: pesar más o medir
+     * más sube el gasto, cumplir años lo baja. Con el perfil por defecto el
+     * factor es 1 y la estimación es la misma de siempre.
+     *
      * @param exercises solo el trabajo principal, sin el bloque de calentamiento
      * @param restSecondsBetween duración de cada descanso entre ejercicios
      * @param targetDurationMinutes duración objetivo, usada solo para el suelo de seguridad
+     * @param profile cuerpo del usuario; por defecto, el de referencia del catálogo
      */
     fun estimateSessionCalories(
         exercises: List<Exercise>,
         restSecondsBetween: Int,
-        targetDurationMinutes: Int
+        targetDurationMinutes: Int,
+        profile: UserProfile = UserProfile()
     ): Int {
         if (exercises.isEmpty()) return 0
 
-        // Tiempo activo con el ritmo de cada ejercicio.
+        // Tiempo activo con el ritmo de cada ejercicio, ajustado al perfil.
         val activeKcal = exercises.sumOf { ex ->
-            (ex.defaultDurationSeconds / 60.0) * ex.caloriesPerMinute.toDouble()
+            (ex.defaultDurationSeconds / 60.0) *
+                profile.adjustCaloriesPerMinute(ex.caloriesPerMinute).toDouble()
         }
 
         // Recuperación entre series: sigue quemando algo, y evita que rutinas
         // con mucho descanso queden artificialmente por debajo de su duración.
         val restCount = (exercises.size - 1).coerceAtLeast(0)
         val restMinutes = restCount * restSecondsBetween / 60.0
-        val restKcal = restMinutes * REST_KCAL_PER_MINUTE
+        val restKcal = restMinutes * profile.adjustCaloriesPerMinute(REST_KCAL_PER_MINUTE).toDouble()
 
         // Suelo de seguridad: solo evita estimaciones absurdamente bajas en
         // planes muy cortos, sin ahogar la diferencia entre grupos musculares.
+        // Se escala con el perfil para no igualar a cuerpos ligeros con pesados.
+        val safetyFloor = targetDurationMinutes * MIN_KCAL_PER_MINUTE * profile.calorieFactor
         return (activeKcal + restKcal)
             .roundToInt()
-            .coerceAtLeast(targetDurationMinutes * MIN_KCAL_PER_MINUTE)
+            .coerceAtLeast(safetyFloor.roundToInt())
     }
 
     private companion object {
         /** Ritmo de recuperación durante los descansos, kcal/min (≈2.5 MET a 70 kg). */
-        const val REST_KCAL_PER_MINUTE = 2.9
+        const val REST_KCAL_PER_MINUTE = 2.9f
 
         /** Suelo de seguridad en kcal por minuto objetivo. */
         const val MIN_KCAL_PER_MINUTE = 3
