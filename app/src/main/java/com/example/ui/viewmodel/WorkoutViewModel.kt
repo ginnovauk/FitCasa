@@ -106,6 +106,10 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         voiceCoach.setSpeechRate(rate)
     }
 
+    fun setVoicePitch(pitch: Float) {
+        voiceCoach.setSpeechPitch(pitch)
+    }
+
     fun previewVoice() {
         voiceCoach.previewVoice()
     }
@@ -232,7 +236,9 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                         voiceCoach.speakTenSecondsLeft()
                     } else if (newRemaining in 1..3) {
                         vibrateShort(60)
-                        voiceCoach.speakCountdown(newRemaining)
+                        if (newRemaining == 3) {
+                            voiceCoach.speakCountdown()
+                        }
                     }
                 } else {
                     // Voice cues during rest

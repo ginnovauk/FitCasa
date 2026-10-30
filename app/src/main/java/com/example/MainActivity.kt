@@ -235,6 +235,7 @@ fun FitCasaApp(
                         onToggleVoiceCoach = { viewModel.toggleVoiceCoach() },
                         onSelectVoice = { viewModel.selectVoiceOption(it) },
                         onSelectVoiceRate = { viewModel.setVoiceRate(it) },
+                        onSelectVoicePitch = { viewModel.setVoicePitch(it) },
                         onPreviewVoice = { viewModel.previewVoice() },
                         onTogglePause = { viewModel.togglePause() },
                         onSkipRest = { viewModel.skipRest() },

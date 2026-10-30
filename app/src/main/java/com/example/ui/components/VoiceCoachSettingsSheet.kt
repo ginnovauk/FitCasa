@@ -59,6 +59,7 @@ fun VoiceCoachSettingsSheet(
     onToggleEnabled: () -> Unit,
     onSelectVoice: (String) -> Unit,
     onSelectRate: (Float) -> Unit,
+    onSelectPitch: (Float) -> Unit,
     onPreview: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -102,6 +103,14 @@ fun VoiceCoachSettingsSheet(
             RateSelector(
                 selectedRate = state.speechRate,
                 onSelectRate = onSelectRate
+            )
+
+            Spacer(modifier = Modifier.height(22.dp))
+            SectionTitle("Tono de la voz")
+            Spacer(modifier = Modifier.height(8.dp))
+            PitchSelector(
+                selectedPitch = state.speechPitch,
+                onSelectPitch = onSelectPitch
             )
 
             Spacer(modifier = Modifier.height(22.dp))
@@ -162,7 +171,7 @@ fun VoiceCoachSettingsSheet(
             Spacer(modifier = Modifier.height(14.dp))
 
             Text(
-                text = "Consejo: si no aparece tu voz preferida, instala las voces de Google en Ajustes del teléfono › Idiomas y entrada › Salida de texto a voz.",
+                text = "Consejo: las voces que requieren internet suenan más naturales, pero necesitan datos. Si se corta la conexión, FitCasa cambia sola a una voz sin conexión.",
                 fontSize = 11.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 lineHeight = 16.sp
@@ -290,17 +299,51 @@ private fun RateSelector(
     selectedRate: Float,
     onSelectRate: (Float) -> Unit
 ) {
+    OptionSelector(
+        options = VoiceCoachUiState.RATE_OPTIONS,
+        selected = selectedRate,
+        testTagPrefix = "voice_rate",
+        title = { rateLabel(it) },
+        subtitle = { "${(it * 100).toInt()}%" },
+        onSelect = onSelectRate
+    )
+}
+
+@Composable
+private fun PitchSelector(
+    selectedPitch: Float,
+    onSelectPitch: (Float) -> Unit
+) {
+    OptionSelector(
+        options = VoiceCoachUiState.PITCH_OPTIONS,
+        selected = selectedPitch,
+        testTagPrefix = "voice_pitch",
+        title = { pitchLabel(it) },
+        subtitle = { pitchHint(it) },
+        onSelect = onSelectPitch
+    )
+}
+
+@Composable
+private fun OptionSelector(
+    options: List<Float>,
+    selected: Float,
+    testTagPrefix: String,
+    title: (Float) -> String,
+    subtitle: (Float) -> String,
+    onSelect: (Float) -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        VoiceCoachUiState.RATE_OPTIONS.forEach { rate ->
-            val isSelected = abs(selectedRate - rate) < 0.01f
+        options.forEach { option ->
+            val isSelected = abs(selected - option) < 0.01f
             Surface(
                 modifier = Modifier
                     .weight(1f)
-                    .clickable { onSelectRate(rate) }
-                    .testTag("voice_rate_${rate}"),
+                    .clickable { onSelect(option) }
+                    .testTag("${testTagPrefix}_$option"),
                 shape = RoundedCornerShape(14.dp),
                 color = if (isSelected) {
                     MaterialTheme.colorScheme.primaryContainer
@@ -321,7 +364,7 @@ private fun RateSelector(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = rateLabel(rate),
+                        text = title(option),
                         fontSize = 13.sp,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                         color = if (isSelected) {
@@ -331,7 +374,7 @@ private fun RateSelector(
                         }
                     )
                     Text(
-                        text = "${(rate * 100).toInt()}%",
+                        text = subtitle(option),
                         fontSize = 10.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -345,6 +388,18 @@ private fun rateLabel(rate: Float): String = when {
     rate < 0.97f -> "Pausada"
     rate > 1.05f -> "Enérgica"
     else -> "Natural"
+}
+
+private fun pitchLabel(pitch: Float): String = when {
+    pitch < 0.97f -> "Grave"
+    pitch > 1.03f -> "Aguda"
+    else -> "Natural"
+}
+
+private fun pitchHint(pitch: Float): String = when {
+    pitch < 0.97f -> "Cálida"
+    pitch > 1.03f -> "Brillante"
+    else -> "Equilibrada"
 }
 
 @Composable

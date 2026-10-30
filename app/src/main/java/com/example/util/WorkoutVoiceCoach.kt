@@ -38,12 +38,15 @@ data class VoiceCoachUiState(
     val voices: List<VoiceOption> = emptyList(),
     val selectedVoiceId: String? = null,
     val speechRate: Float = DEFAULT_RATE,
+    val speechPitch: Float = DEFAULT_PITCH,
     val needsSpanishVoiceData: Boolean = false,
     val errorMessage: String? = null
 ) {
     companion object {
         const val DEFAULT_RATE = 1.0f
+        const val DEFAULT_PITCH = 1.0f
         val RATE_OPTIONS = listOf(0.9f, 1.0f, 1.12f)
+        val PITCH_OPTIONS = listOf(0.9f, 1.0f, 1.1f)
     }
 }
 
@@ -55,6 +58,8 @@ data class VoiceCoachUiState(
  *  - Selecciona automáticamente la mejor voz en español instalada (sin conexión, de mayor calidad y de España).
  *  - Envía el audio como "voz" a través de atributos de audio, con foco temporal que atenúa la música del usuario.
  *  - Permite elegir otra voz y la velocidad, y recuerda la preferencia entre sesiones.
+ *  - Ajusta también el tono (grave/natural/agudo) y varía las frases de ánimo.
+ *  - Si una voz de red falla, cambia sola a una voz local para no quedarse mudo.
  *  - Evita que los subtítulos desaparezcan cuando una frase interrumpe a la anterior.
  *  - Avisa cuando faltan las voces en español para poder descargarlas.
  */
@@ -74,6 +79,8 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
     private var usingGoogleEngine = false
     private var triedDefaultEngine = false
     private var pendingPreview = false
+    private var encouragementIndex = 0
+    private var networkFallbackDone = false
 
     private var hasAudioFocus = false
     private var audioFocusRequest: AudioFocusRequest? = null
@@ -84,7 +91,8 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
     private val _uiState = MutableStateFlow(
         VoiceCoachUiState(
             isEnabled = prefs.getBoolean(KEY_ENABLED, true),
-            speechRate = prefs.getFloat(KEY_RATE, VoiceCoachUiState.DEFAULT_RATE)
+            speechRate = prefs.getFloat(KEY_RATE, VoiceCoachUiState.DEFAULT_RATE),
+            speechPitch = prefs.getFloat(KEY_PITCH, VoiceCoachUiState.DEFAULT_PITCH)
         )
     )
     val uiState: StateFlow<VoiceCoachUiState> = _uiState.asStateFlow()
@@ -148,7 +156,7 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
         isInitialized = true
 
         engine.setAudioAttributes(audioAttributes)
-        engine.setPitch(1.0f)
+        engine.setPitch(_uiState.value.speechPitch)
         engine.setSpeechRate(_uiState.value.speechRate)
         engine.setOnUtteranceProgressListener(progressListener)
 
@@ -187,6 +195,14 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
 
         val chosenVoice = spanishVoices.firstOrNull { it.name == storedVoiceId }
             ?: spanishVoices.firstOrNull()
+
+        Log.d(
+            TAG,
+            "Voces en español: " + spanishVoices.joinToString { voice ->
+                "${voice.name} (calidad ${voice.quality}, " +
+                    if (voice.isNetworkConnectionRequired) "red)" else "sin conexión)"
+            }
+        )
 
         if (chosenVoice != null && engine.setVoice(chosenVoice) == TextToSpeech.SUCCESS) {
             publishVoices(engine, spanishVoices)
@@ -277,6 +293,7 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
 
         if (engine.setVoice(voice) == TextToSpeech.SUCCESS) {
             prefs.edit().putString(KEY_VOICE_ID, voiceId).apply()
+            networkFallbackDone = false
             _uiState.update {
                 it.copy(
                     selectedVoiceId = voiceId,
@@ -293,6 +310,14 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
         tts?.setSpeechRate(clamped)
         prefs.edit().putFloat(KEY_RATE, clamped).apply()
         _uiState.update { it.copy(speechRate = clamped) }
+        previewVoice()
+    }
+
+    fun setSpeechPitch(pitch: Float) {
+        val clamped = pitch.coerceIn(0.6f, 1.4f)
+        tts?.setPitch(clamped)
+        prefs.edit().putFloat(KEY_PITCH, clamped).apply()
+        _uiState.update { it.copy(speechPitch = clamped) }
         previewVoice()
     }
 
@@ -315,12 +340,17 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
     private fun speakInternal(
         text: String,
         force: Boolean = false,
-        showSubtitle: Boolean = true
+        showSubtitle: Boolean = true,
+        optional: Boolean = false
     ) {
         if (!force && !_uiState.value.isEnabled) return
 
         val engine = tts
         if (!isInitialized || engine == null) return
+
+        // Un aviso opcional (mitad del ejercicio, "diez segundos") no debe cortar
+        // lo que el entrenador esté diciendo: si ya está hablando, se omite.
+        if (optional && isTalking()) return
 
         val utteranceId = "fitcasa_${utteranceCounter.incrementAndGet()}"
         currentUtteranceId = utteranceId
@@ -344,32 +374,40 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
     }
 
     fun speakExerciseStart(exerciseName: String, durationOrReps: String) {
-        speakInternal("Empezamos con ${nameForSpeech(exerciseName)}. $durationOrReps. ¡Vamos con fuerza!")
+        speakInternal(
+            "Empezamos con ${nameForSpeech(exerciseName)}. $durationOrReps. ${nextEncouragement()}"
+        )
     }
 
     fun speakHalfway() {
-        speakInternal("¡Vas por la mitad! Mantén el ritmo y no olvides respirar.")
+        speakInternal("Vas por la mitad. Mantén el ritmo y respira.", optional = true)
     }
 
     fun speakTenSecondsLeft() {
-        speakInternal("¡Últimos diez segundos! ¡Resiste!")
+        speakInternal("Últimos diez segundos. Aguanta un poco más.", optional = true)
     }
 
-    fun speakCountdown(seconds: Int) {
-        speakInternal(countdownWord(seconds))
+    /**
+     * Una sola locución para "tres, dos, uno". Si se enviaran los números por
+     * separado, cada uno cortaría al anterior y con voces de red se oirían a medias.
+     */
+    fun speakCountdown() {
+        speakInternal("Tres, dos, uno.")
     }
 
     fun speakRestStart(restSeconds: Int, nextExerciseName: String) {
-        speakInternal("¡Bien hecho! Descansa $restSeconds segundos. Ahora sigue: ${nameForSpeech(nextExerciseName)}.")
+        speakInternal(
+            "Bien hecho. Descansa $restSeconds segundos. Después toca ${nameForSpeech(nextExerciseName)}."
+        )
     }
 
     fun speakPrepareNext(nextExerciseName: String) {
-        speakInternal("Prepárate para ${nameForSpeech(nextExerciseName)}. Comenzamos en tres, dos, uno.")
+        speakInternal("Prepárate para ${nameForSpeech(nextExerciseName)}.")
     }
 
     fun speakWorkoutCompleted(calories: Int, minutes: Int) {
         speakInternal(
-            "¡Entrenamiento completado! Quemaste aproximadamente $calories calorías en $minutes minutos. ¡Excelente trabajo!"
+            "Entrenamiento completado. Has quemado unas $calories calorías en $minutes minutos. Gran trabajo."
         )
     }
 
@@ -381,11 +419,14 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
         speakInternal("Continuamos. ¡A por todas!")
     }
 
-    private fun countdownWord(seconds: Int): String = when (seconds) {
-        1 -> "Uno"
-        2 -> "Dos"
-        3 -> "Tres"
-        else -> seconds.toString()
+    /**
+     * Alterna los ánimos para que el entrenador no repita la misma frase en cada
+     * ejercicio, que es lo que más delata a una voz sintética.
+     */
+    private fun nextEncouragement(): String {
+        val phrase = ENCOURAGEMENTS[encouragementIndex % ENCOURAGEMENTS.size]
+        encouragementIndex += 1
+        return phrase
     }
 
     /**
@@ -409,6 +450,7 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
 
         override fun onError(utteranceId: String?, errorCode: Int) {
             finishUtterance(utteranceId)
+            fallbackToLocalVoice()
         }
 
         override fun onStop(utteranceId: String?, interrupted: Boolean) {
@@ -423,6 +465,39 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
         currentUtteranceId = null
         _currentVoiceMessage.value = null
         abandonAudioFocus()
+    }
+
+    /**
+     * Hay una locución en curso (o esperando síntesis, que en las voces de red
+     * tarda un poco en arrancar).
+     */
+    private fun isTalking(): Boolean =
+        currentUtteranceId != null || tts?.isSpeaking == true
+
+    /**
+     * Si la voz elegida necesita internet y falla (sin datos, servidor caído),
+     * cambiamos una sola vez a la mejor voz local para que el entrenador no se
+     * quede mudo a mitad de la rutina.
+     */
+    private fun fallbackToLocalVoice() {
+        if (networkFallbackDone) return
+        val engine = tts ?: return
+        val current = engine.voice ?: return
+        if (!current.isNetworkConnectionRequired) return
+
+        val localVoice = engine.voices.orEmpty()
+            .filter { it.locale.language.equals("es", ignoreCase = true) }
+            .filterNot { it.isNetworkConnectionRequired || it.isMissingData() }
+            .sortedWith(spanishVoiceComparator)
+            .firstOrNull() ?: return
+
+        if (engine.setVoice(localVoice) == TextToSpeech.SUCCESS) {
+            networkFallbackDone = true
+            prefs.edit().putString(KEY_VOICE_ID, localVoice.name).apply()
+            _uiState.update { it.copy(selectedVoiceId = localVoice.name) }
+            _currentVoiceMessage.value =
+                "Sin conexión: he cambiado a una voz que funciona sin internet."
+        }
     }
 
     // Se crea al final para que todos los campos de la clase ya estén inicializados
@@ -496,7 +571,15 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
         const val KEY_ENABLED = "voice_enabled"
         const val KEY_VOICE_ID = "voice_id"
         const val KEY_RATE = "voice_rate"
+        const val KEY_PITCH = "voice_pitch"
         const val GOOGLE_TTS_ENGINE = "com.google.android.tts"
+        val ENCOURAGEMENTS = listOf(
+            "¡Vamos con fuerza!",
+            "¡Tú puedes!",
+            "¡A por ello!",
+            "¡Buen ritmo!",
+            "¡Sigue así!"
+        )
         const val PREVIEW_PHRASE =
             "Hola, soy tu entrenador de FitCasa. Empezamos con sentadillas. ¡Vamos con fuerza!"
     }

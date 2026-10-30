@@ -76,6 +76,7 @@ fun ActiveWorkoutScreen(
     onToggleVoiceCoach: () -> Unit,
     onSelectVoice: (String) -> Unit,
     onSelectVoiceRate: (Float) -> Unit,
+    onSelectVoicePitch: (Float) -> Unit,
     onPreviewVoice: () -> Unit,
     onTogglePause: () -> Unit,
     onSkipRest: () -> Unit,
@@ -408,6 +409,7 @@ fun ActiveWorkoutScreen(
                 onToggleEnabled = onToggleVoiceCoach,
                 onSelectVoice = onSelectVoice,
                 onSelectRate = onSelectVoiceRate,
+                onSelectPitch = onSelectVoicePitch,
                 onPreview = onPreviewVoice
             )
         }
