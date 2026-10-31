@@ -6,6 +6,19 @@
 
 App Android de entrenamiento en casa **sin equipamiento**: rutinas por zona del cuerpo, nivel y tiempo disponible, temporizador con descansos, demostraciones de técnica y seguimiento local del progreso.
 
+## English
+
+FitCasa is a home workout app for Android with **no equipment and no account**: choose a body part, an intensity level and how much time you have, and it builds a routine with a timer, rests, technique demonstrations and a voice coach. Everything runs offline and your history stays on the phone.
+
+- **Home**: streak, minutes and calories, plus shortcuts to each body part.
+- **Routines**: three-step setup, generated plan and exercise list with step-by-step instructions.
+- **Exercise library**: 46 bodyweight moves (10 of them with a broomstick) with instructions, breathing tips, common mistakes and their own animation.
+- **Active workout**: circular timer, skippable rests, vibration, screen kept on and a voice coach that speaks the app language.
+- **Progress**: local history (Room), no sign-up, sessions can be deleted.
+- **Languages**: English and Spanish. Switch inside the app from the profile icon (System / Español / English); on Android 13+ it also appears in the system language settings.
+
+Download the latest APK from [Releases](https://github.com/ginnovauk/FitCasa/releases).
+
 ## Capturas
 
 <table>
@@ -30,11 +43,11 @@ App Android de entrenamiento en casa **sin equipamiento**: rutinas por zona del 
 
 ## Catálogo de ejercicios
 
-36 ejercicios sin equipamiento: 7 de cuerpo completo, 3 de pecho, 3 de abdomen, 4 de piernas, 9 de brazos y 10 de espalda.
+46 ejercicios sin equipamiento (los de palo solo necesitan un bastón o una escoba): 10 de espalda, 10 con palo, 9 de brazos, 7 de cuerpo completo, 4 de piernas, 3 de pecho y 3 de abdomen.
 
-Los 36 tienen demostración propia en formato vectorial (Lottie) empaquetada en la app, así que funcionan sin conexión y se ven nítidas en cualquier pantalla. Cada una se acompaña de las instrucciones paso a paso, la respiración y los errores comunes.
+Los 46 tienen demostración propia en formato vectorial (Lottie) empaquetada en la app, así que funcionan sin conexión y se ven nítidas en cualquier pantalla. Cada una se acompaña de las instrucciones paso a paso, la respiración y los errores comunes.
 
-**Créditos:** 20 animaciones provienen de LottieFiles bajo la *Lottie Simple License* (permite uso comercial) y las otras 16 están dibujadas para FitCasa, sin material de terceros. Ver `app/src/main/assets/exercises/lottie/NOTICE.txt`.
+**Créditos:** parte de las animaciones provienen de LottieFiles bajo la *Lottie Simple License* (permite uso comercial) y el resto están dibujadas para FitCasa, sin material de terceros. Ver `app/src/main/assets/exercises/lottie/NOTICE.txt`.
 
 ## Estimación de calorías
 
@@ -44,16 +57,20 @@ El perfil (peso, estatura, edad y sexo, desde el icono de perfil de Inicio) ajus
 
 Es una estimación orientativa; sirve para comparar sesiones entre sí, no sustituye una medición.
 
+## Idiomas
+
+La app está en inglés y español. El inglés es el idioma por defecto: si el móvil usa otro idioma, FitCasa se abre en inglés en lugar de quedarse a medias. Cambia el idioma desde Inicio › icono de perfil › Sistema / Español / English, sin reiniciar. En Android 13 o superior también aparece en **Ajustes del teléfono › Idiomas**.
+
 ## Voz del entrenador
 
 - Usa el motor de voz de Google si está instalado y, si no, el motor del sistema.
-- Elige automáticamente la mejor voz en español disponible (prefiere voces instaladas, sin conexión y de mayor calidad).
+- Elige automáticamente la mejor voz del idioma de la app (prefiere voces instaladas, sin conexión y de mayor calidad).
 - Atenúa la música del teléfono mientras habla.
 - Durante el entrenamiento, el icono de ajustes de voz permite cambiar de voz, ajustar la velocidad (pausada / natural / enérgica) y probarla.
 - La preferencia de voz, velocidad y activación se guarda entre sesiones.
-- Si faltan las voces en español, la app ofrece un botón para descargarlas.
+- Si faltan las voces del idioma, la app ofrece un botón para descargarlas.
 
-Para que suene bien, instala las voces en español desde **Ajustes del teléfono › Idiomas y entrada › Salida de texto a voz**.
+Para que suene bien, instala las voces del idioma desde **Ajustes del teléfono › Idiomas y entrada › Salida de texto a voz**.
 
 ## Cómo ejecutarlo
 
