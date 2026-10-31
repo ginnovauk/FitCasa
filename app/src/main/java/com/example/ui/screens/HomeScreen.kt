@@ -46,17 +46,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.data.local.WorkoutEntity
 import com.example.data.model.IntensityLevel
 import com.example.data.model.WorkoutPlan
 import com.example.ui.components.WeeklyCaloriesChart
+import com.example.ui.displayTitle
+import com.example.ui.rememberAppLocale
 import com.example.ui.theme.AthleticGreenDark
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 @Composable
 fun HomeScreen(
@@ -99,14 +103,14 @@ fun HomeScreen(
                     ) {
                         Column {
                             Text(
-                                text = "FITCASA",
+                                text = stringResource(R.string.home_brand),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Black,
                                 letterSpacing = 2.sp,
                                 color = MaterialTheme.colorScheme.primary
                             )
                             Text(
-                                text = "Entrena en Casa",
+                                text = stringResource(R.string.home_title),
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onBackground
@@ -124,7 +128,7 @@ fun HomeScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Outlined.AccountCircle,
-                                    contentDescription = "Perfil",
+                                    contentDescription = stringResource(R.string.home_profile),
                                     tint = MaterialTheme.colorScheme.onBackground
                                 )
                             }
@@ -147,7 +151,7 @@ fun HomeScreen(
                                     )
                                     Spacer(modifier = Modifier.width(4.dp))
                                     Text(
-                                        text = "$streakDays días racha",
+                                        text = pluralStringResource(R.plurals.home_streak_days, streakDays, streakDays),
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.onTertiaryContainer
@@ -166,19 +170,19 @@ fun HomeScreen(
                     ) {
                         QuickStatItem(
                             icon = Icons.Default.Timer,
-                            label = "Minutos",
+                            label = stringResource(R.string.home_stat_minutes),
                             value = "$totalMinutes",
                             modifier = Modifier.weight(1f)
                         )
                         QuickStatItem(
                             icon = Icons.Default.LocalFireDepartment,
-                            label = "Calorías",
+                            label = stringResource(R.string.home_stat_calories),
                             value = "$totalCalories",
                             modifier = Modifier.weight(1f)
                         )
                         QuickStatItem(
                             icon = Icons.Default.FitnessCenter,
-                            label = "Sesiones",
+                            label = stringResource(R.string.home_stat_sessions),
                             value = "${recentWorkouts.size}",
                             modifier = Modifier.weight(1f)
                         )
@@ -207,7 +211,7 @@ fun HomeScreen(
                         color = Color.White.copy(alpha = 0.2f)
                     ) {
                         Text(
-                            text = "RECOMENDADO DE HOY",
+                            text = stringResource(R.string.home_recommended_today),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Black,
                             letterSpacing = 1.sp,
@@ -219,14 +223,14 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(10.dp))
 
                     Text(
-                        text = "Activación Total Exprés",
+                        text = stringResource(R.string.home_quick_title),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
                     )
 
                     Text(
-                        text = "10 minutos intensos para reactivar tu energía sin pesas ni máquinas.",
+                        text = stringResource(R.string.home_quick_desc),
                         fontSize = 13.sp,
                         color = Color.White.copy(alpha = 0.85f),
                         lineHeight = 18.sp,
@@ -249,7 +253,7 @@ fun HomeScreen(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "10 min • Principiante",
+                                text = stringResource(R.string.home_quick_meta),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.White
@@ -267,7 +271,7 @@ fun HomeScreen(
                             shape = RoundedCornerShape(14.dp),
                             modifier = Modifier.testTag("start_quick_workout_btn")
                         ) {
-                            Text("Entrenar", fontWeight = FontWeight.Bold)
+                            Text(stringResource(R.string.home_start), fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.width(4.dp))
                             Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(16.dp))
                         }
@@ -292,7 +296,7 @@ fun HomeScreen(
         item {
             Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
                 Text(
-                    text = "Historial Reciente",
+                    text = stringResource(R.string.home_recent),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
@@ -321,14 +325,14 @@ fun HomeScreen(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = "Aún no tienes entrenamientos",
+                                text = stringResource(R.string.home_empty_title),
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = "Cuando completes tu primera rutina, aquí verás la actividad de cada día en el gráfico semanal.",
+                                text = stringResource(R.string.home_empty_desc),
                                 fontSize = 13.sp,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 lineHeight = 18.sp
@@ -394,7 +398,7 @@ fun QuickStatItem(
 
 @Composable
 fun RecentWorkoutItem(record: WorkoutEntity) {
-    val formatter = SimpleDateFormat("dd MMM, HH:mm", Locale("es", "ES"))
+    val formatter = SimpleDateFormat(stringResource(R.string.home_date_pattern), rememberAppLocale())
     val dateText = formatter.format(Date(record.dateMillis))
     val minutes = (record.durationSeconds / 60).coerceAtLeast(1)
 
@@ -425,13 +429,18 @@ fun RecentWorkoutItem(record: WorkoutEntity) {
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = record.workoutTitle,
+                    text = record.displayTitle(),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "$dateText • $minutes min • ${record.caloriesBurned} kcal",
+                    text = stringResource(
+                        R.string.home_record_meta,
+                        dateText,
+                        minutes,
+                        record.caloriesBurned
+                    ),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -441,7 +450,11 @@ fun RecentWorkoutItem(record: WorkoutEntity) {
                 color = MaterialTheme.colorScheme.surfaceVariant
             ) {
                 Text(
-                    text = "${record.exercisesCompleted}/${record.totalExercises} ej.",
+                    text = stringResource(
+                        R.string.home_record_exercises,
+                        record.exercisesCompleted,
+                        record.totalExercises
+                    ),
                     fontSize = 11.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,

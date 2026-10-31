@@ -26,10 +26,16 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.data.model.Exercise
+import com.example.ui.breathingTips
+import com.example.ui.commonMistakes
+import com.example.ui.displayName
+import com.example.ui.instructions
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,7 +59,7 @@ fun ExerciseDetailSheet(
                 .verticalScroll(rememberScrollState())
         ) {
             Text(
-                text = exercise.name,
+                text = exercise.displayName(),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -74,7 +80,7 @@ fun ExerciseDetailSheet(
 
             // Steps
             Text(
-                text = "INSTRUCCIONES PASO A PASO",
+                text = stringResource(R.string.exercise_steps_title),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.sp,
@@ -83,7 +89,7 @@ fun ExerciseDetailSheet(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            exercise.instructions.forEachIndexed { index, instruction ->
+            exercise.instructions().forEachIndexed { index, instruction ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -129,13 +135,13 @@ fun ExerciseDetailSheet(
                     Spacer(modifier = Modifier.width(10.dp))
                     Column {
                         Text(
-                            text = "Respiración:",
+                            text = stringResource(R.string.exercise_breathing),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.secondary
                         )
                         Text(
-                            text = exercise.breathingTips,
+                            text = exercise.breathingTips(),
                             fontSize = 13.sp,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -166,13 +172,13 @@ fun ExerciseDetailSheet(
                     Spacer(modifier = Modifier.width(10.dp))
                     Column {
                         Text(
-                            text = "Errores comunes:",
+                            text = stringResource(R.string.exercise_mistakes),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.tertiary
                         )
                         Text(
-                            text = exercise.commonMistakes,
+                            text = exercise.commonMistakes(),
                             fontSize = 13.sp,
                             color = MaterialTheme.colorScheme.onSurface
                         )

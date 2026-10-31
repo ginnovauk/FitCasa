@@ -50,9 +50,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.data.model.BodyPart
 import com.example.data.model.Exercise
 import com.example.data.model.IntensityLevel
@@ -61,6 +63,9 @@ import com.example.ui.components.BodyPartCard
 import com.example.ui.components.DurationSelectorRow
 import com.example.ui.components.ExerciseDetailSheet
 import com.example.ui.components.IntensitySelectorRow
+import com.example.ui.description
+import com.example.ui.displayName
+import com.example.ui.displayTitle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,14 +89,14 @@ fun WorkoutBuilderScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Configurar Entrenamiento",
+                        text = stringResource(R.string.builder_title),
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack, modifier = Modifier.testTag("builder_back_button")) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Regresar")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.builder_back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -125,9 +130,17 @@ fun WorkoutBuilderScreen(
                             Text(
                                 text = if (plan.exercises.any { it.isWarmUp }) {
                                     val principales = plan.exercises.count { !it.isWarmUp }
-                                    "Comenzar ($principales ejercicios + calentamiento • ~${plan.targetDurationMinutes} min)"
+                                    stringResource(
+                                        R.string.builder_start_warmup,
+                                        principales,
+                                        plan.targetDurationMinutes
+                                    )
                                 } else {
-                                    "Comenzar (${plan.exercises.size} ejercicios • ~${plan.targetDurationMinutes} min)"
+                                    stringResource(
+                                        R.string.builder_start,
+                                        plan.exercises.size,
+                                        plan.targetDurationMinutes
+                                    )
                                 },
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold
@@ -149,7 +162,7 @@ fun WorkoutBuilderScreen(
         ) {
             // Step 1: Zona del Cuerpo
             item {
-                SectionHeader(title = "1. Selecciona el Grupo")
+                SectionHeader(title = stringResource(R.string.builder_step_body))
                 Spacer(modifier = Modifier.height(8.dp))
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     BodyPart.values().forEach { bp ->
@@ -165,7 +178,7 @@ fun WorkoutBuilderScreen(
 
             // Step 2: Nivel de Intensidad
             item {
-                SectionHeader(title = "2. Nivel de Intensidad")
+                SectionHeader(title = stringResource(R.string.builder_step_intensity))
                 Spacer(modifier = Modifier.height(8.dp))
                 IntensitySelectorRow(
                     selectedIntensity = selectedIntensity,
@@ -173,7 +186,7 @@ fun WorkoutBuilderScreen(
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = selectedIntensity.description,
+                    text = selectedIntensity.description(),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 16.sp
@@ -183,7 +196,7 @@ fun WorkoutBuilderScreen(
 
             // Step 3: Tiempo Disponible
             item {
-                SectionHeader(title = "3. Tiempo Disponible")
+                SectionHeader(title = stringResource(R.string.builder_step_time))
                 Spacer(modifier = Modifier.height(8.dp))
                 DurationSelectorRow(
                     selectedMinutes = selectedDurationMinutes,
@@ -195,7 +208,7 @@ fun WorkoutBuilderScreen(
             // Plan Summary Card
             if (plan != null) {
                 item {
-                    SectionHeader(title = "Resumen de la Rutina Generada")
+                    SectionHeader(title = stringResource(R.string.builder_plan_summary))
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Card(
@@ -208,7 +221,7 @@ fun WorkoutBuilderScreen(
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Text(
-                                text = plan.title,
+                                text = plan.displayTitle(),
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -223,17 +236,17 @@ fun WorkoutBuilderScreen(
                             ) {
                                 MetricBadge(
                                     icon = Icons.Default.FitnessCenter,
-                                    label = "${plan.exercises.size} ejercicios",
+                                    label = stringResource(R.string.builder_metric_exercises, plan.exercises.size),
                                     modifier = Modifier.weight(1f)
                                 )
                                 MetricBadge(
                                     icon = Icons.Default.LocalFireDepartment,
-                                    label = "~${plan.estimatedCalories} kcal",
+                                    label = stringResource(R.string.builder_metric_kcal, plan.estimatedCalories),
                                     modifier = Modifier.weight(1f)
                                 )
                                 MetricBadge(
                                     icon = Icons.Default.Speed,
-                                    label = "${plan.restBetweenSeconds}s descanso",
+                                    label = stringResource(R.string.builder_metric_rest, plan.restBetweenSeconds),
                                     modifier = Modifier.weight(1f)
                                 )
                             }
@@ -242,7 +255,7 @@ fun WorkoutBuilderScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "Secuencia de Ejercicios (toca para ver técnica, ↑↓ para cambiar el orden):",
+                        text = stringResource(R.string.builder_sequence_hint),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -362,7 +375,7 @@ fun ExerciseListItem(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = exercise.name,
+                    text = exercise.displayName(),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -377,7 +390,7 @@ fun ExerciseListItem(
                         modifier = Modifier.align(Alignment.Start)
                     ) {
                         Text(
-                            text = "Calentamiento",
+                            text = stringResource(R.string.builder_warmup_badge),
                             fontSize = 9.sp,
                             fontWeight = FontWeight.Bold,
                             maxLines = 1,
@@ -387,7 +400,11 @@ fun ExerciseListItem(
                     }
                 }
                 Text(
-                    text = if (exercise.isTimeBased) "${exercise.defaultDurationSeconds} segundos" else "${exercise.defaultReps} repeticiones",
+                    text = if (exercise.isTimeBased) {
+                        stringResource(R.string.unit_seconds, exercise.defaultDurationSeconds)
+                    } else {
+                        stringResource(R.string.unit_reps, exercise.defaultReps)
+                    },
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -404,7 +421,7 @@ fun ExerciseListItem(
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowUp,
-                        contentDescription = "Subir ${exercise.name}",
+                        contentDescription = stringResource(R.string.builder_move_up, exercise.displayName()),
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -417,7 +434,7 @@ fun ExerciseListItem(
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = "Bajar ${exercise.name}",
+                        contentDescription = stringResource(R.string.builder_move_down, exercise.displayName()),
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -427,7 +444,7 @@ fun ExerciseListItem(
 
             Icon(
                 imageVector = Icons.Default.Info,
-                contentDescription = "Ver técnica",
+                contentDescription = stringResource(R.string.builder_see_technique),
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(20.dp)
             )

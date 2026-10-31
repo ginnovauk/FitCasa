@@ -10,6 +10,8 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.speech.tts.Voice
 import android.util.Log
+import androidx.annotation.StringRes
+import com.example.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,12 +36,12 @@ data class VoiceOption(
 data class VoiceCoachUiState(
     val isEnabled: Boolean = true,
     val isReady: Boolean = false,
-    val engineLabel: String = "Detectando motor de voz…",
+    val engineLabel: String = "",
     val voices: List<VoiceOption> = emptyList(),
     val selectedVoiceId: String? = null,
     val speechRate: Float = DEFAULT_RATE,
     val speechPitch: Float = DEFAULT_PITCH,
-    val needsSpanishVoiceData: Boolean = false,
+    val needsVoiceData: Boolean = false,
     val errorMessage: String? = null
 ) {
     companion object {
@@ -69,6 +71,9 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
     private val prefs = appContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     private val audioManager = appContext.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
 
+    /** Idioma de la app (respeta el selector de idioma por aplicación). */
+    private val appLocale: Locale = appContext.resources.configuration.locales[0]
+
     private val audioAttributes: AudioAttributes = AudioAttributes.Builder()
         .setUsage(AudioAttributes.USAGE_MEDIA)
         .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
@@ -92,6 +97,7 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
     private val _uiState = MutableStateFlow(
         VoiceCoachUiState(
             isEnabled = prefs.getBoolean(KEY_ENABLED, true),
+            engineLabel = appContext.getString(R.string.voice_engine_detecting),
             speechRate = prefs.getFloat(KEY_RATE, VoiceCoachUiState.DEFAULT_RATE),
             speechPitch = prefs.getFloat(KEY_PITCH, VoiceCoachUiState.DEFAULT_PITCH)
         )
@@ -101,8 +107,8 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
     private val _currentVoiceMessage = MutableStateFlow<String?>(null)
     val currentVoiceMessage: StateFlow<String?> = _currentVoiceMessage.asStateFlow()
 
-    private val spanishVoiceComparator = compareByDescending<Voice> {
-        it.locale.country.equals("ES", ignoreCase = true)
+    private val voiceComparator = compareByDescending<Voice> {
+        it.locale.country.equals(appLocale.country, ignoreCase = true)
     }
         // Las voces de red del motor de Google son las que suenan naturales;
         // si fallan (sin datos), fallbackToLocalVoice cambia a una local.
@@ -149,9 +155,9 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
             _uiState.update {
                 it.copy(
                     isReady = false,
-                    engineLabel = "Motor de voz no disponible",
-                    needsSpanishVoiceData = true,
-                    errorMessage = "Este dispositivo no tiene un motor de voz compatible. Descarga las voces de Google para escuchar al entrenador."
+                    engineLabel = appContext.getString(R.string.voice_engine_missing),
+                    needsVoiceData = true,
+                    errorMessage = appContext.getString(R.string.voice_error_no_engine)
                 )
             }
             return
@@ -165,15 +171,17 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
         engine.setSpeechRate(_uiState.value.speechRate)
         engine.setOnUtteranceProgressListener(progressListener)
 
-        val needsVoiceData = configureSpanishVoice(engine)
+        val needsVoiceData = configureVoice(engine)
 
         _uiState.update {
             it.copy(
                 isReady = true,
-                engineLabel = if (usingGoogleEngine) "Motor de voz de Google" else "Motor de voz del sistema",
-                needsSpanishVoiceData = needsVoiceData,
+                engineLabel = appContext.getString(
+                    if (usingGoogleEngine) R.string.voice_engine_google else R.string.voice_engine_system
+                ),
+                needsVoiceData = needsVoiceData,
                 errorMessage = if (needsVoiceData) {
-                    "No encontramos una voz en español instalada. Descarga las voces de Google para escuchar al entrenador."
+                    appContext.getString(R.string.voice_error_missing_data)
                 } else {
                     null
                 }
@@ -187,46 +195,46 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
     }
 
     /**
-     * Aplica la voz guardada o la mejor voz en español disponible.
-     * Devuelve true cuando el dispositivo no tiene datos de voz en español.
+     * Aplica la voz guardada o la mejor voz del idioma de la app disponible.
+     * Devuelve true cuando el dispositivo no tiene datos de voz en ese idioma.
      */
-    private fun configureSpanishVoice(engine: TextToSpeech): Boolean {
+    private fun configureVoice(engine: TextToSpeech): Boolean {
         val storedVoiceId = prefs.getString(KEY_VOICE_ID, null)
 
-        val spanishVoices = engine.voices.orEmpty()
-            .filter { it.locale.language.equals("es", ignoreCase = true) }
+        val languageVoices = engine.voices.orEmpty()
+            .filter { it.locale.language.equals(appLocale.language, ignoreCase = true) }
             .filterNot { it.isMissingData() }
             // El motor expone entradas "es-ES-language" que no son voces reales:
             // al elegirlas la calidad cae y el entrenador suena metálico.
             .filterNot { it.name.endsWith("-language", ignoreCase = true) }
-            .sortedWith(spanishVoiceComparator)
+            .sortedWith(voiceComparator)
 
-        val chosenVoice = spanishVoices.firstOrNull { it.name == storedVoiceId }
-            ?: spanishVoices.firstOrNull()
+        val chosenVoice = languageVoices.firstOrNull { it.name == storedVoiceId }
+            ?: languageVoices.firstOrNull()
 
         Log.d(
             TAG,
-            "Voces en español: " + spanishVoices.joinToString { voice ->
+            "Voces en ${appLocale.language}: " + languageVoices.joinToString { voice ->
                 "${voice.name} (calidad ${voice.quality}, " +
                     if (voice.isNetworkConnectionRequired) "red)" else "sin conexión)"
             }
         )
 
         if (chosenVoice != null && engine.setVoice(chosenVoice) == TextToSpeech.SUCCESS) {
-            publishVoices(engine, spanishVoices)
+            publishVoices(engine, languageVoices)
             return false
         }
 
         // Vuelta atrás: pedimos el idioma en lugar de una voz concreta.
-        val result = engine.setLanguage(Locale("es", "ES"))
+        val result = engine.setLanguage(appLocale)
         val needsVoiceData = result == TextToSpeech.LANG_MISSING_DATA ||
             result == TextToSpeech.LANG_NOT_SUPPORTED
 
         if (needsVoiceData) {
-            engine.setLanguage(Locale("es"))
+            engine.setLanguage(Locale(appLocale.language))
         }
 
-        publishVoices(engine, spanishVoices)
+        publishVoices(engine, languageVoices)
         return needsVoiceData
     }
 
@@ -254,29 +262,24 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
         features?.contains(TextToSpeech.Engine.KEY_FEATURE_NOT_INSTALLED) == true
 
     private fun displayNameFor(voice: Voice, allVoices: List<Voice>): String {
-        val localeName = when (voice.locale.country.uppercase(Locale.ROOT)) {
-            "ES" -> "Español (España)"
-            "US" -> "Español (EE. UU.)"
-            "MX" -> "Español (México)"
-            "AR" -> "Español (Argentina)"
-            "CO" -> "Español (Colombia)"
-            "CL" -> "Español (Chile)"
-            else -> voice.locale.displayName.replaceFirstChar { it.uppercase() }
-        }
+        // getDisplayName ya devuelve el nombre del idioma en el idioma de la app
+        // ("español (México)", "Spanish (Mexico)"…), sin listas hardcodeadas.
+        val localeName = voice.locale.getDisplayName(appLocale)
+            .replaceFirstChar { it.uppercase(appLocale) }
 
         val sameLocale = allVoices.filter { it.locale.country == voice.locale.country }
         return if (sameLocale.size > 1) {
-            "$localeName · Voz ${sameLocale.indexOf(voice) + 1}"
+            appContext.getString(R.string.voice_voice_number, localeName, sameLocale.indexOf(voice) + 1)
         } else {
             localeName
         }
     }
 
     private fun qualityLabel(quality: Int): String = when {
-        quality >= Voice.QUALITY_VERY_HIGH -> "Calidad máxima"
-        quality >= Voice.QUALITY_HIGH -> "Alta calidad"
-        quality >= Voice.QUALITY_NORMAL -> "Calidad estándar"
-        else -> "Calidad básica"
+        quality >= Voice.QUALITY_VERY_HIGH -> appContext.getString(R.string.voice_quality_max)
+        quality >= Voice.QUALITY_HIGH -> appContext.getString(R.string.voice_quality_high)
+        quality >= Voice.QUALITY_NORMAL -> appContext.getString(R.string.voice_quality_normal)
+        else -> appContext.getString(R.string.voice_quality_basic)
     }
 
     // ---------------------------------------------------------------------------------
@@ -291,7 +294,7 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
         if (!newState) {
             stop()
         } else {
-            speak("Entrenador por voz activado.", force = true)
+            speak(appContext.getString(R.string.voice_speak_enabled), force = true)
         }
     }
 
@@ -305,7 +308,7 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
             _uiState.update {
                 it.copy(
                     selectedVoiceId = voiceId,
-                    needsSpanishVoiceData = false,
+                    needsVoiceData = false,
                     errorMessage = null
                 )
             }
@@ -334,7 +337,7 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
             pendingPreview = true
             return
         }
-        speakInternal(PREVIEW_PHRASE, force = true, showSubtitle = false)
+        speakInternal(appContext.getString(R.string.voice_preview_phrase), force = true, showSubtitle = false)
     }
 
     // ---------------------------------------------------------------------------------
@@ -390,16 +393,21 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
 
     fun speakExerciseStart(exerciseName: String, durationOrReps: String) {
         speakInternal(
-            "Empezamos con ${nameForSpeech(exerciseName)}. $durationOrReps. ${nextEncouragement()}"
+            appContext.getString(
+                R.string.voice_speak_start,
+                nameForSpeech(exerciseName),
+                durationOrReps,
+                nextEncouragement()
+            )
         )
     }
 
     fun speakHalfway() {
-        speakInternal("Vas por la mitad. Mantén el ritmo y respira.", optional = true)
+        speakInternal(appContext.getString(R.string.voice_speak_halfway), optional = true)
     }
 
     fun speakTenSecondsLeft() {
-        speakInternal("Últimos diez segundos. Aguanta un poco más.", optional = true)
+        speakInternal(appContext.getString(R.string.voice_speak_ten_left), optional = true)
     }
 
     /**
@@ -408,37 +416,43 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
      * llegue el siguiente, aunque la voz sea de red.
      */
     fun speakCountdownNumber(number: Int) {
-        val word = when (number) {
-            3 -> "Tres"
-            2 -> "Dos"
-            1 -> "Uno"
+        val res = when (number) {
+            3 -> R.string.voice_countdown_3
+            2 -> R.string.voice_countdown_2
+            1 -> R.string.voice_countdown_1
             else -> return
         }
-        speakInternal(word)
+        speakInternal(appContext.getString(res))
     }
 
     fun speakRestStart(restSeconds: Int, nextExerciseName: String) {
         speakInternal(
-            "Bien hecho. Descansa $restSeconds segundos. Después toca ${nameForSpeech(nextExerciseName)}."
+            appContext.getString(
+                R.string.voice_speak_rest,
+                restSeconds,
+                nameForSpeech(nextExerciseName)
+            )
         )
     }
 
     fun speakPrepareNext(nextExerciseName: String) {
-        speakInternal("Prepárate para ${nameForSpeech(nextExerciseName)}.")
+        speakInternal(
+            appContext.getString(R.string.voice_speak_prepare, nameForSpeech(nextExerciseName))
+        )
     }
 
     fun speakWorkoutCompleted(calories: Int, minutes: Int) {
         speakInternal(
-            "Entrenamiento completado. Has quemado unas $calories calorías en $minutes minutos. Gran trabajo."
+            appContext.getString(R.string.voice_speak_completed, calories, minutes)
         )
     }
 
     fun speakPaused() {
-        speakInternal("Entrenamiento en pausa.")
+        speakInternal(appContext.getString(R.string.voice_speak_paused))
     }
 
     fun speakResumed() {
-        speakInternal("Continuamos. ¡A por todas!")
+        speakInternal(appContext.getString(R.string.voice_speak_resumed))
     }
 
     /**
@@ -446,7 +460,9 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
      * ejercicio, que es lo que más delata a una voz sintética.
      */
     private fun nextEncouragement(): String {
-        val phrase = ENCOURAGEMENTS[encouragementIndex % ENCOURAGEMENTS.size]
+        val phrases = appContext.resources.getStringArray(R.array.voice_encouragements)
+        if (phrases.isEmpty()) return ""
+        val phrase = phrases[encouragementIndex % phrases.size]
         encouragementIndex += 1
         return phrase
     }
@@ -508,17 +524,16 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
         if (!current.isNetworkConnectionRequired) return
 
         val localVoice = engine.voices.orEmpty()
-            .filter { it.locale.language.equals("es", ignoreCase = true) }
+            .filter { it.locale.language.equals(appLocale.language, ignoreCase = true) }
             .filterNot { it.isNetworkConnectionRequired || it.isMissingData() }
-            .sortedWith(spanishVoiceComparator)
+            .sortedWith(voiceComparator)
             .firstOrNull() ?: return
 
         if (engine.setVoice(localVoice) == TextToSpeech.SUCCESS) {
             networkFallbackDone = true
             prefs.edit().putString(KEY_VOICE_ID, localVoice.name).apply()
             _uiState.update { it.copy(selectedVoiceId = localVoice.name) }
-            _currentVoiceMessage.value =
-                "Sin conexión: he cambiado a una voz que funciona sin internet."
+            _currentVoiceMessage.value = appContext.getString(R.string.voice_speak_fallback)
         }
     }
 
@@ -596,14 +611,5 @@ class WorkoutVoiceCoach(context: Context) : TextToSpeech.OnInitListener {
         const val KEY_PITCH = "voice_pitch"
         const val GOOGLE_TTS_ENGINE = "com.google.android.tts"
         const val OPTIONAL_CUE_GAP_MS = 5_000L
-        val ENCOURAGEMENTS = listOf(
-            "¡Vamos con fuerza!",
-            "¡Tú puedes!",
-            "¡A por ello!",
-            "¡Buen ritmo!",
-            "¡Sigue así!"
-        )
-        const val PREVIEW_PHRASE =
-            "Hola, soy tu entrenador de FitCasa. Empezamos con sentadillas. ¡Vamos con fuerza!"
     }
 }

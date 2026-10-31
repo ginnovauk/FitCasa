@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated from ExerciseCatalog.kt. Catalog text lives here. -->
+<!-- This is the default bucket: any language without its own translation -->
+<!-- sees these English names, instructions and tips. -->
+<resources>
+
+    <!-- Jumping Jacks -->
+    <string name="ex_jumping_jacks_name">Jumping Jacks</string>
+    <string-array name="ex_jumping_jacks_instructions">
+        <item>Stand with your feet together and your arms at your sides.</item>
+        <item>Jump your feet out to shoulder width while raising your hands above your head.</item>
+        <item>Jump back to the starting position, landing softly on the balls of your feet.</item>
+    </string-array>
+    <string name="ex_jumping_jacks_breathing">Inhale as you open up, exhale as you close your body.</string>
+    <string name="ex_jumping_jacks_mistake">Landing hard on your heels; always cushion the landing with slightly bent knees.</string>
+
+    <!-- Mountain Climbers -->
+    <string name="ex_mountain_climbers_name">Mountain Climbers</string>
+    <string-array name="ex_mountain_climbers_instructions">
+        <item>Start in a high plank with your hands directly under your shoulders.</item>
+        <item>Drive one knee toward your chest without lifting your hips.</item>
+        <item>Alternate legs quickly with an explosive, rhythmic motion.</item>
+    </string-array>
+    <string name="ex_mountain_climbers_breathing">Keep your breathing rhythmic and continuous, never holding your breath.</string>
+    <string name="ex_mountain_climbers_mistake">Letting your hips rise too high or your lower back sag.</string>
+
+    <!-- High Knees -->
+    <string name="ex_high_knees_name">High Knees</string>
+    <string-array name="ex_high_knees_instructions">
+        <item>Run in place, driving your knees up to hip height.</item>
+        <item>Keep your chest tall and swing your arms with the movement.</item>
+        <item>Land softly on the balls of your feet at a fast rhythm.</item>
+    </string-array>
+    <string name="ex_high_knees_breathing">Inhale for two steps, exhale for two steps.</string>
+    <string name="ex_high_knees_mistake">Leaning backward as you lift your legs.</string>
+
+    <!-- Dynamic Burpees -->
+    <string name="ex_burpees_name">Dynamic Burpees</string>
+    <string-array name="ex_burpees_instructions">
+        <item>From standing, squat down and place your hands on the floor.</item>
+        <item>Jump your feet back into a plank position.</item>
+        <item>Jump your feet back toward your hands and jump up, extending your arms.</item>
+    </string-array>
+    <string name="ex_burpees_breathing">Exhale on the way up, inhale as you lower back to the floor.</string>
+    <string name="ex_burpees_mistake">Arching your lower back as you jump your feet back.</string>
+
+    <!-- Knee Push-Ups -->
+    <string name="ex_push_ups_knees_name">Knee Push-Ups</string>
+    <string-array name="ex_push_ups_knees_instructions">
+        <item>Rest on your knees with your palms slightly wider than shoulder width.</item>
+        <item>Keep a straight line from your head to your knees, bracing your core.</item>
+        <item>Lower your chest toward the floor with your elbows at 45 degrees, then push up hard.</item>
+    </string-array>
+    <string name="ex_push_ups_knees_breathing">Inhale as you lower your chest, exhale as you push up.</string>
+    <string name="ex_push_ups_knees_mistake">Letting your head drop or overextending your neck.</string>
+
+    <!-- Classic Push-Ups -->
+    <string name="ex_push_ups_standard_name">Classic Push-Ups</string>
+    <string-array name="ex_push_ups_standard_instructions">
+        <item>Get into a high plank with your feet together and your core tight.</item>
+        <item>Lower yourself under control until your chest is a few inches off the floor.</item>
+        <item>Push the floor away and extend your arms without snapping your elbows.</item>
+    </string-array>
+    <string name="ex_push_ups_standard_breathing">Inhale on the way down, exhale as you push up powerfully.</string>
+    <string name="ex_push_ups_standard_mistake">Flaring your elbows 90 degrees out from your torso; they should form an arrow (45°).</string>
+
+    <!-- Diamond Push-Ups (Chest &amp; Triceps) -->
+    <string name="ex_push_ups_diamond_name">Diamond Push-Ups (Chest &amp; Triceps)</string>
+    <string-array name="ex_push_ups_diamond_instructions">
+        <item>Bring your thumbs and index fingers together on the floor to form a triangle or diamond under your chest.</item>
+        <item>Lower the center of your chest toward the center of your hands, keeping your elbows tucked.</item>
+        <item>Push up, squeezing the inner chest and your triceps.</item>
+    </string-array>
+    <string name="ex_push_ups_diamond_breathing">Inhale as you lower, exhale as you push up.</string>
+    <string name="ex_push_ups_diamond_mistake">Doing short bounces instead of completing the full range of motion.</string>
+
+    <!-- Crunches -->
+    <string name="ex_crunches_name">Crunches</string>
+    <string-array name="ex_crunches_instructions">
+        <item>Lie on your back with your knees bent and your feet firmly on the floor.</item>
+        <item>Place your hands behind your ears without pulling on your neck.</item>
+        <item>Lift your shoulder blades by squeezing your abs hard, then lower with control.</item>
+    </string-array>
+    <string name="ex_crunches_breathing">Exhale as you lift and contract your core, inhale as your shoulders come down.</string>
+    <string name="ex_crunches_mistake">Pulling on your head with your hands and straining your neck.</string>
+
+    <!-- Isometric Plank -->
+    <string name="ex_plank_name">Isometric Plank</string>
+    <string-array name="ex_plank_instructions">
+        <item>Rest on your forearms and the balls of your feet.</item>
+        <item>Form one perfect straight line from your head to your heels.</item>
+        <item>Squeeze your glutes and pull your navel toward your spine without dropping your hips.</item>
+    </string-array>
+    <string name="ex_plank_breathing">Breathe slowly and deeply, never holding your breath.</string>
+    <string name="ex_plank_mistake">Letting your lower back sag or hiking your hips into a triangle.</string>
+
+    <!-- Bicycle Crunches -->
+    <string name="ex_bicycle_crunches_name">Bicycle Crunches</string>
+    <string-array name="ex_bicycle_crunches_instructions">
+        <item>Lie on your back with your legs raised at a 90-degree angle.</item>
+        <item>Bring your right elbow toward your left knee as you extend your right leg.</item>
+        <item>Alternate sides smoothly, rotating from your ribcage.</item>
+    </string-array>
+    <string name="ex_bicycle_crunches_breathing">Exhale on every cross with a diagonal contraction.</string>
+    <string name="ex_bicycle_crunches_mistake">Moving only your elbows instead of rotating your whole torso.</string>
+
+    <!-- Classic Squats -->
+    <string name="ex_squats_bodyweight_name">Classic Squats</string>
+    <string-array name="ex_squats_bodyweight_instructions">
+        <item>Stand with your feet shoulder-width apart and your toes slightly turned out.</item>
+        <item>Bend your hips and knees as if you were sitting down in a low chair.</item>
+        <item>Lower until your thighs are parallel to the floor, then drive back up through your heels.</item>
+    </string-array>
+    <string name="ex_squats_bodyweight_breathing">Inhale as you lower, exhale forcefully as you stand up.</string>
+    <string name="ex_squats_bodyweight_mistake">Letting your knees cave inward or your heels lift off the floor.</string>
+
+    <!-- Alternating Lunges -->
+    <string name="ex_lunges_alternating_name">Alternating Lunges</string>
+    <string-array name="ex_lunges_alternating_instructions">
+        <item>Take a long step forward with one leg, keeping your torso upright.</item>
+        <item>Bend both knees until they form a 90-degree angle.</item>
+        <item>Push through your front heel to return to the start and switch legs.</item>
+    </string-array>
+    <string name="ex_lunges_alternating_breathing">Inhale as you step down, exhale as you return to center.</string>
+    <string name="ex_lunges_alternating_mistake">Letting your front knee travel far past your toes.</string>
+
+    <!-- Glute &amp; Hamstring Bridge -->
+    <string name="ex_glute_bridge_name">Glute &amp; Hamstring Bridge</string>
+    <string-array name="ex_glute_bridge_instructions">
+        <item>Lie on your back with your knees bent and your feet flat close to your glutes.</item>
+        <item>Lift your hips by squeezing your glutes until knees, hips and shoulders are aligned.</item>
+        <item>Hold for 1 second at the top and lower slowly without fully touching the floor.</item>
+    </string-array>
+    <string name="ex_glute_bridge_breathing">Exhale as you lift your hips, inhale as you lower.</string>
+    <string name="ex_glute_bridge_mistake">Arching your lower back instead of extending your hips with your glutes.</string>
+
+    <!-- Wall Sit -->
+    <string name="ex_wall_sit_name">Wall Sit</string>
+    <string-array name="ex_wall_sit_instructions">
+        <item>Press your back flat against a wall and slide down.</item>
+        <item>Stop when your thighs form a 90-degree angle with the floor.</item>
+        <item>Rest your hands on your thighs or let them hang at your sides and hold the position.</item>
+    </string-array>
+    <string name="ex_wall_sit_breathing">Breathe calmly and keep your core tight.</string>
+    <string name="ex_wall_sit_mistake">Resting your hands on your knees to take load off your legs.</string>
+
+    <!-- Triceps Dips -->
+    <string name="ex_triceps_dips_name">Triceps Dips</string>
+    <string-array name="ex_triceps_dips_instructions">
+        <item>Place your palms on a sturdy chair, sofa or on the floor behind you.</item>
+        <item>With your elbows pointing back, bend them and lower your hips close to the support.</item>
+        <item>Push through your palms, extending your arms and squeezing your triceps.</item>
+    </string-array>
+    <string name="ex_triceps_dips_breathing">Inhale as you lower your body, exhale as you extend your arms.</string>
+    <string name="ex_triceps_dips_mistake">Moving your back away from the support or shrugging your shoulders toward your ears.</string>
+
+    <!-- Superman Back Extension -->
+    <string name="ex_superman_name">Superman Back Extension</string>
+    <string-array name="ex_superman_instructions">
+        <item>Lie face down with your arms and legs fully extended.</item>
+        <item>Lift your chest, arms and thighs a few inches off the floor at the same time.</item>
+        <item>Squeeze your lower back and glutes at the top, then lower gently.</item>
+    </string-array>
+    <string name="ex_superman_breathing">Inhale on the floor, exhale as you lift your limbs.</string>
+    <string name="ex_superman_mistake">Straining your neck to look up instead of keeping your gaze on the floor.</string>
+
+    <!-- Cobra &amp; Back Extension -->
+    <string name="ex_cobra_stretch_name">Cobra &amp; Back Extension</string>
+    <string-array name="ex_cobra_stretch_instructions">
+        <item>Lie face down with your palms on the floor beside your chest.</item>
+        <item>Push gently, extending your torso upward and opening your chest.</item>
+        <item>Move your shoulders away from your ears and feel your back decompress.</item>
+    </string-array>
+    <string name="ex_cobra_stretch_breathing">Inhale deeply as you open your ribcage, exhale as you release the tension.</string>
+    <string name="ex_cobra_stretch_mistake">Locking your elbows abruptly if you feel discomfort in your lower back.</string>
+
+    <!-- Wall Push-Ups -->
+    <string name="ex_wall_push_ups_name">Wall Push-Ups</string>
+    <string-array name="ex_wall_push_ups_instructions">
+        <item>Place your palms on the wall at shoulder height, a little wider than your shoulders.</item>
+        <item>Take a step back and keep your body in a straight line from your head to your heels.</item>
+        <item>Bend your elbows to bring your chest toward the wall, then push back without locking your elbows.</item>
+    </string-array>
+    <string name="ex_wall_push_ups_breathing">Inhale as you move toward the wall, exhale as you push away.</string>
+    <string name="ex_wall_push_ups_mistake">Letting your hips drop or shrugging your shoulders toward your ears.</string>
+
+    <!-- Triceps Dips on the Floor -->
+    <string name="ex_triceps_dips_floor_name">Triceps Dips on the Floor</string>
+    <string-array name="ex_triceps_dips_floor_instructions">
+        <item>Sit on the edge of a stable chair with your hands beside your hips and your fingers pointing forward.</item>
+        <item>Slide your hips off the seat with your legs extended and your back close to the chair.</item>
+        <item>Lower by bending your elbows back to about 90 degrees, then push to come back up.</item>
+    </string-array>
+    <string name="ex_triceps_dips_floor_breathing">Inhale as you lower, exhale as you push up.</string>
+    <string name="ex_triceps_dips_floor_mistake">Moving your back away from the seat or shrugging your shoulders toward your ears.</string>
+
+    <!-- Kneeling Triceps Extension -->
+    <string name="ex_kneeling_triceps_extension_name">Kneeling Triceps Extension</string>
+    <string-array name="ex_kneeling_triceps_extension_instructions">
+        <item>Kneel with your hands on the floor under your shoulders and your fingers pointing forward.</item>
+        <item>Keep your body in a straight line from your head to your knees with your core tight.</item>
+        <item>Bend your elbows back to lower your chest, then push to extend your arms.</item>
+    </string-array>
+    <string name="ex_kneeling_triceps_extension_breathing">Inhale as you lower your chest, exhale as you extend your elbows.</string>
+    <string name="ex_kneeling_triceps_extension_mistake">Flaring your elbows out instead of keeping them close to your torso.</string>
+
+    <!-- Self-Resistance Biceps Curl -->
+    <string name="ex_biceps_self_resistance_name">Self-Resistance Biceps Curl</string>
+    <string-array name="ex_biceps_self_resistance_instructions">
+        <item>Lie on your side with your legs extended and your head resting on your lower arm.</item>
+        <item>Keep your top arm against your side and bend your elbow, bringing your hand toward your shoulder.</item>
+        <item>Press your other hand against your forearm to slow the descent, then repeat.</item>
+    </string-array>
+    <string name="ex_biceps_self_resistance_breathing">Exhale as you curl, inhale as you lower with control.</string>
+    <string name="ex_biceps_self_resistance_mistake">Moving your shoulder or torso to help your arm; only your elbow should be working.</string>
+
+    <!-- Close-Grip Push-Ups -->
+    <string name="ex_close_grip_push_ups_name">Close-Grip Push-Ups</string>
+    <string-array name="ex_close_grip_push_ups_instructions">
+        <item>Get into a high plank with your hands together under your chest and your core tight.</item>
+        <item>Lower your body, keeping your elbows tucked against your ribs.</item>
+        <item>Push through your palms to extend your arms and return to the plank.</item>
+    </string-array>
+    <string name="ex_close_grip_push_ups_breathing">Inhale as you lower, exhale as you push.</string>
+    <string name="ex_close_grip_push_ups_mistake">Flaring your elbows out, which takes work off your triceps and loads your shoulder.</string>
+
+    <!-- Elbow Dips on a Chair -->
+    <string name="ex_elbow_dips_name">Elbow Dips on a Chair</string>
+    <string-array name="ex_elbow_dips_instructions">
+        <item>Sit on the edge of a stable chair and grip the edge with your hands beside your hips.</item>
+        <item>Slide your hips forward and place your heels on the floor with your knees slightly bent.</item>
+        <item>Lower by bending your elbows, then push until your arms straighten without locking out fully.</item>
+    </string-array>
+    <string name="ex_elbow_dips_breathing">Inhale as you lower, exhale as you push up.</string>
+    <string name="ex_elbow_dips_mistake">Going too low and feeling pressure in your shoulder; stop at about a 90-degree elbow angle.</string>
+
+    <!-- Side Triceps Push-Ups -->
+    <string name="ex_side_push_up_name">Side Triceps Push-Ups</string>
+    <string-array name="ex_side_push_up_instructions">
+        <item>Lie on your side with your legs extended and stacked one on top of the other.</item>
+        <item>Place your lower hand under your shoulder and push to lift your hips off the floor.</item>
+        <item>Raise your free arm toward the ceiling in a straight line and lower with control. Switch sides halfway through.</item>
+    </string-array>
+    <string name="ex_side_push_up_breathing">Exhale as you lift your hips, inhale as you lower.</string>
+    <string name="ex_side_push_up_mistake">Letting your hips drop or drifting your support shoulder in front of your hand.</string>
+
+    <!-- Elevated Triceps Dips -->
+    <string name="ex_body_up_name">Elevated Triceps Dips</string>
+    <string-array name="ex_body_up_instructions">
+        <item>Place your palms on a sturdy bench or the edge of a stable table, with your fingers pointing forward.</item>
+        <item>Extend your legs in front of you with your heels on the floor and keep your body straight.</item>
+        <item>Lower by bending your elbows close to your body, then push through your palms to rise.</item>
+    </string-array>
+    <string name="ex_body_up_breathing">Inhale as you lower, exhale as you push hard.</string>
+    <string name="ex_body_up_mistake">Using an unstable surface or letting your hips drop for lack of core tension.</string>
+
+    <!-- Standing Towel Row -->
+    <string name="ex_towel_row_name">Standing Towel Row</string>
+    <string-array name="ex_towel_row_instructions">
+        <item>Hold a rolled towel with both hands in front of your chest, feet shoulder-width apart.</item>
+        <item>Bend your knees slightly and hinge your torso forward, keeping your back straight.</item>
+        <item>Pull the towel toward your chest by squeezing your shoulder blades, then return slowly.</item>
+    </string-array>
+    <string name="ex_towel_row_breathing">Exhale as you pull the towel, inhale as you extend your arms.</string>
+    <string name="ex_towel_row_mistake">Rounding your back or hunching your neck as you squeeze your shoulder blades.</string>
+
+    <!-- Prone Elbow Lift -->
+    <string name="ex_prone_elbow_lift_name">Prone Elbow Lift</string>
+    <string-array name="ex_prone_elbow_lift_instructions">
+        <item>Lie face down with your legs extended and your hands under your shoulders.</item>
+        <item>Brace your abs and push gently with your palms to lift your chest off the floor.</item>
+        <item>Draw your elbows back by squeezing your shoulder blades, hold for a second, then lower slowly.</item>
+    </string-array>
+    <string name="ex_prone_elbow_lift_breathing">Exhale as you squeeze your shoulder blades, inhale as you lower.</string>
+    <string name="ex_prone_elbow_lift_mistake">Arching your lower back or lifting your head too high; the movement comes from your upper back.</string>
+
+    <!-- Scapular Push-Ups -->
+    <string name="ex_scapula_push_up_name">Scapular Push-Ups</string>
+    <string-array name="ex_scapula_push_up_instructions">
+        <item>Get into a high plank with your arms straight and your core tight.</item>
+        <item>Without bending your elbows, let your chest sink as your shoulder blades spread apart.</item>
+        <item>Push the floor away to rise and squeeze your shoulder blades together. The range is short and controlled.</item>
+    </string-array>
+    <string name="ex_scapula_push_up_breathing">Inhale as your chest sinks, exhale as you push.</string>
+    <string name="ex_scapula_push_up_mistake">Bending your elbows and turning it into a regular push-up.</string>
+
+    <!-- Sphinx Hold -->
+    <string name="ex_sphinx_hold_name">Sphinx Hold</string>
+    <string-array name="ex_sphinx_hold_instructions">
+        <item>Lie face down with your forearms on the floor and your elbows under your shoulders.</item>
+        <item>Brace your abs and lift your chest off the floor without shrugging your shoulders.</item>
+        <item>Hold the position, breathing calmly with your neck in a neutral position.</item>
+    </string-array>
+    <string name="ex_sphinx_hold_breathing">Breathe deeply and slowly, never holding your breath.</string>
+    <string name="ex_sphinx_hold_mistake">Letting your lower back sag or looking too far up.</string>
+
+    <!-- Towel Squat Row -->
+    <string name="ex_towel_squat_row_name">Towel Squat Row</string>
+    <string-array name="ex_towel_squat_row_instructions">
+        <item>Holding the towel in your hands, lower into a half squat with your chest up.</item>
+        <item>From there, pull the towel toward your chest, drawing your elbows back.</item>
+        <item>Extend your arms and stand up out of the squat to complete the rep.</item>
+    </string-array>
+    <string name="ex_towel_squat_row_breathing">Exhale as you pull and stand up, inhale as you lower.</string>
+    <string name="ex_towel_squat_row_mistake">Losing your lower-back curve as you lean or pulling only with your arms.</string>
+
+    <!-- Inverted Row Under a Sturdy Table -->
+    <string name="ex_inverted_row_table_name">Inverted Row Under a Sturdy Table</string>
+    <string-array name="ex_inverted_row_table_instructions">
+        <item>Lie under a sturdy table and grip the edge with your hands slightly wider than your shoulders.</item>
+        <item>Place your heels on the floor with your knees slightly bent and your body straight.</item>
+        <item>Pull on the edge to bring your chest toward the table, squeezing your shoulder blades, then lower with control. Only use a stable table that won\'t tip over.</item>
+    </string-array>
+    <string name="ex_inverted_row_table_breathing">Exhale as your chest rises, inhale as you lower.</string>
+    <string name="ex_inverted_row_table_mistake">Using unstable tables or letting your hips drop; if the table moves, switch exercises.</string>
+
+    <!-- Reverse Plank with Leg Lift -->
+    <string name="ex_reverse_plank_leg_lift_name">Reverse Plank with Leg Lift</string>
+    <string-array name="ex_reverse_plank_leg_lift_instructions">
+        <item>Sit with your knees bent and your palms on the floor behind your hips.</item>
+        <item>Push through your hands and feet to lift your hips into a straight line.</item>
+        <item>From the top, lift one straight leg and lower your hips to repeat, alternating sides.</item>
+    </string-array>
+    <string name="ex_reverse_plank_leg_lift_breathing">Exhale as you lift your hips, inhale as you lower.</string>
+    <string name="ex_reverse_plank_leg_lift_mistake">Letting your head fall back or locking your elbows with tension.</string>
+
+    <!-- Upward Dog -->
+    <string name="ex_upward_dog_name">Upward Dog</string>
+    <string-array name="ex_upward_dog_instructions">
+        <item>Lie face down with your legs extended and your hands beside your lower ribs.</item>
+        <item>Push the floor away to lift your torso and thighs, opening your chest.</item>
+        <item>Draw your shoulders back and down, hold for a few seconds, then lower slowly.</item>
+    </string-array>
+    <string name="ex_upward_dog_breathing">Inhale as you open your chest, exhale as you lower.</string>
+    <string name="ex_upward_dog_mistake">Compressing your lower back; spread the stretch between your chest and upper back.</string>
+
+    <!-- Overhead Stick Passes -->
+    <string name="ex_stick_shoulder_pass_name">Overhead Stick Passes</string>
+    <string-array name="ex_stick_shoulder_pass_instructions">
+        <item>Hold the stick with both hands, wider than shoulder width, in front of your thighs.</item>
+        <item>Raise the stick in front of you, pass it over your head and bring it behind your back without bending your elbows.</item>
+        <item>Reverse the path with control back to the starting position.</item>
+    </string-array>
+    <string name="ex_stick_shoulder_pass_breathing">Inhale as you raise the stick, exhale as you lower it behind you.</string>
+    <string name="ex_stick_shoulder_pass_mistake">Arching your lower back or letting your hands fly open; if it feels tight, widen your grip.</string>
+
+    <!-- Stick Torso Twists -->
+    <string name="ex_stick_torso_twist_name">Stick Torso Twists</string>
+    <string-array name="ex_stick_torso_twist_instructions">
+        <item>Rest the stick across your shoulders, holding it with your hands and your elbows forward.</item>
+        <item>Turn your torso slowly to one side without moving your hips or feet.</item>
+        <item>Return to center and repeat on the other side.</item>
+    </string-array>
+    <string name="ex_stick_torso_twist_breathing">Exhale as you twist, inhale as you return to center.</string>
+    <string name="ex_stick_torso_twist_mistake">Turning only your arms or forcing your lower back; the twist starts at your chest.</string>
+
+    <!-- Overhead Stick Press -->
+    <string name="ex_stick_overhead_press_name">Overhead Stick Press</string>
+    <string-array name="ex_stick_overhead_press_instructions">
+        <item>Hold the stick in front of your chest with your hands shoulder-width apart.</item>
+        <item>Press the stick overhead until your arms are straight, without flaring your ribs.</item>
+        <item>Lower slowly to chest height, keeping your core tight.</item>
+    </string-array>
+    <string name="ex_stick_overhead_press_breathing">Exhale as you press up, inhale as you lower.</string>
+    <string name="ex_stick_overhead_press_mistake">Arching your back or shrugging your shoulders toward your ears.</string>
+
+    <!-- Stick Side Bend -->
+    <string name="ex_stick_side_bend_name">Stick Side Bend</string>
+    <string-array name="ex_stick_side_bend_instructions">
+        <item>With the stick overhead and your arms straight, widen your grip a little.</item>
+        <item>Bend your torso to one side, keeping your hips in place.</item>
+        <item>Return to center and repeat on the other side.</item>
+    </string-array>
+    <string name="ex_stick_side_bend_breathing">Exhale as you bend, inhale as you return to center.</string>
+    <string name="ex_stick_side_bend_mistake">Twisting your torso or lifting a foot; the movement is purely sideways.</string>
+
+    <!-- Stick Good Mornings -->
+    <string name="ex_stick_good_morning_name">Stick Good Mornings</string>
+    <string-array name="ex_stick_good_morning_instructions">
+        <item>Place the stick across your upper back, holding it with your hands and your elbows open.</item>
+        <item>With your knees slightly bent, push your hips back while keeping your back straight.</item>
+        <item>Lower until you feel the stretch in your hamstrings, then come up by squeezing your glutes.</item>
+    </string-array>
+    <string name="ex_stick_good_morning_breathing">Inhale as your hips go back, exhale as you rise.</string>
+    <string name="ex_stick_good_morning_mistake">Rounding your back or bending your knees like in a squat.</string>
+
+    <!-- Stick Back Squat -->
+    <string name="ex_stick_back_squat_name">Stick Back Squat</string>
+    <string-array name="ex_stick_back_squat_instructions">
+        <item>Rest the stick across your shoulder blades, holding it at the sides with your hands.</item>
+        <item>Set your feet shoulder-width apart and push your hips back.</item>
+        <item>Keep your chest high and drive up through your heels.</item>
+    </string-array>
+    <string name="ex_stick_back_squat_breathing">Inhale as you lower, exhale as you rise.</string>
+    <string name="ex_stick_back_squat_mistake">Losing contact between the stick and your back or letting your knees cave in.</string>
+
+    <!-- Stick Shoulder Windmill -->
+    <string name="ex_stick_shoulder_windmill_name">Stick Shoulder Windmill</string>
+    <string-array name="ex_stick_shoulder_windmill_instructions">
+        <item>Hold the stick vertically with one hand, resting it on the floor or at hip height.</item>
+        <item>With your arm straight, draw a big circle with the stick forward and back.</item>
+        <item>Switch arms halfway through.</item>
+    </string-array>
+    <string name="ex_stick_shoulder_windmill_breathing">Breathe continuously and follow the circle without locking your shoulder.</string>
+    <string name="ex_stick_shoulder_windmill_mistake">Moving your whole torso instead of your shoulder, or drawing circles so small they don\'t mobilize it.</string>
+
+    <!-- Stick Woodchopper -->
+    <string name="ex_stick_woodchopper_name">Stick Woodchopper</string>
+    <string-array name="ex_stick_woodchopper_instructions">
+        <item>Hold the stick with both hands diagonally above your right shoulder.</item>
+        <item>Bring the stick down toward your left hip, rotating your torso and bending your knees.</item>
+        <item>Come back up with control and switch sides halfway through.</item>
+    </string-array>
+    <string name="ex_stick_woodchopper_breathing">Exhale as you bring the stick down, inhale as you come back up.</string>
+    <string name="ex_stick_woodchopper_mistake">Pulling only with your arms or snapping your hips around; spread the rotation through your whole torso.</string>
+
+    <!-- Stick Wrist Rolls -->
+    <string name="ex_stick_wrist_rolls_name">Stick Wrist Rolls</string>
+    <string-array name="ex_stick_wrist_rolls_instructions">
+        <item>Hold the stick at both ends with your palms facing down and your arms extended in front of you.</item>
+        <item>Roll the stick toward you with your wrists, then unroll it forward.</item>
+        <item>Alternate directions while keeping your elbows still.</item>
+    </string-array>
+    <string name="ex_stick_wrist_rolls_breathing">Breathe calmly and keep your shoulders down.</string>
+    <string name="ex_stick_wrist_rolls_mistake">Moving your elbows or shrugging your shoulders; only your wrists should rotate.</string>
+
+    <!-- Stick Knee Raises -->
+    <string name="ex_stick_knee_raise_name">Stick Knee Raises</string>
+    <string-array name="ex_stick_knee_raise_instructions">
+        <item>Rest the stick across your shoulders, holding it with your hands, and keep your back straight.</item>
+        <item>Lift one knee to hip height without leaning back.</item>
+        <item>Lower your foot with control and repeat on the other leg at the same pace.</item>
+    </string-array>
+    <string name="ex_stick_knee_raise_breathing">Exhale as you lift your knee, inhale as you lower your foot.</string>
+    <string name="ex_stick_knee_raise_mistake">Arching your back or leaning your torso back; keep your abs tight.</string>
+
+    <!-- Ankle Circles -->
+    <string name="ex_warmup_ankle_circles_name">Ankle Circles</string>
+    <string-array name="ex_warmup_ankle_circles_instructions">
+        <item>Steady yourself against a wall or light support with one foot slightly raised.</item>
+        <item>Circle your ankle in wide loops, 10 times in each direction.</item>
+        <item>Switch feet and repeat the movement with the same range.</item>
+    </string-array>
+    <string name="ex_warmup_ankle_circles_breathing">Breathe calmly and steadily; a warm-up should never wear you out.</string>
+    <string name="ex_warmup_ankle_circles_mistake">Making very fast or tiny circles; mobility comes from range, not speed.</string>
+
+    <!-- Wrist Circles -->
+    <string name="ex_warmup_wrist_circles_name">Wrist Circles</string>
+    <string-array name="ex_warmup_wrist_circles_instructions">
+        <item>Extend your arms at shoulder height with your hands open.</item>
+        <item>Circle your wrists in wide loops, 10 times forward.</item>
+        <item>Do 10 circles backward, keeping your arms steady.</item>
+    </string-array>
+    <string name="ex_warmup_wrist_circles_breathing">Inhale and exhale with the rhythm of the circles, never holding your breath.</string>
+    <string name="ex_warmup_wrist_circles_mistake">Moving only your fingers instead of rotating the whole wrist.</string>
+
+    <!-- Standing Side Stretch -->
+    <string name="ex_warmup_lateral_stretch_name">Standing Side Stretch</string>
+    <string-array name="ex_warmup_lateral_stretch_instructions">
+        <item>Stand tall with your feet shoulder-width apart.</item>
+        <item>Raise one arm and slowly lean your torso to the opposite side, feeling the stretch along your side.</item>
+        <item>Hold for 3 seconds, return to center and switch sides.</item>
+    </string-array>
+    <string name="ex_warmup_lateral_stretch_breathing">Exhale as you lean to the side, inhale as you return to center.</string>
+    <string name="ex_warmup_lateral_stretch_mistake">Twisting your torso forward; the movement is purely lateral.</string>
+</resources>

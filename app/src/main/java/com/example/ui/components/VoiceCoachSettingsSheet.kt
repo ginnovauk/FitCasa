@@ -41,9 +41,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.util.VoiceCoachUiState
 import com.example.util.VoiceOption
 import kotlin.math.abs
@@ -98,7 +100,7 @@ fun VoiceCoachSettingsSheet(
             }
 
             Spacer(modifier = Modifier.height(22.dp))
-            SectionTitle("Velocidad de la voz")
+            SectionTitle(stringResource(R.string.voice_speed))
             Spacer(modifier = Modifier.height(8.dp))
             RateSelector(
                 selectedRate = state.speechRate,
@@ -106,7 +108,7 @@ fun VoiceCoachSettingsSheet(
             )
 
             Spacer(modifier = Modifier.height(22.dp))
-            SectionTitle("Tono de la voz")
+            SectionTitle(stringResource(R.string.voice_pitch))
             Spacer(modifier = Modifier.height(8.dp))
             PitchSelector(
                 selectedPitch = state.speechPitch,
@@ -114,13 +116,13 @@ fun VoiceCoachSettingsSheet(
             )
 
             Spacer(modifier = Modifier.height(22.dp))
-            SectionTitle("Voces en español")
+            SectionTitle(stringResource(R.string.voice_list))
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = if (state.voices.isEmpty()) {
-                    "No se detectaron voces instaladas."
+                    stringResource(R.string.voice_none)
                 } else {
-                    "Elige la que mejor suene en tu teléfono. La usaremos en todos los entrenamientos."
+                    stringResource(R.string.voice_choose)
                 },
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -165,13 +167,13 @@ fun VoiceCoachSettingsSheet(
             ) {
                 Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(20.dp))
                 Spacer(modifier = Modifier.width(6.dp))
-                Text("Probar voz", fontWeight = FontWeight.SemiBold)
+                Text(stringResource(R.string.voice_preview), fontWeight = FontWeight.SemiBold)
             }
 
             Spacer(modifier = Modifier.height(14.dp))
 
             Text(
-                text = "Consejo: las voces que requieren internet suenan más naturales, pero necesitan datos. Si se corta la conexión, FitCasa cambia sola a una voz sin conexión.",
+                text = stringResource(R.string.voice_tip),
                 fontSize = 11.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 lineHeight = 16.sp
@@ -210,7 +212,7 @@ private fun VoiceHeader(
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "Entrenador por voz",
+                text = stringResource(R.string.voice_title),
                 fontSize = 19.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -252,7 +254,7 @@ private fun VoiceIssueCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Faltan las voces en español",
+                    text = stringResource(R.string.voice_missing_title),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -263,20 +265,20 @@ private fun VoiceIssueCard(
 
             Text(
                 text = state.errorMessage
-                    ?: "Descarga el paquete de voces del sistema para escuchar las indicaciones.",
+                    ?: stringResource(R.string.voice_missing_desc),
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurface,
                 lineHeight = 17.sp
             )
 
-            if (state.needsSpanishVoiceData || state.voices.isEmpty()) {
+            if (state.needsVoiceData || state.voices.isEmpty()) {
                 TextButton(
                     onClick = onInstallVoiceData,
                     modifier = Modifier.testTag("voice_install_data_button")
                 ) {
                     Icon(Icons.Default.Download, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(6.dp))
-                    Text("Descargar voces", fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.voice_download), fontWeight = FontWeight.SemiBold)
                 }
             }
         }
@@ -304,7 +306,7 @@ private fun RateSelector(
         selected = selectedRate,
         testTagPrefix = "voice_rate",
         title = { rateLabel(it) },
-        subtitle = { "${(it * 100).toInt()}%" },
+        subtitle = { stringResource(R.string.voice_percent, (it * 100).toInt()) },
         onSelect = onSelectRate
     )
 }
@@ -329,8 +331,8 @@ private fun OptionSelector(
     options: List<Float>,
     selected: Float,
     testTagPrefix: String,
-    title: (Float) -> String,
-    subtitle: (Float) -> String,
+    title: @Composable (Float) -> String,
+    subtitle: @Composable (Float) -> String,
     onSelect: (Float) -> Unit
 ) {
     Row(
@@ -384,22 +386,25 @@ private fun OptionSelector(
     }
 }
 
+@Composable
 private fun rateLabel(rate: Float): String = when {
-    rate < 0.97f -> "Pausada"
-    rate > 1.05f -> "Enérgica"
-    else -> "Natural"
+    rate < 0.97f -> stringResource(R.string.voice_rate_slow)
+    rate > 1.05f -> stringResource(R.string.voice_rate_fast)
+    else -> stringResource(R.string.voice_rate_natural)
 }
 
+@Composable
 private fun pitchLabel(pitch: Float): String = when {
-    pitch < 0.97f -> "Grave"
-    pitch > 1.03f -> "Aguda"
-    else -> "Natural"
+    pitch < 0.97f -> stringResource(R.string.voice_pitch_low)
+    pitch > 1.03f -> stringResource(R.string.voice_pitch_high)
+    else -> stringResource(R.string.voice_pitch_natural)
 }
 
+@Composable
 private fun pitchHint(pitch: Float): String = when {
-    pitch < 0.97f -> "Cálida"
-    pitch > 1.03f -> "Brillante"
-    else -> "Equilibrada"
+    pitch < 0.97f -> stringResource(R.string.voice_pitch_low_hint)
+    pitch > 1.03f -> stringResource(R.string.voice_pitch_high_hint)
+    else -> stringResource(R.string.voice_pitch_natural_hint)
 }
 
 @Composable
@@ -441,7 +446,13 @@ private fun VoiceRow(
                     text = buildString {
                         append(voice.qualityLabel)
                         append(" · ")
-                        append(if (voice.requiresNetwork) "Requiere internet" else "Funciona sin conexión")
+                        append(
+                            if (voice.requiresNetwork) {
+                                stringResource(R.string.voice_requires_network)
+                            } else {
+                                stringResource(R.string.voice_offline)
+                            }
+                        )
                     },
                     fontSize = 11.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant

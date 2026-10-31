@@ -1,20 +1,28 @@
 package com.example
 
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import com.example.data.model.BodyPart
 import com.example.data.repository.ExerciseCatalog
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.io.File
 
 /**
  * Valida la integridad del catálogo de ejercicios: identificadores únicos,
  * contenido completo y cobertura suficiente por zona del cuerpo.
  */
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [36])
 class ExerciseCatalogTest {
 
     private val exercises = ExerciseCatalog.allExercises + ExerciseCatalog.warmUpExercises
+    private val context = ApplicationProvider.getApplicationContext<Context>()
 
     @Test
     fun `los identificadores son unicos`() {
@@ -29,16 +37,23 @@ class ExerciseCatalogTest {
     @Test
     fun `todos los ejercicios tienen contenido completo`() {
         exercises.forEach { exercise ->
+            val instructions = context.resources.getStringArray(exercise.instructionsRes).toList()
             assertTrue(
                 "${exercise.id} no tiene instrucciones suficientes",
-                exercise.instructions.size >= 2
+                instructions.size >= 2
             )
             assertTrue(
                 "${exercise.id} tiene una instrucción vacía",
-                exercise.instructions.none { it.isBlank() }
+                instructions.none { it.isBlank() }
             )
-            assertTrue("${exercise.id} sin consejo de respiración", exercise.breathingTips.isNotBlank())
-            assertTrue("${exercise.id} sin errores comunes", exercise.commonMistakes.isNotBlank())
+            assertTrue(
+                "${exercise.id} sin consejo de respiración",
+                context.getString(exercise.breathingTipsRes).isNotBlank()
+            )
+            assertTrue(
+                "${exercise.id} sin errores comunes",
+                context.getString(exercise.commonMistakesRes).isNotBlank()
+            )
             assertTrue(
                 "${exercise.id} tiene una duración irreal (${exercise.defaultDurationSeconds}s)",
                 exercise.defaultDurationSeconds in 20..60
@@ -101,7 +116,7 @@ class ExerciseCatalogTest {
         BodyPart.values().forEach { bodyPart ->
             val own = exercises.count { it.bodyPart == bodyPart }
             assertTrue(
-                "${bodyPart.displayName} solo tiene $own ejercicios propios",
+                "${context.getString(bodyPart.nameRes)} solo tiene $own ejercicios propios",
                 own >= 3
             )
         }
@@ -111,13 +126,13 @@ class ExerciseCatalogTest {
     fun `los ejercicios de una rutina pertenecen a la zona elegida o a cuerpo completo`() {
         BodyPart.values().forEach { bodyPart ->
             val pool = ExerciseCatalog.getExercisesByBodyPart(bodyPart)
-            assertTrue("Sin ejercicios para ${bodyPart.displayName}", pool.isNotEmpty())
+            assertTrue("Sin ejercicios para ${context.getString(bodyPart.nameRes)}", pool.isNotEmpty())
 
             if (bodyPart == BodyPart.CUERPO_COMPLETO) {
                 assertEquals(ExerciseCatalog.allExercises.size, pool.size)
             } else {
                 assertTrue(
-                    "Se colaron ejercicios de otra zona en ${bodyPart.displayName}",
+                    "Se colaron ejercicios de otra zona en ${context.getString(bodyPart.nameRes)}",
                     pool.all { it.bodyPart == bodyPart || it.bodyPart == BodyPart.CUERPO_COMPLETO }
                 )
             }

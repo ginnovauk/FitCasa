@@ -120,10 +120,7 @@ class WorkoutRepository(
             profile = profile
         )
 
-        val title = "Rutina de ${bodyPart.displayName} - ${intensity.displayName}"
-
         return WorkoutPlan(
-            title = title,
             bodyPart = bodyPart,
             intensity = intensity,
             targetDurationMinutes = targetDurationMinutes,

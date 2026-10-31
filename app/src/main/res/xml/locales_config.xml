@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Idiomas que ofrece la app. Android 13+ muestra este listado en
+    Ajustes > Aplicaciones > FitCasa > Idioma.
+    Al añadir un idioma: crea res/values-<código>/ y añade aquí su <locale>.
+-->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="es" />
+    <locale android:name="en" />
+</locale-config>

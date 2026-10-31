@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generado desde ExerciseCatalog.kt. Los textos del catálogo viven aquí. -->
+<!-- De momento solo existen en español: al no tener un values-xx/ propio, -->
+<!-- cualquier idioma sin catálogo traducido ve estos nombres en español. -->
+<resources>
+
+    <!-- Saltos de Tijera (Jumping Jacks) -->
+    <string name="ex_jumping_jacks_name">Saltos de Tijera (Jumping Jacks)</string>
+    <string-array name="ex_jumping_jacks_instructions">
+        <item>Párate con los pies juntos y los brazos a los lados.</item>
+        <item>Da un salto abriendo las piernas a la anchura de los hombros mientras elevas las manos por encima de la cabeza.</item>
+        <item>Regresa a la posición inicial con otro salto suave sobre la punta de los pies.</item>
+    </string-array>
+    <string name="ex_jumping_jacks_breathing">Inhala al saltar abriendo, exhala al cerrar el cuerpo.</string>
+    <string name="ex_jumping_jacks_mistake">Caer con los talones duros en el suelo; amortigua siempre con las rodillas ligeramente flexionadas.</string>
+
+    <!-- Escaladores de Montaña -->
+    <string name="ex_mountain_climbers_name">Escaladores de Montaña</string>
+    <string-array name="ex_mountain_climbers_instructions">
+        <item>Comienza en posición de plancha alta con las manos directamente bajo los hombros.</item>
+        <item>Lleva una rodilla hacia el pecho sin levantar la cadera.</item>
+        <item>Alterna rápidamente de pierna con un movimiento explosivo y rítmico.</item>
+    </string-array>
+    <string name="ex_mountain_climbers_breathing">Mantén una respiración rítmica y continua, sin contener el aire.</string>
+    <string name="ex_mountain_climbers_mistake">Elevar demasiado la pelvis o dejar caer la zona lumbar.</string>
+
+    <!-- Rodillas Altas al Pecho -->
+    <string name="ex_high_knees_name">Rodillas Altas al Pecho</string>
+    <string-array name="ex_high_knees_instructions">
+        <item>Corre en el lugar elevando las rodillas a la altura de la cadera.</item>
+        <item>Mantén el pecho erguido y acompaña el movimiento balanceando los brazos.</item>
+        <item>Aterriza suavemente sobre las puntas de los pies con ritmo rápido.</item>
+    </string-array>
+    <string name="ex_high_knees_breathing">Inhala en 2 pasos, exhala en 2 pasos.</string>
+    <string name="ex_high_knees_mistake">Inclinarse hacia atrás mientras se suben las piernas.</string>
+
+    <!-- Burpees Dinámicos -->
+    <string name="ex_burpees_name">Burpees Dinámicos</string>
+    <string-array name="ex_burpees_instructions">
+        <item>Desde posición de pie, agáchate y coloca las manos en el suelo.</item>
+        <item>Lanza los pies hacia atrás para quedar en posición de plancha.</item>
+        <item>Regresa los pies de un salto hacia las manos y salta verticalmente extendiendo los brazos.</item>
+    </string-array>
+    <string name="ex_burpees_breathing">Exhala en el salto ascendente, inhala al descender al suelo.</string>
+    <string name="ex_burpees_mistake">Arquear la espalda lumbar al saltar hacia atrás.</string>
+
+    <!-- Flexiones con Rodillas Apoyadas -->
+    <string name="ex_push_ups_knees_name">Flexiones con Rodillas Apoyadas</string>
+    <string-array name="ex_push_ups_knees_instructions">
+        <item>Apoya las rodillas y las palmas de las manos a una anchura superior a los hombros.</item>
+        <item>Mantén una línea recta desde la cabeza hasta las rodillas contrayendo el abdomen.</item>
+        <item>Baja el pecho hacia el suelo doblando los codos a 45 grados y empuja con fuerza.</item>
+    </string-array>
+    <string name="ex_push_ups_knees_breathing">Inhala al bajar el pecho, exhala al empujar hacia arriba.</string>
+    <string name="ex_push_ups_knees_mistake">Dejar caer la cabeza o hiperextender el cuello.</string>
+
+    <!-- Flexiones de Pecho Clásicas -->
+    <string name="ex_push_ups_standard_name">Flexiones de Pecho Clásicas</string>
+    <string-array name="ex_push_ups_standard_instructions">
+        <item>Colócate en posición de plancha alta con los pies juntos y el abdomen firme.</item>
+        <item>Desciende controladamente hasta que el pecho quede a pocos centímetros del suelo.</item>
+        <item>Empuja el suelo extendiendo los brazos sin bloquear bruscamente los codos.</item>
+    </string-array>
+    <string name="ex_push_ups_standard_breathing">Inhala en la bajada, exhala al subir con potencia.</string>
+    <string name="ex_push_ups_standard_mistake">Abrir los codos en ángulo de 90 grados respecto al torso; deben formar una flecha (45°).</string>
+
+    <!-- Flexiones Diamante (Pecho y Tríceps) -->
+    <string name="ex_push_ups_diamond_name">Flexiones Diamante (Pecho y Tríceps)</string>
+    <string-array name="ex_push_ups_diamond_instructions">
+        <item>Junta los dedos pulgares e índices en el suelo formando un triángulo o diamante bajo el pecho.</item>
+        <item>Baja el centro del pecho hacia el centro de las manos manteniendo los codos pegados.</item>
+        <item>Empuja activando la zona central del pectoral y tríceps.</item>
+    </string-array>
+    <string name="ex_push_ups_diamond_breathing">Inhala al descender, exhala al subir.</string>
+    <string name="ex_push_ups_diamond_mistake">Hacer rebotes cortos sin completar el rango completo de movimiento.</string>
+
+    <!-- Crunches Abdominales -->
+    <string name="ex_crunches_name">Crunches Abdominales</string>
+    <string-array name="ex_crunches_instructions">
+        <item>Acuéstate boca arriba con las rodillas dobladas y los pies firmes en el suelo.</item>
+        <item>Coloca las manos detrás de las orejas sin tirar del cuello.</item>
+        <item>Eleva los omóplatos apretando fuertemente el abdomen y baja con control.</item>
+    </string-array>
+    <string name="ex_crunches_breathing">Exhala al subir y contraer el core, inhala al bajar los hombros.</string>
+    <string name="ex_crunches_mistake">Jalar la nuca con las manos forzando las cervicales.</string>
+
+    <!-- Plancha Abdominal Isométrica -->
+    <string name="ex_plank_name">Plancha Abdominal Isométrica</string>
+    <string-array name="ex_plank_instructions">
+        <item>Apoya los antebrazos y las puntas de los pies en el suelo.</item>
+        <item>Forma una línea recta perfecta desde la cabeza hasta los talones.</item>
+        <item>Aprieta glúteos y ombligo hacia la columna sin dejar caer la pelvis.</item>
+    </string-array>
+    <string name="ex_plank_breathing">Respira de forma controlada y profunda sin aguantar la respiración.</string>
+    <string name="ex_plank_mistake">Hundir la zona lumbar o levantar la cadera en triángulo.</string>
+
+    <!-- Abdominales Bicicleta Cruzados -->
+    <string name="ex_bicycle_crunches_name">Abdominales Bicicleta Cruzados</string>
+    <string-array name="ex_bicycle_crunches_instructions">
+        <item>Acuéstate boca arriba con las piernas levantadas en ángulo de 90 grados.</item>
+        <item>Lleva el codo derecho hacia la rodilla izquierda mientras extiendes la pierna derecha.</item>
+        <item>Alterna de lado de forma fluida rotando desde la caja torácica.</item>
+    </string-array>
+    <string name="ex_bicycle_crunches_breathing">Exhala en cada cruce con contracción diagonal.</string>
+    <string name="ex_bicycle_crunches_mistake">Mover solo los codos en vez de rotar el tronco completo.</string>
+
+    <!-- Sentadillas Clásicas -->
+    <string name="ex_squats_bodyweight_name">Sentadillas Clásicas</string>
+    <string-array name="ex_squats_bodyweight_instructions">
+        <item>Párate con los pies separados al ancho de los hombros y puntas ligeramente abiertas.</item>
+        <item>Flexiona caderas y rodillas como si fueras a sentarte en una silla baja.</item>
+        <item>Baja hasta que los muslos queden paralelos al suelo y vuelve a subir empujando los talones.</item>
+    </string-array>
+    <string name="ex_squats_bodyweight_breathing">Inhala al descender, exhala con fuerza al subir.</string>
+    <string name="ex_squats_bodyweight_mistake">Dejar que las rodillas colapsen hacia adentro o despegar los talones.</string>
+
+    <!-- Zancadas Alternas -->
+    <string name="ex_lunges_alternating_name">Zancadas Alternas</string>
+    <string-array name="ex_lunges_alternating_instructions">
+        <item>Da un paso amplio hacia adelante con una pierna manteniendo el torso recto.</item>
+        <item>Flexiona ambas rodillas hasta que formen un ángulo de 90 grados.</item>
+        <item>Empuja con el talón delantero para regresar a la posición inicial y alterna.</item>
+    </string-array>
+    <string name="ex_lunges_alternating_breathing">Inhala en el paso hacia abajo, exhala al regresar al centro.</string>
+    <string name="ex_lunges_alternating_mistake">Que la rodilla adelantada sobrepase excesivamente la punta del pie.</string>
+
+    <!-- Puente de Glúteos y Femoral -->
+    <string name="ex_glute_bridge_name">Puente de Glúteos y Femoral</string>
+    <string-array name="ex_glute_bridge_instructions">
+        <item>Acuéstate boca arriba con las rodillas dobladas y los pies planos cerca de los glúteos.</item>
+        <item>Eleva la pelvis contrayendo los glúteos hasta alinear rodillas, caderas y hombros.</item>
+        <item>Sostén 1 segundo arriba y baja despacio sin tocar del todo el suelo.</item>
+    </string-array>
+    <string name="ex_glute_bridge_breathing">Exhala al subir la pelvis, inhala al descender.</string>
+    <string name="ex_glute_bridge_mistake">Arquear la zona lumbar en lugar de extender la cadera con los glúteos.</string>
+
+    <!-- Sentadilla Isométrica en Pared -->
+    <string name="ex_wall_sit_name">Sentadilla Isométrica en Pared</string>
+    <string-array name="ex_wall_sit_instructions">
+        <item>Apoya la espalda plana contra una pared y deslízate hacia abajo.</item>
+        <item>Detente cuando los muslos formen un ángulo de 90 grados con el suelo.</item>
+        <item>Apoya las manos en los muslos o déjalas a los lados, resistiendo la postura.</item>
+    </string-array>
+    <string name="ex_wall_sit_breathing">Respira con calma y mantén el abdomen firme.</string>
+    <string name="ex_wall_sit_mistake">Apoyar las manos en las rodillas para quitar carga a las piernas.</string>
+
+    <!-- Fondos de Tríceps -->
+    <string name="ex_triceps_dips_name">Fondos de Tríceps</string>
+    <string-array name="ex_triceps_dips_instructions">
+        <item>Apoya las palmas sobre una silla firme, sillón o en el suelo detrás de ti.</item>
+        <item>Con los codos apuntando hacia atrás, flexiónalos bajando la cadera cerca del soporte.</item>
+        <item>Empuja con las palmas extendiendo los brazos y contrayendo los tríceps.</item>
+    </string-array>
+    <string name="ex_triceps_dips_breathing">Inhala al bajar el cuerpo, exhala al extender los brazos.</string>
+    <string name="ex_triceps_dips_mistake">Alejar la espalda del apoyo o encoger los hombros hacia las orejas.</string>
+
+    <!-- Superman Lumbar -->
+    <string name="ex_superman_name">Superman Lumbar</string>
+    <string-array name="ex_superman_instructions">
+        <item>Acuéstate boca abajo con brazos y piernas estirados completamente.</item>
+        <item>Eleva simultáneamente el pecho, los brazos y los muslos del suelo unos centímetros.</item>
+        <item>Aprieta la zona lumbar y glúteos en el punto alto y desciende con suavidad.</item>
+    </string-array>
+    <string name="ex_superman_breathing">Inhala en el suelo, exhala al despegar las extremidades.</string>
+    <string name="ex_superman_mistake">Tironear con el cuello mirando hacia arriba en lugar de mantener la mirada al suelo.</string>
+
+    <!-- Cobra y Extensión Dorsal -->
+    <string name="ex_cobra_stretch_name">Cobra y Extensión Dorsal</string>
+    <string-array name="ex_cobra_stretch_instructions">
+        <item>Acuéstate boca abajo con las palmas apoyadas a los lados del pecho.</item>
+        <item>Empuja suavemente extendiendo el tronco hacia arriba abriendo el pecho.</item>
+        <item>Aleja los hombros de las orejas y siente la descompresión de la espalda.</item>
+    </string-array>
+    <string name="ex_cobra_stretch_breathing">Inhala profundo abriendo la caja torácica, exhala relajando la tensión.</string>
+    <string name="ex_cobra_stretch_mistake">Bloquear los codos bruscamente si sientes molestia en la zona lumbar.</string>
+
+    <!-- Flexiones en la Pared -->
+    <string name="ex_wall_push_ups_name">Flexiones en la Pared</string>
+    <string-array name="ex_wall_push_ups_instructions">
+        <item>Apoya las palmas en la pared a la altura de los hombros, un poco más separadas que el ancho de los hombros.</item>
+        <item>Da un paso atrás y mantén el cuerpo en línea recta desde la cabeza hasta los talones.</item>
+        <item>Flexiona los codos acercando el pecho a la pared y empuja para volver, sin bloquear los codos de golpe.</item>
+    </string-array>
+    <string name="ex_wall_push_ups_breathing">Inhala al acercarte a la pared, exhala al empujar.</string>
+    <string name="ex_wall_push_ups_mistake">Dejar caer la cadera o encoger los hombros hacia las orejas.</string>
+
+    <!-- Fondos de Tríceps en el Suelo -->
+    <string name="ex_triceps_dips_floor_name">Fondos de Tríceps en el Suelo</string>
+    <string-array name="ex_triceps_dips_floor_instructions">
+        <item>Siéntate en el borde de una silla estable con las manos al lado de las caderas y los dedos hacia delante.</item>
+        <item>Desliza la cadera fuera del asiento con las piernas extendidas y la espalda cerca de la silla.</item>
+        <item>Baja flexionando los codos hacia atrás hasta unos 90 grados y empuja para subir.</item>
+    </string-array>
+    <string name="ex_triceps_dips_floor_breathing">Inhala al bajar, exhala al empujar hacia arriba.</string>
+    <string name="ex_triceps_dips_floor_mistake">Alejar la espalda del asiento o encoger los hombros hacia las orejas.</string>
+
+    <!-- Extensión de Tríceps de Rodillas -->
+    <string name="ex_kneeling_triceps_extension_name">Extensión de Tríceps de Rodillas</string>
+    <string-array name="ex_kneeling_triceps_extension_instructions">
+        <item>Arrodíllate con las manos en el suelo bajo los hombros y los dedos hacia delante.</item>
+        <item>Mantén el cuerpo en línea recta desde la cabeza hasta las rodillas y el abdomen firme.</item>
+        <item>Flexiona los codos hacia atrás bajando el pecho y empuja para extender los brazos.</item>
+    </string-array>
+    <string name="ex_kneeling_triceps_extension_breathing">Inhala al bajar el pecho, exhala al extender los codos.</string>
+    <string name="ex_kneeling_triceps_extension_mistake">Abrir los codos hacia los lados en lugar de mantenerlos pegados al torso.</string>
+
+    <!-- Curl de Bíceps con Auto-Resistencia -->
+    <string name="ex_biceps_self_resistance_name">Curl de Bíceps con Auto-Resistencia</string>
+    <string-array name="ex_biceps_self_resistance_instructions">
+        <item>Túmbate de lado con las piernas extendidas y la cabeza apoyada en el brazo de abajo.</item>
+        <item>Pega el brazo de arriba al costado y flexiona el codo llevando la mano hacia el hombro.</item>
+        <item>Haz fuerza con la mano contra el propio brazo para frenar la bajada y repite.</item>
+    </string-array>
+    <string name="ex_biceps_self_resistance_breathing">Exhala al flexionar el codo, inhala al bajar con control.</string>
+    <string name="ex_biceps_self_resistance_mistake">Mover el hombro o el torso para ayudar al brazo; solo debe trabajar el codo.</string>
+
+    <!-- Flexiones con Manos Juntas -->
+    <string name="ex_close_grip_push_ups_name">Flexiones con Manos Juntas</string>
+    <string-array name="ex_close_grip_push_ups_instructions">
+        <item>Colócate en plancha alta con las manos juntas bajo el pecho y el abdomen firme.</item>
+        <item>Baja el cuerpo manteniendo los codos pegados a las costillas.</item>
+        <item>Empuja con las palmas para extender los brazos y volver a la plancha.</item>
+    </string-array>
+    <string name="ex_close_grip_push_ups_breathing">Inhala en la bajada, exhala al empujar.</string>
+    <string name="ex_close_grip_push_ups_mistake">Abrir los codos hacia fuera, lo que quita trabajo al tríceps y carga el hombro.</string>
+
+    <!-- Fondos de Codos en Silla -->
+    <string name="ex_elbow_dips_name">Fondos de Codos en Silla</string>
+    <string-array name="ex_elbow_dips_instructions">
+        <item>Siéntate en el borde de una silla estable y agarra el borde con las manos junto a la cadera.</item>
+        <item>Desliza la cadera hacia fuera y apoya los talones en el suelo con las piernas semiflexionadas.</item>
+        <item>Baja flexionando los codos y empuja hasta estirar los brazos sin bloquear del todo.</item>
+    </string-array>
+    <string name="ex_elbow_dips_breathing">Inhala al descender, exhala al subir.</string>
+    <string name="ex_elbow_dips_mistake">Bajar demasiado y sentir presión en el hombro; detente a unos 90 grados de codo.</string>
+
+    <!-- Flexiones Laterales de Tríceps -->
+    <string name="ex_side_push_up_name">Flexiones Laterales de Tríceps</string>
+    <string-array name="ex_side_push_up_instructions">
+        <item>Túmbate de lado con las piernas extendidas y una encima de la otra.</item>
+        <item>Apoya la mano de abajo bajo el hombro y empuja para levantar la cadera del suelo.</item>
+        <item>Sube el brazo libre hacia el techo formando una línea recta y baja con control. Cambia de lado a mitad del ejercicio.</item>
+    </string-array>
+    <string name="ex_side_push_up_breathing">Exhala al elevar la cadera, inhala al bajar.</string>
+    <string name="ex_side_push_up_mistake">Dejar caer la cadera o adelantar el hombro de apoyo por delante de la mano.</string>
+
+    <!-- Fondos Elevados de Tríceps -->
+    <string name="ex_body_up_name">Fondos Elevados de Tríceps</string>
+    <string-array name="ex_body_up_instructions">
+        <item>Apoya las palmas en un banco firme o en el borde de una mesa estable, con los dedos hacia delante.</item>
+        <item>Extiende las piernas al frente apoyando los talones y mantén el cuerpo recto.</item>
+        <item>Baja flexionando los codos pegados al cuerpo y empuja con las palmas para subir.</item>
+    </string-array>
+    <string name="ex_body_up_breathing">Inhala al bajar, exhala al empujar con fuerza.</string>
+    <string name="ex_body_up_mistake">Usar una superficie inestable o dejar caer la cadera por falta de abdomen.</string>
+
+    <!-- Remo de Pie con Toalla -->
+    <string name="ex_towel_row_name">Remo de Pie con Toalla</string>
+    <string-array name="ex_towel_row_instructions">
+        <item>Sostén una toalla enrollada con las dos manos frente al pecho, con los pies al ancho de los hombros.</item>
+        <item>Flexiona un poco las rodillas e inclina el torso hacia delante manteniendo la espalda recta.</item>
+        <item>Tira de la toalla hacia el pecho juntando los omóplatos y vuelve despacio.</item>
+    </string-array>
+    <string name="ex_towel_row_breathing">Exhala al tirar de la toalla, inhala al extender los brazos.</string>
+    <string name="ex_towel_row_mistake">Redondear la espalda o encoger el cuello al juntar los omóplatos.</string>
+
+    <!-- Elevación de Codos Boca Abajo -->
+    <string name="ex_prone_elbow_lift_name">Elevación de Codos Boca Abajo</string>
+    <string-array name="ex_prone_elbow_lift_instructions">
+        <item>Túmbate boca abajo con las piernas extendidas y las manos bajo los hombros.</item>
+        <item>Aprieta el abdomen y empuja suavemente con las palmas para separar el pecho del suelo.</item>
+        <item>Lleva los codos hacia atrás juntando los omóplatos, mantén un segundo y baja despacio.</item>
+    </string-array>
+    <string name="ex_prone_elbow_lift_breathing">Exhala al juntar los omóplatos, inhala al bajar.</string>
+    <string name="ex_prone_elbow_lift_mistake">Arquear la zona lumbar o levantar demasiado la cabeza; el movimiento nace de la espalda alta.</string>
+
+    <!-- Flexiones Escapulares -->
+    <string name="ex_scapula_push_up_name">Flexiones Escapulares</string>
+    <string-array name="ex_scapula_push_up_instructions">
+        <item>Colócate en plancha alta con los brazos estirados y el abdomen firme.</item>
+        <item>Sin doblar los codos, deja que el pecho descienda separando las escápulas.</item>
+        <item>Empuja el suelo para volver a subir y junta las escápulas. El recorrido es corto y controlado.</item>
+    </string-array>
+    <string name="ex_scapula_push_up_breathing">Inhala al dejar caer el pecho, exhala al empujar.</string>
+    <string name="ex_scapula_push_up_mistake">Doblar los codos y convertirlo en una flexión normal.</string>
+
+    <!-- Esfinge Isométrica -->
+    <string name="ex_sphinx_hold_name">Esfinge Isométrica</string>
+    <string-array name="ex_sphinx_hold_instructions">
+        <item>Túmbate boca abajo con los antebrazos apoyados y los codos bajo los hombros.</item>
+        <item>Aprieta el abdomen y eleva el pecho separándolo del suelo sin encoger los hombros.</item>
+        <item>Mantén la postura respirando con calma y con el cuello en posición neutra.</item>
+    </string-array>
+    <string name="ex_sphinx_hold_breathing">Respira profundo y lento, sin aguantar el aire.</string>
+    <string name="ex_sphinx_hold_mistake">Hundir la zona lumbar o mirar demasiado hacia arriba.</string>
+
+    <!-- Remo en Sentadilla con Toalla -->
+    <string name="ex_towel_squat_row_name">Remo en Sentadilla con Toalla</string>
+    <string-array name="ex_towel_squat_row_instructions">
+        <item>Con la toalla en las manos, baja a media sentadilla manteniendo el pecho arriba.</item>
+        <item>Desde esa posición, tira de la toalla hacia el pecho llevando los codos hacia atrás.</item>
+        <item>Extiende los brazos y sube de la sentadilla para completar la repetición.</item>
+    </string-array>
+    <string name="ex_towel_squat_row_breathing">Exhala al tirar y al subir, inhala al bajar.</string>
+    <string name="ex_towel_squat_row_mistake">Perder la curvatura lumbar al inclinarse o tirar solo con los brazos.</string>
+
+    <!-- Remo Invertido Bajo Mesa Firme -->
+    <string name="ex_inverted_row_table_name">Remo Invertido Bajo Mesa Firme</string>
+    <string-array name="ex_inverted_row_table_instructions">
+        <item>Túmbate bajo una mesa robusta y agarra el borde con las manos algo más separadas que los hombros.</item>
+        <item>Apoya los talones en el suelo con las piernas semiflexionadas y el cuerpo recto.</item>
+        <item>Tira del borde llevando el pecho hacia la mesa juntando los omóplatos y baja con control. Usa solo una mesa estable que no se vuelque.</item>
+    </string-array>
+    <string name="ex_inverted_row_table_breathing">Exhala al subir el pecho, inhala al bajar.</string>
+    <string name="ex_inverted_row_table_mistake">Usar mesas inestables o dejar caer la cadera; si la mesa se mueve, cambia de ejercicio.</string>
+
+    <!-- Plancha Inversa con Elevación -->
+    <string name="ex_reverse_plank_leg_lift_name">Plancha Inversa con Elevación</string>
+    <string-array name="ex_reverse_plank_leg_lift_instructions">
+        <item>Siéntate con las rodillas flexionadas y las palmas apoyadas detrás de la cadera.</item>
+        <item>Empuja con las manos y los pies para elevar la cadera hasta formar una línea recta.</item>
+        <item>Desde arriba, eleva una pierna extendida y baja la cadera para repetir alternando.</item>
+    </string-array>
+    <string name="ex_reverse_plank_leg_lift_breathing">Exhala al elevar la cadera, inhala al descender.</string>
+    <string name="ex_reverse_plank_leg_lift_mistake">Dejar caer la cabeza hacia atrás o bloquear los codos con tensión.</string>
+
+    <!-- Perro Mirando Arriba -->
+    <string name="ex_upward_dog_name">Perro Mirando Arriba</string>
+    <string-array name="ex_upward_dog_instructions">
+        <item>Túmbate boca abajo con las piernas extendidas y las manos junto a las costillas bajas.</item>
+        <item>Empuja el suelo para elevar el torso y los muslos, abriendo el pecho.</item>
+        <item>Lleva los hombros atrás y abajo, mantén la postura unos segundos y baja despacio.</item>
+    </string-array>
+    <string name="ex_upward_dog_breathing">Inhala al abrir el pecho, exhala al bajar.</string>
+    <string name="ex_upward_dog_mistake">Comprimir la zona lumbar; reparte el estiramiento entre pecho y espalda alta.</string>
+
+    <!-- Pases de Palo sobre la Cabeza -->
+    <string name="ex_stick_shoulder_pass_name">Pases de Palo sobre la Cabeza</string>
+    <string-array name="ex_stick_shoulder_pass_instructions">
+        <item>Sujeta el palo con las dos manos, más separadas que los hombros, delante de los muslos.</item>
+        <item>Sube el palo por delante hasta pasarlo por encima de la cabeza y llévalo detrás de la espalda sin doblar los codos.</item>
+        <item>Deshaz el camino con control hasta la posición inicial.</item>
+    </string-array>
+    <string name="ex_stick_shoulder_pass_breathing">Inhala al subir el palo, exhala al bajarlo por detrás.</string>
+    <string name="ex_stick_shoulder_pass_mistake">Arquear la zona lumbar o abrir las manos de golpe; si cuesta, amplía el agarre.</string>
+
+    <!-- Giros de Tronco con Palo -->
+    <string name="ex_stick_torso_twist_name">Giros de Tronco con Palo</string>
+    <string-array name="ex_stick_torso_twist_instructions">
+        <item>Apoya el palo sobre los hombros, sujeto con las manos y los codos hacia delante.</item>
+        <item>Gira el tronco despacio hacia un lado sin mover la cadera ni los pies.</item>
+        <item>Vuelve al centro y repite hacia el otro lado.</item>
+    </string-array>
+    <string name="ex_stick_torso_twist_breathing">Exhala al girar, inhala al volver al centro.</string>
+    <string name="ex_stick_torso_twist_mistake">Girar solo los brazos o forzar la lumbar; el giro nace del pecho.</string>
+
+    <!-- Empuje Vertical con Palo -->
+    <string name="ex_stick_overhead_press_name">Empuje Vertical con Palo</string>
+    <string-array name="ex_stick_overhead_press_instructions">
+        <item>Sujeta el palo por delante del pecho con las manos al ancho de los hombros.</item>
+        <item>Empuja el palo hacia arriba hasta estirar los brazos, sin sacar las costillas.</item>
+        <item>Baja despacio hasta la altura del pecho manteniendo el abdomen firme.</item>
+    </string-array>
+    <string name="ex_stick_overhead_press_breathing">Exhala al empujar hacia arriba, inhala al bajar.</string>
+    <string name="ex_stick_overhead_press_mistake">Arquear la espalda o encoger los hombros hacia las orejas.</string>
+
+    <!-- Inclinación Lateral con Palo -->
+    <string name="ex_stick_side_bend_name">Inclinación Lateral con Palo</string>
+    <string-array name="ex_stick_side_bend_instructions">
+        <item>Con el palo por encima de la cabeza y los brazos estirados, separa un poco las manos.</item>
+        <item>Inclina el tronco hacia un lado manteniendo la cadera en el sitio.</item>
+        <item>Vuelve al centro y repite hacia el otro lado.</item>
+    </string-array>
+    <string name="ex_stick_side_bend_breathing">Exhala al inclinarte, inhala al volver al centro.</string>
+    <string name="ex_stick_side_bend_mistake">Girar el tronco o levantar un pie; el movimiento es solo lateral.</string>
+
+    <!-- Buenos Días con Palo -->
+    <string name="ex_stick_good_morning_name">Buenos Días con Palo</string>
+    <string-array name="ex_stick_good_morning_instructions">
+        <item>Coloca el palo sobre la espalda alta, sujeto con las manos y los codos abiertos.</item>
+        <item>Con las rodillas algo flexionadas, lleva la cadera hacia atrás manteniendo la espalda recta.</item>
+        <item>Baja hasta notar el estiramiento en los femorales y vuelve apretando los glúteos.</item>
+    </string-array>
+    <string name="ex_stick_good_morning_breathing">Inhala al llevar la cadera atrás, exhala al subir.</string>
+    <string name="ex_stick_good_morning_mistake">Redondear la espalda o doblar las rodillas como en una sentadilla.</string>
+
+    <!-- Sentadilla con Palo en la Espalda -->
+    <string name="ex_stick_back_squat_name">Sentadilla con Palo en la Espalda</string>
+    <string-array name="ex_stick_back_squat_instructions">
+        <item>Apoya el palo sobre los omóplatos, con las manos sujetándolo a los lados.</item>
+        <item>Separa los pies al ancho de los hombros y baja la cadera hacia atrás.</item>
+        <item>Mantén el pecho alto y sube empujando con los talones.</item>
+    </string-array>
+    <string name="ex_stick_back_squat_breathing">Inhala al bajar, exhala al subir.</string>
+    <string name="ex_stick_back_squat_mistake">Perder el contacto del palo con la espalda o dejar caer las rodillas hacia dentro.</string>
+
+    <!-- Molino de Hombro con Palo -->
+    <string name="ex_stick_shoulder_windmill_name">Molino de Hombro con Palo</string>
+    <string-array name="ex_stick_shoulder_windmill_instructions">
+        <item>Sujeta el palo en vertical con una mano, apoyado en el suelo o a la altura de la cadera.</item>
+        <item>Con el brazo estirado, dibuja un círculo amplio con el palo por delante y por detrás.</item>
+        <item>Cambia de brazo a mitad del ejercicio.</item>
+    </string-array>
+    <string name="ex_stick_shoulder_windmill_breathing">Respira de forma continua y acompaña el círculo sin bloquear el hombro.</string>
+    <string name="ex_stick_shoulder_windmill_mistake">Mover todo el torso en vez del hombro o hacer círculos tan pequeños que no movilicen.</string>
+
+    <!-- Leñador con Palo -->
+    <string name="ex_stick_woodchopper_name">Leñador con Palo</string>
+    <string-array name="ex_stick_woodchopper_instructions">
+        <item>Sujeta el palo con las dos manos en diagonal, por encima del hombro derecho.</item>
+        <item>Baja el palo hacia la cadera izquierda girando el tronco y flexionando las rodillas.</item>
+        <item>Vuelve arriba con control y cambia de lado a mitad del ejercicio.</item>
+    </string-array>
+    <string name="ex_stick_woodchopper_breathing">Exhala al bajar el palo, inhala al volver a subir.</string>
+    <string name="ex_stick_woodchopper_mistake">Tirar solo con los brazos o girar la cadera de golpe; reparte el giro por todo el tronco.</string>
+
+    <!-- Rotaciones de Muñeca con Palo -->
+    <string name="ex_stick_wrist_rolls_name">Rotaciones de Muñeca con Palo</string>
+    <string-array name="ex_stick_wrist_rolls_instructions">
+        <item>Sujeta el palo por los extremos con las palmas hacia abajo y los brazos estirados al frente.</item>
+        <item>Gira las muñecas para enrollar el palo hacia ti y desenróllalo hacia delante.</item>
+        <item>Alterna el sentido manteniendo los codos quietos.</item>
+    </string-array>
+    <string name="ex_stick_wrist_rolls_breathing">Respira con calma y mantén los hombros bajos.</string>
+    <string name="ex_stick_wrist_rolls_mistake">Mover los codos o encoger los hombros; solo deben girar las muñecas.</string>
+
+    <!-- Elevación de Rodillas con Palo -->
+    <string name="ex_stick_knee_raise_name">Elevación de Rodillas con Palo</string>
+    <string-array name="ex_stick_knee_raise_instructions">
+        <item>Apoya el palo sobre los hombros, sujeto con las manos, y mantén la espalda recta.</item>
+        <item>Levanta una rodilla hasta la altura de la cadera sin inclinarte hacia atrás.</item>
+        <item>Baja el pie con control y repite con la otra pierna al mismo ritmo.</item>
+    </string-array>
+    <string name="ex_stick_knee_raise_breathing">Exhala al subir la rodilla, inhala al bajar el pie.</string>
+    <string name="ex_stick_knee_raise_mistake">Arquear la espalda o echar el tronco atrás; el abdomen se mantiene firme.</string>
+
+    <!-- Círculos de Tobillos -->
+    <string name="ex_warmup_ankle_circles_name">Círculos de Tobillos</string>
+    <string-array name="ex_warmup_ankle_circles_instructions">
+        <item>Apóyate en una pared o apoyo ligero con un pie ligeramente elevado.</item>
+        <item>Gira el tobillo en círculos amplios, 10 veces en cada dirección.</item>
+        <item>Cambia de pie y repite el movimiento con la misma amplitud.</item>
+    </string-array>
+    <string name="ex_warmup_ankle_circles_breathing">Respira tranquilo y continuo; el calentamiento nunca debe agotarte.</string>
+    <string name="ex_warmup_ankle_circles_mistake">Hacer círculos muy rápidos o pequeños; la movilidad se gana con amplitud, no con prisa.</string>
+
+    <!-- Círculos de Muñecas -->
+    <string name="ex_warmup_wrist_circles_name">Círculos de Muñecas</string>
+    <string-array name="ex_warmup_wrist_circles_instructions">
+        <item>Extiende los brazos a la altura de los hombros con las manos abiertas.</item>
+        <item>Gira las muñecas en círculos amplios, 10 veces hacia delante.</item>
+        <item>Repite 10 círculos hacia atrás manteniendo los brazos firmes.</item>
+    </string-array>
+    <string name="ex_warmup_wrist_circles_breathing">Inhala y exhala al ritmo de los círculos, sin contener el aire.</string>
+    <string name="ex_warmup_wrist_circles_mistake">Mover solo los dedos en vez de girar la muñeca completa.</string>
+
+    <!-- Estiramiento Lateral de Pie -->
+    <string name="ex_warmup_lateral_stretch_name">Estiramiento Lateral de Pie</string>
+    <string-array name="ex_warmup_lateral_stretch_instructions">
+        <item>Párate erguido con los pies al ancho de los hombros.</item>
+        <item>Eleva un brazo y lleva el tronco lentamente al lado contrario, sintiendo el estiramiento lateral.</item>
+        <item>Mantén 3 segundos, vuelve al centro y cambia de lado.</item>
+    </string-array>
+    <string name="ex_warmup_lateral_stretch_breathing">Exhala al inclinarte de lado e inhala al volver al centro.</string>
+    <string name="ex_warmup_lateral_stretch_mistake">Girar el tronco hacia delante; el movimiento es puramente lateral.</string>
+</resources>

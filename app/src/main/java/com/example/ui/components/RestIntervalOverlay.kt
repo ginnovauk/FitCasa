@@ -29,11 +29,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.data.model.Exercise
+import com.example.ui.displayName
 
 @Composable
 fun RestIntervalOverlay(
@@ -67,7 +70,7 @@ fun RestIntervalOverlay(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "TIEMPO DE DESCANSO",
+                text = stringResource(R.string.rest_title),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.5.sp,
@@ -84,7 +87,7 @@ fun RestIntervalOverlay(
             )
 
             Text(
-                text = "segundos restantes",
+                text = stringResource(R.string.rest_seconds_left),
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -105,7 +108,7 @@ fun RestIntervalOverlay(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "A CONTINUACIÓN:",
+                            text = stringResource(R.string.rest_next),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.secondary,
@@ -113,7 +116,7 @@ fun RestIntervalOverlay(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = nextExercise.name,
+                            text = nextExercise.displayName(),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
@@ -121,7 +124,11 @@ fun RestIntervalOverlay(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = if (nextExercise.isTimeBased) "${nextExercise.defaultDurationSeconds} seg" else "${nextExercise.defaultReps} repeticiones",
+                            text = if (nextExercise.isTimeBased) {
+                                stringResource(R.string.unit_seconds_short, nextExercise.defaultDurationSeconds)
+                            } else {
+                                stringResource(R.string.unit_reps, nextExercise.defaultReps)
+                            },
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -147,7 +154,7 @@ fun RestIntervalOverlay(
                 ) {
                     Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("+20 seg", fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.rest_add20), fontWeight = FontWeight.SemiBold)
                 }
 
                 Button(
@@ -159,7 +166,7 @@ fun RestIntervalOverlay(
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     shape = RoundedCornerShape(14.dp)
                 ) {
-                    Text("Saltar", fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.rest_skip), fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.width(4.dp))
                     Icon(Icons.Default.FastForward, contentDescription = null, modifier = Modifier.size(18.dp))
                 }

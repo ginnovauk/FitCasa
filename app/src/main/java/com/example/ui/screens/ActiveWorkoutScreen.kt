@@ -54,10 +54,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.data.model.Exercise
 import com.example.ui.components.CircularTimerView
 import com.example.ui.components.ExerciseDetailSheet
@@ -65,6 +67,7 @@ import com.example.ui.components.ExerciseGuideCard
 import com.example.ui.components.ExerciseMediaView
 import com.example.ui.components.RestIntervalOverlay
 import com.example.ui.components.VoiceCoachSettingsSheet
+import com.example.ui.displayName
 import com.example.ui.viewmodel.ActiveWorkoutUiState
 import com.example.util.VoiceCoachUiState
 
@@ -129,13 +132,17 @@ fun ActiveWorkoutScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Salir de la rutina",
+                        contentDescription = stringResource(R.string.workout_exit),
                         tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
 
                 Text(
-                    text = "${(state.currentExerciseIndex + 1).coerceAtMost(plan?.exercises?.size ?: 1)} de ${plan?.exercises?.size ?: 1}",
+                    text = stringResource(
+                        R.string.workout_counter,
+                        (state.currentExerciseIndex + 1).coerceAtMost(plan?.exercises?.size ?: 1),
+                        plan?.exercises?.size ?: 1
+                    ),
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.primary
@@ -149,7 +156,11 @@ fun ActiveWorkoutScreen(
                     ) {
                         Icon(
                             imageVector = if (voiceState.isEnabled) Icons.Default.VolumeUp else Icons.Default.VolumeOff,
-                            contentDescription = if (voiceState.isEnabled) "Silenciar Entrenador por Voz" else "Activar Entrenador por Voz",
+                            contentDescription = if (voiceState.isEnabled) {
+                                stringResource(R.string.workout_mute_voice)
+                            } else {
+                                stringResource(R.string.workout_unmute_voice)
+                            },
                             tint = if (voiceState.isEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -161,7 +172,7 @@ fun ActiveWorkoutScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.SettingsVoice,
-                            contentDescription = "Configurar la voz del entrenador",
+                            contentDescription = stringResource(R.string.workout_voice_settings),
                             tint = if (voiceState.errorMessage != null) {
                                 MaterialTheme.colorScheme.error
                             } else {
@@ -177,7 +188,7 @@ fun ActiveWorkoutScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Info,
-                            contentDescription = "Instrucciones de ejercicio",
+                            contentDescription = stringResource(R.string.workout_exercise_info),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -220,7 +231,7 @@ fun ActiveWorkoutScreen(
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "La voz necesita configuración. Toca para revisarla.",
+                            text = stringResource(R.string.workout_voice_issue_banner),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -240,7 +251,7 @@ fun ActiveWorkoutScreen(
                         modifier = Modifier.padding(bottom = 6.dp)
                     ) {
                         Text(
-                            text = "CALENTAMIENTO",
+                            text = stringResource(R.string.workout_warmup),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Black,
                             letterSpacing = 1.sp,
@@ -251,7 +262,7 @@ fun ActiveWorkoutScreen(
                 }
 
                 Text(
-                    text = currentEx.name,
+                    text = currentEx.displayName(),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -265,7 +276,11 @@ fun ActiveWorkoutScreen(
                     color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
                 ) {
                     Text(
-                        text = if (currentEx.isTimeBased) "${currentEx.defaultDurationSeconds} seg sugeridos" else "${currentEx.defaultReps} repeticiones",
+                        text = if (currentEx.isTimeBased) {
+                            stringResource(R.string.workout_seconds_suggested, currentEx.defaultDurationSeconds)
+                        } else {
+                            stringResource(R.string.unit_reps, currentEx.defaultReps)
+                        },
                         fontSize = 12.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -316,7 +331,7 @@ fun ActiveWorkoutScreen(
             // usuario está colocado y pulsa play.
             if (state.isWaitingToStart) {
                 Text(
-                    text = "Cuando estés listo, pulsa play",
+                    text = stringResource(R.string.workout_waiting_hint),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.primary,
@@ -355,7 +370,7 @@ fun ActiveWorkoutScreen(
                     ),
                     shape = CircleShape
                 ) {
-                    Icon(Icons.Default.SkipPrevious, contentDescription = "Anterior", modifier = Modifier.size(26.dp))
+                    Icon(Icons.Default.SkipPrevious, contentDescription = stringResource(R.string.workout_prev), modifier = Modifier.size(26.dp))
                 }
 
                 // Main Play/Pause Button
@@ -377,9 +392,9 @@ fun ActiveWorkoutScreen(
                             Icons.Default.Pause
                         },
                         contentDescription = when {
-                            state.isWaitingToStart -> "Empezar ejercicio"
-                            state.isPaused -> "Reanudar"
-                            else -> "Pausar"
+                            state.isWaitingToStart -> stringResource(R.string.workout_start_exercise)
+                            state.isPaused -> stringResource(R.string.workout_resume)
+                            else -> stringResource(R.string.workout_pause)
                         },
                         modifier = Modifier.size(36.dp)
                     )
@@ -397,7 +412,7 @@ fun ActiveWorkoutScreen(
                     ),
                     shape = CircleShape
                 ) {
-                    Icon(Icons.Default.SkipNext, contentDescription = "Siguiente", modifier = Modifier.size(26.dp))
+                    Icon(Icons.Default.SkipNext, contentDescription = stringResource(R.string.workout_next), modifier = Modifier.size(26.dp))
                 }
             }
         }
@@ -441,8 +456,8 @@ fun ActiveWorkoutScreen(
         if (showExitDialog) {
             AlertDialog(
                 onDismissRequest = { showExitDialog = false },
-                title = { Text("¿Deseas pausar o salir?") },
-                text = { Text("Si abandonas el entrenamiento ahora, tu sesión actual no quedará registrada en el historial de estadísticas.") },
+                title = { Text(stringResource(R.string.workout_exit_title)) },
+                text = { Text(stringResource(R.string.workout_exit_body)) },
                 confirmButton = {
                     Button(
                         onClick = {
@@ -451,12 +466,12 @@ fun ActiveWorkoutScreen(
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                     ) {
-                        Text("Salir de todas formas")
+                        Text(stringResource(R.string.workout_exit_confirm))
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showExitDialog = false }) {
-                        Text("Continuar entrenando")
+                        Text(stringResource(R.string.workout_exit_cancel))
                     }
                 }
             )

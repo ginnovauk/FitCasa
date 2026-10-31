@@ -35,11 +35,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.data.local.WorkoutEntity
+import com.example.ui.displayTitle
 import java.util.Calendar
 import java.util.Locale
 
@@ -47,7 +51,7 @@ import java.util.Locale
 data class DaySummary(
     val kcal: Int,
     val minutes: Int,
-    val titles: List<String>
+    val workouts: List<WorkoutEntity>
 )
 
 /** Resumen de la semana en curso (lunes a domingo) y la anterior, para comparar. */
@@ -64,7 +68,7 @@ data class WeekSummary(
  */
 fun buildWeekSummary(history: List<WorkoutEntity>, nowMillis: Long): WeekSummary {
     fun startOfDay(millis: Long): Calendar =
-        Calendar.getInstance(Locale("es", "ES")).apply {
+        Calendar.getInstance(Locale.getDefault()).apply {
             timeInMillis = millis
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
@@ -94,7 +98,7 @@ fun buildWeekSummary(history: List<WorkoutEntity>, nowMillis: Long): WeekSummary
         DaySummary(
             kcal = inDay.sumOf { it.caloriesBurned },
             minutes = inDay.sumOf { it.durationSeconds } / 60,
-            titles = inDay.map { it.workoutTitle }
+            workouts = inDay
         )
     }
 
@@ -104,9 +108,6 @@ fun buildWeekSummary(history: List<WorkoutEntity>, nowMillis: Long): WeekSummary
         previousWeekKcal = kcalBetween(prevMonday, thisMonday)
     )
 }
-
-private val dayInitials = listOf("L", "M", "X", "J", "V", "S", "D")
-private val dayNames = listOf("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo")
 
 /**
  * Gráfico semanal de kilocalorías, tipo app de fitness:
@@ -124,13 +125,19 @@ fun WeeklyCaloriesChart(
     val todayIndex = todayIndexOf(now)
     var selectedIndex by remember { mutableIntStateOf(todayIndex) }
     val selected = week.days[selectedIndex]
-    val dayName = if (selectedIndex == todayIndex) "Hoy" else dayNames[selectedIndex]
-    val detail = if (selected.kcal == 0) {
-        "$dayName · Sin entrenamiento"
+    val dayInitials = stringArrayResource(R.array.weekday_initials)
+    val dayNames = stringArrayResource(R.array.weekday_names)
+    val dayName = if (selectedIndex == todayIndex) {
+        stringResource(R.string.chart_today)
     } else {
-        "$dayName · ${selected.kcal} kcal · ${selected.minutes} min"
+        dayNames[selectedIndex]
     }
-    val subtitle = selected.titles.distinct().joinToString(" · ")
+    val detail = if (selected.kcal == 0) {
+        stringResource(R.string.chart_no_workout, dayName)
+    } else {
+        stringResource(R.string.chart_day_detail, dayName, selected.kcal, selected.minutes)
+    }
+    val subtitle = selected.workouts.map { it.displayTitle() }.distinct().joinToString(" · ")
 
     Card(
         modifier = modifier,
@@ -147,7 +154,7 @@ fun WeeklyCaloriesChart(
             ) {
                 Column {
                     Text(
-                        text = "KCAL DE LA SEMANA",
+                        text = stringResource(R.string.chart_week_kcal),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Black,
                         letterSpacing = 1.sp,
@@ -161,7 +168,7 @@ fun WeeklyCaloriesChart(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = " kcal",
+                            text = stringResource(R.string.chart_kcal_unit),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -171,7 +178,7 @@ fun WeeklyCaloriesChart(
                 }
                 if (onSeeAll != null) {
                     Text(
-                        text = "Ver todo",
+                        text = stringResource(R.string.chart_see_all),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.primary,
@@ -241,9 +248,13 @@ private fun TrendBadge(total: Int, previous: Int) {
     val diff = total - previous
     val up = diff >= 0
     val text = when {
-        previous == 0 -> "Primera semana registrada"
-        diff == 0 -> "Igual que la semana anterior"
-        else -> "%s%d kcal vs semana anterior".format(if (up) "+" else "−", kotlin.math.abs(diff))
+        previous == 0 -> stringResource(R.string.chart_trend_first)
+        diff == 0 -> stringResource(R.string.chart_trend_same)
+        else -> stringResource(
+            R.string.chart_trend_diff,
+            if (up) "+" else "−",
+            kotlin.math.abs(diff)
+        )
     }
     Surface(
         shape = RoundedCornerShape(9.dp),
@@ -337,7 +348,7 @@ private fun DayBar(
 
 /** Índice (0 = lunes) del día de hoy dentro de la semana (lunes a domingo). */
 private fun todayIndexOf(nowMillis: Long): Int {
-    val cal = Calendar.getInstance(Locale("es", "ES")).apply { timeInMillis = nowMillis }
+    val cal = Calendar.getInstance(Locale.getDefault()).apply { timeInMillis = nowMillis }
     return when (cal.get(Calendar.DAY_OF_WEEK)) {
         Calendar.MONDAY -> 0
         Calendar.TUESDAY -> 1

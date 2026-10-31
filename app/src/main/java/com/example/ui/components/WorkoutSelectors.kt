@@ -29,11 +29,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.data.model.BodyPart
 import com.example.data.model.IntensityLevel
+import com.example.ui.displayName
+import com.example.ui.subtitle
 
 @Composable
 fun BodyPartCard(
@@ -79,13 +83,13 @@ fun BodyPartCard(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = bodyPart.displayName,
+                    text = bodyPart.displayName(),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = bodyPart.subtitle,
+                    text = bodyPart.subtitle(),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 16.sp
@@ -134,7 +138,7 @@ fun IntensitySelectorRow(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = level.displayName,
+                        text = level.displayName(),
                         fontSize = 13.sp,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                         color = if (isSelected) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurface
@@ -189,7 +193,7 @@ fun DurationSelectorRow(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "$minutes min",
+                        text = stringResource(R.string.unit_minutes, minutes),
                         fontSize = 13.sp,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                         color = if (isSelected) MaterialTheme.colorScheme.onTertiaryContainer else MaterialTheme.colorScheme.onSurface

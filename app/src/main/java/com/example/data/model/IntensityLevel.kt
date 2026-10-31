@@ -1,31 +1,39 @@
 package com.example.data.model
 
+import androidx.annotation.StringRes
+import com.example.R
+
 enum class IntensityLevel(
     val id: String,
-    val displayName: String,
-    val description: String,
+    @StringRes val nameRes: Int,
+    @StringRes val descriptionRes: Int,
     val restDurationSeconds: Int,
     val workRatioMultiplier: Float
 ) {
     PRINCIPIANTE(
         id = "principiante",
-        displayName = "Principiante",
-        description = "Movimientos controlados, intervalos suaves y descansos amplios para iniciar sin lesiones.",
+        nameRes = R.string.intensity_beginner_name,
+        descriptionRes = R.string.intensity_beginner_desc,
         restDurationSeconds = 25,
         workRatioMultiplier = 0.8f
     ),
     INTERMEDIO(
         id = "intermedio",
-        displayName = "Intermedio",
-        description = "Ritmo dinámico, tensión muscular constante y descansos moderados para progresar.",
+        nameRes = R.string.intensity_intermediate_name,
+        descriptionRes = R.string.intensity_intermediate_desc,
         restDurationSeconds = 20,
         workRatioMultiplier = 1.0f
     ),
     AVANZADO(
         id = "avanzado",
-        displayName = "Avanzado",
-        description = "Máxima intensidad, densidad de trabajo elevada y descansos cortos para máxima exigencia.",
+        nameRes = R.string.intensity_advanced_name,
+        descriptionRes = R.string.intensity_advanced_desc,
         restDurationSeconds = 15,
         workRatioMultiplier = 1.25f
-    )
+    );
+
+    companion object {
+        /** Busca un nivel por su identificador guardado en la base de datos. */
+        fun fromId(id: String?): IntensityLevel? = values().firstOrNull { it.id == id }
+    }
 }

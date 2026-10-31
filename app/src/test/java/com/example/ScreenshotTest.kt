@@ -67,7 +67,6 @@ class ScreenshotTest {
             .map { it.copy(defaultDurationSeconds = 30) }
 
         WorkoutPlan(
-            title = "Rutina de Brazos - Intermedio",
             bodyPart = BodyPart.BRAZOS,
             intensity = IntensityLevel.INTERMEDIO,
             targetDurationMinutes = 15,

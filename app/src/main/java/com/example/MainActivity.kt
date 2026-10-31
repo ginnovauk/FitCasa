@@ -1,10 +1,14 @@
 package com.example
 
+import android.app.Activity
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -34,7 +38,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,16 +54,17 @@ import com.example.ui.screens.WorkoutBuilderScreen
 import com.example.ui.screens.WorkoutSummaryScreen
 import com.example.ui.theme.FitCasaTheme
 import com.example.ui.viewmodel.WorkoutViewModel
+import com.example.util.AppLanguage
 
 enum class MainTab(
-    val title: String,
+    @StringRes val titleRes: Int,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
     val tag: String
 ) {
-    HOME("Inicio", Icons.Filled.Home, Icons.Outlined.Home, "nav_home"),
-    BUILDER("Rutinas", Icons.Filled.FitnessCenter, Icons.Outlined.FitnessCenter, "nav_builder"),
-    HISTORY("Progreso", Icons.Filled.History, Icons.Outlined.History, "nav_history")
+    HOME(R.string.nav_home, Icons.Filled.Home, Icons.Outlined.Home, "nav_home"),
+    BUILDER(R.string.nav_workouts, Icons.Filled.FitnessCenter, Icons.Outlined.FitnessCenter, "nav_builder"),
+    HISTORY(R.string.nav_history, Icons.Filled.History, Icons.Outlined.History, "nav_history")
 }
 
 enum class ScreenState {
@@ -67,6 +74,12 @@ enum class ScreenState {
 }
 
 class MainActivity : ComponentActivity() {
+
+    /** En Android 12 y anteriores el idioma elegido en la app se aplica aquí. */
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AppLanguage.wrap(newBase))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -86,6 +99,9 @@ fun FitCasaApp(
     var currentScreen by remember { mutableStateOf(ScreenState.TABS) }
     var selectedTab by remember { mutableStateOf(MainTab.HOME) }
     var showProfileSheet by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+    var appLanguage by remember { mutableStateOf(AppLanguage.current(context)) }
 
     val activeState by viewModel.activeWorkoutState.collectAsStateWithLifecycle()
     val history by viewModel.workoutHistory.collectAsStateWithLifecycle()
@@ -136,18 +152,19 @@ fun FitCasaApp(
                 ) {
                     MainTab.values().forEach { tab ->
                         val isSelected = selectedTab == tab
+                        val title = stringResource(tab.titleRes)
                         NavigationBarItem(
                             selected = isSelected,
                             onClick = { selectedTab = tab },
                             icon = {
                                 Icon(
                                     imageVector = if (isSelected) tab.selectedIcon else tab.unselectedIcon,
-                                    contentDescription = tab.title
+                                    contentDescription = title
                                 )
                             },
                             label = {
                                 Text(
-                                    text = tab.title,
+                                    text = title,
                                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
                                 )
                             },
@@ -267,6 +284,16 @@ fun FitCasaApp(
     if (showProfileSheet) {
         ProfileSheet(
             profile = profile,
+            currentLanguage = appLanguage,
+            onSelectLanguage = { language ->
+                AppLanguage.set(context, language)
+                appLanguage = language
+                // En Android 13+ el sistema reconfigura la app; en versiones
+                // anteriores hay que recrear la actividad para aplicar el idioma.
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                    (context as? Activity)?.recreate()
+                }
+            },
             onDismiss = { showProfileSheet = false },
             onSave = { newProfile ->
                 viewModel.saveProfile(newProfile)

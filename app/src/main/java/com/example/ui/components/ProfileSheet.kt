@@ -34,12 +34,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.data.model.Sex
 import com.example.data.model.UserProfile
-import java.util.Locale
+import com.example.ui.displayName
+import com.example.ui.rememberAppLocale
+import com.example.util.AppLanguage
 import kotlin.math.roundToInt
 
 /**
@@ -50,6 +54,8 @@ import kotlin.math.roundToInt
 @Composable
 fun ProfileSheet(
     profile: UserProfile,
+    currentLanguage: String?,
+    onSelectLanguage: (String?) -> Unit,
     onDismiss: () -> Unit,
     onSave: (UserProfile) -> Unit
 ) {
@@ -83,7 +89,7 @@ fun ProfileSheet(
                 )
                 Spacer(modifier = Modifier.size(10.dp))
                 Text(
-                    text = "Tu perfil",
+                    text = stringResource(R.string.profile_title),
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -91,7 +97,7 @@ fun ProfileSheet(
             }
 
             Text(
-                text = "Ajustamos las calorías de cada rutina a tu cuerpo. Es una estimación orientativa, no una medición.",
+                text = stringResource(R.string.profile_desc),
                 fontSize = 13.sp,
                 lineHeight = 18.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -101,8 +107,8 @@ fun ProfileSheet(
             Spacer(modifier = Modifier.height(20.dp))
 
             ProfileSlider(
-                label = "Peso",
-                valueText = "${weightKg.roundToInt()} kg",
+                label = stringResource(R.string.profile_weight),
+                valueText = stringResource(R.string.profile_kg, weightKg.roundToInt()),
                 value = weightKg,
                 range = UserProfile.MIN_WEIGHT_KG..UserProfile.MAX_WEIGHT_KG,
                 onValueChange = { weightKg = it.roundToInt().toFloat() },
@@ -110,8 +116,8 @@ fun ProfileSheet(
             )
 
             ProfileSlider(
-                label = "Estatura",
-                valueText = "$heightCm cm",
+                label = stringResource(R.string.profile_height),
+                valueText = stringResource(R.string.profile_cm, heightCm),
                 value = heightCm.toFloat(),
                 range = UserProfile.MIN_HEIGHT_CM.toFloat()..UserProfile.MAX_HEIGHT_CM.toFloat(),
                 onValueChange = { heightCm = it.roundToInt() },
@@ -119,8 +125,8 @@ fun ProfileSheet(
             )
 
             ProfileSlider(
-                label = "Edad",
-                valueText = "$age años",
+                label = stringResource(R.string.profile_age),
+                valueText = stringResource(R.string.profile_years, age),
                 value = age.toFloat(),
                 range = UserProfile.MIN_AGE.toFloat()..UserProfile.MAX_AGE.toFloat(),
                 onValueChange = { age = it.roundToInt() },
@@ -128,7 +134,7 @@ fun ProfileSheet(
             )
 
             Text(
-                text = "Sexo",
+                text = stringResource(R.string.profile_sex),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -139,7 +145,7 @@ fun ProfileSheet(
                     FilterChip(
                         selected = sex == option,
                         onClick = { sex = option },
-                        label = { Text(option.displayName) },
+                        label = { Text(option.displayName()) },
                         modifier = Modifier.testTag("profile_sex_${option.id}")
                     )
                 }
@@ -154,18 +160,24 @@ fun ProfileSheet(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Con estos datos",
+                        text = stringResource(R.string.profile_with_data),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                     Text(
-                        text = "Gasto en reposo: ≈ ${draft.basalMetabolicRate.roundToInt()} kcal/día",
+                        text = stringResource(
+                            R.string.profile_bmr,
+                            draft.basalMetabolicRate.roundToInt()
+                        ),
                         fontSize = 13.sp,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                     Text(
-                        text = "IMC: ${String.format(Locale.getDefault(), "%.1f", draft.bmi)}",
+                        text = stringResource(
+                            R.string.profile_bmi,
+                            String.format(rememberAppLocale(), "%.1f", draft.bmi)
+                        ),
                         fontSize = 13.sp,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
@@ -181,7 +193,7 @@ fun ProfileSheet(
                     .testTag("profile_save_btn"),
                 shape = RoundedCornerShape(14.dp)
             ) {
-                Text("Guardar perfil", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.profile_save), fontWeight = FontWeight.Bold)
             }
 
             TextButton(
@@ -196,7 +208,38 @@ fun ProfileSheet(
                     .fillMaxWidth()
                     .testTag("profile_reset_btn")
             ) {
-                Text("Volver a los valores por defecto")
+                Text(stringResource(R.string.profile_reset))
+            }
+
+            // Idioma de la app. El nombre de cada idioma va en su propio idioma
+            // ("Español", "English") para que siempre se reconozca.
+            Text(
+                text = stringResource(R.string.profile_language),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(top = 12.dp)
+            )
+            Text(
+                text = stringResource(R.string.profile_language_desc),
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                FilterChip(
+                    selected = currentLanguage == null,
+                    onClick = { onSelectLanguage(null) },
+                    label = { Text(stringResource(R.string.language_system)) },
+                    modifier = Modifier.testTag("profile_language_system")
+                )
+                AppLanguage.options.forEach { option ->
+                    FilterChip(
+                        selected = currentLanguage == option.tag,
+                        onClick = { onSelectLanguage(option.tag) },
+                        label = { Text(option.label) },
+                        modifier = Modifier.testTag("profile_language_${option.tag}")
+                    )
+                }
             }
         }
     }

@@ -43,13 +43,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.data.local.WorkoutEntity
+import com.example.ui.displayTitle
+import com.example.ui.rememberAppLocale
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 @Composable
 fun ProgressHistoryScreen(
@@ -71,13 +74,13 @@ fun ProgressHistoryScreen(
     ) {
         item {
             Text(
-                text = "Mi Progreso",
+                text = stringResource(R.string.history_title),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
             )
             Text(
-                text = "Estadísticas acumuladas y registros locales",
+                text = stringResource(R.string.history_subtitle),
                 fontSize = 13.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -92,14 +95,14 @@ fun ProgressHistoryScreen(
                 StatCard(
                     icon = Icons.Default.Whatshot,
                     value = "$streakDays",
-                    label = "Días de Racha",
+                    label = stringResource(R.string.history_streak),
                     tint = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier.weight(1f)
                 )
                 StatCard(
                     icon = Icons.Default.FitnessCenter,
                     value = "$totalWorkouts",
-                    label = "Sesiones Totales",
+                    label = stringResource(R.string.history_sessions),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.weight(1f)
                 )
@@ -114,14 +117,14 @@ fun ProgressHistoryScreen(
                 StatCard(
                     icon = Icons.Default.Timer,
                     value = "$totalMinutes",
-                    label = "Minutos Entrenados",
+                    label = stringResource(R.string.history_minutes),
                     tint = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier.weight(1f)
                 )
                 StatCard(
                     icon = Icons.Default.LocalFireDepartment,
                     value = "$totalCalories",
-                    label = "Kcal Quemadas",
+                    label = stringResource(R.string.history_kcal),
                     tint = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier.weight(1f)
                 )
@@ -130,7 +133,7 @@ fun ProgressHistoryScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Historial Completo",
+                text = stringResource(R.string.history_full),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
@@ -159,14 +162,14 @@ fun ProgressHistoryScreen(
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = "Sin entrenamientos registrados",
+                            text = stringResource(R.string.history_empty_title),
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = "Cuando finalices una rutina, aparecerá aquí detallada con sus calorías, tiempo y ejercicios.",
+                            text = stringResource(R.string.history_empty_desc),
                             fontSize = 13.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -187,8 +190,8 @@ fun ProgressHistoryScreen(
     workoutToDelete?.let { record ->
         AlertDialog(
             onDismissRequest = { workoutToDelete = null },
-            title = { Text("Eliminar Registro") },
-            text = { Text("¿Deseas eliminar este registro de entrenamiento del historial?") },
+            title = { Text(stringResource(R.string.history_delete_title)) },
+            text = { Text(stringResource(R.string.history_delete_body)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -197,12 +200,12 @@ fun ProgressHistoryScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("Eliminar")
+                    Text(stringResource(R.string.history_delete_confirm))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { workoutToDelete = null }) {
-                    Text("Cancelar")
+                    Text(stringResource(R.string.history_delete_cancel))
                 }
             }
         )
@@ -251,7 +254,10 @@ fun HistoryRecordCard(
     record: WorkoutEntity,
     onDelete: () -> Unit
 ) {
-    val formatter = SimpleDateFormat("dd 'de' MMMM, yyyy - HH:mm", Locale("es", "ES"))
+    val formatter = SimpleDateFormat(
+        stringResource(R.string.history_date_pattern),
+        rememberAppLocale()
+    )
     val dateText = formatter.format(Date(record.dateMillis))
     val minutes = (record.durationSeconds / 60).coerceAtLeast(1)
 
@@ -284,7 +290,7 @@ fun HistoryRecordCard(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = record.workoutTitle,
+                    text = record.displayTitle(),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -296,7 +302,13 @@ fun HistoryRecordCard(
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = "$minutes min • ${record.caloriesBurned} kcal • ${record.exercisesCompleted}/${record.totalExercises} ej.",
+                    text = stringResource(
+                        R.string.history_record_meta,
+                        minutes,
+                        record.caloriesBurned,
+                        record.exercisesCompleted,
+                        record.totalExercises
+                    ),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.primary
@@ -309,7 +321,7 @@ fun HistoryRecordCard(
             ) {
                 Icon(
                     imageVector = Icons.Default.DeleteOutline,
-                    contentDescription = "Eliminar",
+                    contentDescription = stringResource(R.string.history_delete_confirm),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }

@@ -33,10 +33,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
+import com.example.ui.displayTitle
 import com.example.ui.viewmodel.ActiveWorkoutUiState
 
 @Composable
@@ -86,7 +89,7 @@ fun WorkoutSummaryScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = "¡ENTRENAMIENTO COMPLETADO!",
+                text = stringResource(R.string.summary_done),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Black,
                 letterSpacing = 1.5.sp,
@@ -96,7 +99,7 @@ fun WorkoutSummaryScreen(
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = "¡Excelente Esfuerzo!",
+                text = stringResource(R.string.summary_great),
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
@@ -105,7 +108,7 @@ fun WorkoutSummaryScreen(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = plan?.title ?: "Rutina en Casa",
+                text = plan?.displayTitle() ?: stringResource(R.string.summary_default_title),
                 fontSize = 15.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
@@ -128,17 +131,17 @@ fun WorkoutSummaryScreen(
                 ) {
                     SummaryMetric(
                         icon = Icons.Default.Timer,
-                        label = "Duración",
+                        label = stringResource(R.string.summary_duration),
                         value = formattedDuration
                     )
                     SummaryMetric(
                         icon = Icons.Default.LocalFireDepartment,
-                        label = "Calorías",
-                        value = "${calories.toInt()} kcal"
+                        label = stringResource(R.string.summary_calories),
+                        value = stringResource(R.string.unit_kcal, calories.toInt())
                     )
                     SummaryMetric(
                         icon = Icons.Default.FitnessCenter,
-                        label = "Ejercicios",
+                        label = stringResource(R.string.summary_exercises),
                         value = "${state.exercisesCompletedCount}/${plan?.exercises?.size ?: 0}"
                     )
                 }
@@ -165,7 +168,7 @@ fun WorkoutSummaryScreen(
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = "Sesión guardada en tu historial local privado. ¡Sigue así para mantener tu racha!",
+                        text = stringResource(R.string.summary_saved),
                         fontSize = 13.sp,
                         color = MaterialTheme.colorScheme.onSurface,
                         lineHeight = 18.sp
@@ -185,7 +188,7 @@ fun WorkoutSummaryScreen(
                 shape = RoundedCornerShape(16.dp)
             ) {
                 Text(
-                    text = "Volver al Inicio",
+                    text = stringResource(R.string.summary_back_home),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )

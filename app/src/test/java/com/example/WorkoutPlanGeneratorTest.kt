@@ -66,7 +66,7 @@ class WorkoutPlanGeneratorTest {
 
             val calentamiento = plan.exercises.takeWhile { it.isWarmUp }
             assertTrue(
-                "La rutina de ${parte.displayName} no empieza con calentamiento",
+                "La rutina de ${parte.id} no empieza con calentamiento",
                 calentamiento.size == ExerciseCatalog.warmUpExercises.size
             )
             assertEquals(
@@ -86,7 +86,7 @@ class WorkoutPlanGeneratorTest {
                 targetDurationMinutes = 15
             )
 
-            assertTrue("Sin ejercicios para ${parte.displayName}", plan.exercises.isNotEmpty())
+            assertTrue("Sin ejercicios para ${parte.id}", plan.exercises.isNotEmpty())
             assertTrue(plan.exercises.size in 4..28)
             assertEquals(parte, plan.bodyPart)
             assertTrue(plan.estimatedCalories > 0)
@@ -126,7 +126,7 @@ class WorkoutPlanGeneratorTest {
                 )
 
                 assertEquals(
-                    "La rutina de ${parte.displayName} ($nivel) empieza con un ejercicio de otro nivel",
+                    "La rutina de ${parte.id} ($nivel) empieza con un ejercicio de otro nivel",
                     nivel,
                     plan.exercises.first { !it.isWarmUp }.intensity
                 )
@@ -148,7 +148,7 @@ class WorkoutPlanGeneratorTest {
                 .map { it.id }
 
             assertTrue(
-                "${parte.displayName} usa muy pocos ejercicios propios: ${propios.distinct()}",
+                "${parte.id} usa muy pocos ejercicios propios: ${propios.distinct()}",
                 propios.distinct().size >= 3
             )
         }

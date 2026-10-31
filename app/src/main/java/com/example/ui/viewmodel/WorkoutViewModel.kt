@@ -9,6 +9,7 @@ import android.os.Vibrator
 import android.os.VibratorManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.R
 import com.example.data.local.WorkoutDatabase
 import com.example.data.local.WorkoutEntity
 import com.example.data.local.UserProfileStore
@@ -59,6 +60,7 @@ data class ActiveWorkoutUiState(
 
 class WorkoutViewModel(application: Application) : AndroidViewModel(application) {
 
+    private val app: Application = application
     private val repository: WorkoutRepository
     private var timerJob: Job? = null
     private val vibrator: Vibrator?
@@ -214,7 +216,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         // El entrenador avisa del ejercicio y espera: así da tiempo a colocarse
         // antes de que empiece a correr el tiempo.
         vibrateShort(120)
-        voiceCoach.speakPrepareNext(firstExercise.name)
+        voiceCoach.speakPrepareNext(firstExercise.localizedName())
         startTimerLoop()
     }
 
@@ -224,11 +226,11 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         if (!state.isWaitingToStart) return
         val exercise = state.currentExercise ?: return
         val repOrDuration = if (exercise.isTimeBased) {
-            "${exercise.defaultDurationSeconds} segundos"
+            app.getString(R.string.unit_seconds, exercise.defaultDurationSeconds)
         } else {
-            "${exercise.defaultReps} repeticiones"
+            app.getString(R.string.unit_reps, exercise.defaultReps)
         }
-        voiceCoach.speakExerciseStart(exercise.name, repOrDuration)
+        voiceCoach.speakExerciseStart(exercise.localizedName(), repOrDuration)
         _activeWorkoutState.update {
             it.copy(
                 isWaitingToStart = false,
@@ -282,7 +284,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                     if (newRemaining == 4) {
                         val nextEx = currentState.currentExercise
                         if (nextEx != null) {
-                            voiceCoach.speakPrepareNext(nextEx.name)
+                            voiceCoach.speakPrepareNext(nextEx.localizedName())
                         }
                     } else if (newRemaining in 1..3) {
                         vibrateShort(50)
@@ -310,7 +312,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             // Descanso terminado: se avisa del ejercicio y se espera al play.
             val exercise = plan.exercises[state.currentExerciseIndex]
             vibrateDouble()
-            voiceCoach.speakPrepareNext(exercise.name)
+            voiceCoach.speakPrepareNext(exercise.localizedName())
             _activeWorkoutState.update {
                 it.copy(
                     isResting = false,
@@ -329,7 +331,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 // Enter rest period
                 vibrateShort(150)
                 val nextExercise = plan.exercises[nextIdx]
-                voiceCoach.speakRestStart(plan.restBetweenSeconds, nextExercise.name)
+                voiceCoach.speakRestStart(plan.restBetweenSeconds, nextExercise.localizedName())
                 _activeWorkoutState.update {
                     it.copy(
                         currentExerciseIndex = nextIdx,
@@ -358,7 +360,11 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
         val record = WorkoutEntity(
             dateMillis = System.currentTimeMillis(),
-            workoutTitle = plan.title,
+            workoutTitle = app.getString(
+                R.string.plan_title,
+                app.getString(plan.bodyPart.nameRes),
+                app.getString(plan.intensity.nameRes)
+            ),
             bodyPartId = plan.bodyPart.id,
             intensityId = plan.intensity.id,
             durationSeconds = totalSeconds,
@@ -401,7 +407,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         val plan = state.plan ?: return
         if (state.isResting && state.currentExerciseIndex < plan.exercises.size) {
             val nextExercise = plan.exercises[state.currentExerciseIndex]
-            voiceCoach.speakPrepareNext(nextExercise.name)
+            voiceCoach.speakPrepareNext(nextExercise.localizedName())
             _activeWorkoutState.update {
                 it.copy(
                     isResting = false,
@@ -431,7 +437,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         val nextIdx = state.currentExerciseIndex + 1
         if (nextIdx < plan.exercises.size) {
             val ex = plan.exercises[nextIdx]
-            voiceCoach.speakPrepareNext(ex.name)
+            voiceCoach.speakPrepareNext(ex.localizedName())
             _activeWorkoutState.update {
                 it.copy(
                     currentExerciseIndex = nextIdx,
@@ -451,7 +457,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         val plan = state.plan ?: return
         val prevIdx = (state.currentExerciseIndex - 1).coerceAtLeast(0)
         val ex = plan.exercises[prevIdx]
-        voiceCoach.speakPrepareNext(ex.name)
+        voiceCoach.speakPrepareNext(ex.localizedName())
         _activeWorkoutState.update {
             it.copy(
                 currentExerciseIndex = prevIdx,
@@ -474,6 +480,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             repository.deleteWorkout(id)
         }
     }
+
+    private fun Exercise.localizedName(): String = app.getString(nameRes)
 
     private fun vibrateShort(millis: Long = 80) {
         try {

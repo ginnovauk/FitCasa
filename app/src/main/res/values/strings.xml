@@ -1,7 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Default strings (English). Every language without its own values-xx/ folder
+    falls back to this file, so the app stays usable worldwide before it is
+    translated. Spanish lives in values-es/.
+    To add a language: copy this file to res/values-<code>/, translate the
+    values without touching the names, and add its <locale> to
+    res/xml/locales_config.xml. Exercise names are in strings_exercises.xml.
+-->
 <resources>
     <string name="app_name">FitCasa</string>
-    <string name="tagline">Entrenamiento en Casa sin Equipamiento</string>
-    <string name="nav_home">Inicio</string>
-    <string name="nav_workouts">Rutinas</string>
-    <string name="nav_history">Progreso</string>
+    <string name="tagline">At-Home Training Without Equipment</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_workouts">Workouts</string>
+    <string name="nav_history">Progress</string>
+
+    <!-- Home -->
+    <string name="home_brand">FITCASA</string>
+    <string name="home_title">Train at Home</string>
+    <string name="home_profile">Profile</string>
+    <plurals name="home_streak_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <string name="home_stat_minutes">Minutes</string>
+    <string name="home_stat_calories">Calories</string>
+    <string name="home_stat_sessions">Sessions</string>
+    <string name="home_recommended_today">TODAY\'S PICK</string>
+    <string name="home_quick_title">Total Body Express</string>
+    <string name="home_quick_desc">10 intense minutes to recharge your energy with no weights or machines.</string>
+    <string name="home_quick_meta">10 min • Beginner</string>
+    <string name="home_start">Train</string>
+    <string name="home_recent">Recent History</string>
+    <string name="home_empty_title">No workouts yet</string>
+    <string name="home_empty_desc">Once you finish your first routine, you\'ll see each day\'s activity in the weekly chart.</string>
+    <string name="home_record_meta">%1$s • %2$d min • %3$d kcal</string>
+    <string name="home_record_exercises">%1$d/%2$d ex.</string>
+    <string name="home_date_pattern">MMM d, HH:mm</string>
+
+    <!-- Workout builder -->
+    <string name="builder_title">Set Up Your Workout</string>
+    <string name="builder_back">Back</string>
+    <string name="builder_start_warmup">Start (%1$d exercises + warm-up • ~%2$d min)</string>
+    <string name="builder_start">Start (%1$d exercises • ~%2$d min)</string>
+    <string name="builder_step_body">1. Choose a Body Part</string>
+    <string name="builder_step_intensity">2. Intensity Level</string>
+    <string name="builder_step_time">3. Time Available</string>
+    <string name="builder_plan_summary">Your Generated Routine</string>
+    <string name="builder_metric_exercises">%1$d exercises</string>
+    <string name="builder_metric_kcal">~%1$d kcal</string>
+    <string name="builder_metric_rest">%1$ds rest</string>
+    <string name="builder_sequence_hint">Exercise Sequence (tap for technique, ↑↓ to reorder):</string>
+    <string name="builder_warmup_badge">Warm-up</string>
+    <string name="builder_move_up">Move %1$s up</string>
+    <string name="builder_move_down">Move %1$s down</string>
+    <string name="builder_see_technique">View technique</string>
+    <string name="plan_title">%1$s Routine - %2$s</string>
+
+    <!-- Active workout -->
+    <string name="workout_exit">Exit workout</string>
+    <string name="workout_counter">%1$d of %2$d</string>
+    <string name="workout_mute_voice">Mute Voice Coach</string>
+    <string name="workout_unmute_voice">Turn On Voice Coach</string>
+    <string name="workout_voice_settings">Configure the voice coach</string>
+    <string name="workout_exercise_info">Exercise instructions</string>
+    <string name="workout_voice_issue_banner">The voice needs setup. Tap to review it.</string>
+    <string name="workout_warmup">WARM-UP</string>
+    <string name="workout_seconds_suggested">%1$d s suggested</string>
+    <string name="workout_waiting_hint">When you\'re ready, press play</string>
+    <string name="workout_prev">Previous</string>
+    <string name="workout_start_exercise">Start exercise</string>
+    <string name="workout_resume">Resume</string>
+    <string name="workout_pause">Pause</string>
+    <string name="workout_next">Next</string>
+    <string name="workout_exit_title">Pause or exit?</string>
+    <string name="workout_exit_body">If you leave the workout now, this session won\'t be saved to your stats history.</string>
+    <string name="workout_exit_confirm">Exit anyway</string>
+    <string name="workout_exit_cancel">Keep training</string>
+
+    <!-- Units -->
+    <string name="unit_seconds">%1$d seconds</string>
+    <string name="unit_reps">%1$d reps</string>
+    <string name="unit_seconds_short">%1$d s</string>
+    <string name="unit_minutes">%1$d min</string>
+    <string name="unit_kcal">%1$d kcal</string>
+
+    <!-- Summary -->
+    <string name="summary_done">WORKOUT COMPLETE!</string>
+    <string name="summary_great">Great Effort!</string>
+    <string name="summary_default_title">Home Routine</string>
+    <string name="summary_duration">Duration</string>
+    <string name="summary_calories">Calories</string>
+    <string name="summary_exercises">Exercises</string>
+    <string name="summary_saved">Session saved to your private local history. Keep it up to hold your streak!</string>
+    <string name="summary_back_home">Back to Home</string>
+
+    <!-- Progress -->
+    <string name="history_title">My Progress</string>
+    <string name="history_subtitle">Cumulative stats and local records</string>
+    <string name="history_streak">Day Streak</string>
+    <string name="history_sessions">Total Sessions</string>
+    <string name="history_minutes">Minutes Trained</string>
+    <string name="history_kcal">Kcal Burned</string>
+    <string name="history_full">Full History</string>
+    <string name="history_empty_title">No workouts recorded</string>
+    <string name="history_empty_desc">When you finish a routine it\'ll show up here with its calories, time and exercises.</string>
+    <string name="history_delete_title">Delete Record</string>
+    <string name="history_delete_body">Delete this workout record from your history?</string>
+    <string name="history_delete_confirm">Delete</string>
+    <string name="history_delete_cancel">Cancel</string>
+    <string name="history_record_meta">%1$d min • %2$d kcal • %3$d/%4$d ex.</string>
+    <string name="history_date_pattern">MMM d, yyyy - HH:mm</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Your profile</string>
+    <string name="profile_desc">We adjust each routine\'s calories to your body. It\'s an estimate, not a measurement.</string>
+    <string name="profile_weight">Weight</string>
+    <string name="profile_height">Height</string>
+    <string name="profile_age">Age</string>
+    <string name="profile_sex">Sex</string>
+    <string name="profile_kg">%1$d kg</string>
+    <string name="profile_cm">%1$d cm</string>
+    <string name="profile_years">%1$d years</string>
+    <string name="profile_with_data">With these details</string>
+    <string name="profile_bmr">Resting burn: ≈ %1$d kcal/day</string>
+    <string name="profile_bmi">BMI: %1$s</string>
+    <string name="profile_save">Save profile</string>
+    <string name="profile_reset">Reset to defaults</string>
+    <string name="profile_language">Language</string>
+    <string name="profile_language_desc">Choose the app language. Exercise names are translated separately.</string>
+    <string name="language_system">System</string>
+
+    <!-- Weekly chart -->
+    <string name="chart_week_kcal">WEEK KCAL</string>
+    <string name="chart_kcal_unit"> kcal</string>
+    <string name="chart_see_all">See all</string>
+    <string name="chart_today">Today</string>
+    <string name="chart_no_workout">%1$s · No workout</string>
+    <string name="chart_day_detail">%1$s · %2$d kcal · %3$d min</string>
+    <string name="chart_trend_first">First week recorded</string>
+    <string name="chart_trend_same">Same as last week</string>
+    <string name="chart_trend_diff">%1$s%2$d kcal vs last week</string>
+    <string-array name="weekday_initials">
+        <item>S</item>
+        <item>M</item>
+        <item>T</item>
+        <item>W</item>
+        <item>T</item>
+        <item>F</item>
+        <item>S</item>
+    </string-array>
+    <string-array name="weekday_names">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
+    <!-- Exercise sheet -->
+    <string name="exercise_steps_title">STEP-BY-STEP INSTRUCTIONS</string>
+    <string name="exercise_breathing">Breathing:</string>
+    <string name="exercise_mistakes">Common mistakes:</string>
+    <string name="exercise_how_to">HOW IT\'S DONE</string>
+
+    <!-- Rest -->
+    <string name="rest_title">REST TIME</string>
+    <string name="rest_seconds_left">seconds left</string>
+    <string name="rest_next">UP NEXT:</string>
+    <string name="rest_add20">+20 s</string>
+    <string name="rest_skip">Skip</string>
+
+    <!-- Timer -->
+    <string name="timer_paused">PAUSED</string>
+    <string name="timer_seconds">SECONDS</string>
+
+    <!-- Voice coach: UI -->
+    <string name="voice_title">Voice coach</string>
+    <string name="voice_speed">Voice speed</string>
+    <string name="voice_pitch">Voice pitch</string>
+    <string name="voice_list">Available voices</string>
+    <string name="voice_none">No installed voices found.</string>
+    <string name="voice_choose">Pick the one that sounds best on your phone. We\'ll use it for every workout.</string>
+    <string name="voice_preview">Preview voice</string>
+    <string name="voice_tip">Tip: voices that need internet sound more natural but require data. If the connection drops, FitCasa switches to an offline voice automatically.</string>
+    <string name="voice_missing_title">Voice data is missing</string>
+    <string name="voice_missing_desc">Download your system\'s voice package to hear the cues.</string>
+    <string name="voice_download">Download voices</string>
+    <string name="voice_rate_slow">Calm</string>
+    <string name="voice_rate_natural">Natural</string>
+    <string name="voice_rate_fast">Energetic</string>
+    <string name="voice_pitch_low">Low</string>
+    <string name="voice_pitch_natural">Natural</string>
+    <string name="voice_pitch_high">High</string>
+    <string name="voice_pitch_low_hint">Warm</string>
+    <string name="voice_pitch_natural_hint">Balanced</string>
+    <string name="voice_pitch_high_hint">Bright</string>
+    <string name="voice_requires_network">Needs internet</string>
+    <string name="voice_offline">Works offline</string>
+    <string name="voice_percent">%1$d%%</string>
+    <string name="voice_voice_number">%1$s · Voice %2$d</string>
+    <string name="voice_quality_max">Top quality</string>
+    <string name="voice_quality_high">High quality</string>
+    <string name="voice_quality_normal">Standard quality</string>
+    <string name="voice_quality_basic">Basic quality</string>
+    <string name="voice_engine_google">Google voice engine</string>
+    <string name="voice_engine_system">System voice engine</string>
+    <string name="voice_engine_detecting">Detecting voice engine.</string>
+    <string name="voice_engine_missing">Voice engine unavailable</string>
+    <string name="voice_error_no_engine">This device has no compatible voice engine. Download Google voices to hear the coach.</string>
+    <string name="voice_error_missing_data">We couldn\'t find an installed voice for the app language. Download Google voices to hear the coach.</string>
+
+    <!-- Voice coach: spoken phrases -->
+    <string name="voice_speak_start">Starting with %1$s. %2$s. %3$s</string>
+    <string name="voice_speak_halfway">You\'re halfway there. Keep the pace and breathe.</string>
+    <string name="voice_speak_ten_left">Ten seconds left. Hold on a little longer.</string>
+    <string name="voice_countdown_3">Three</string>
+    <string name="voice_countdown_2">Two</string>
+    <string name="voice_countdown_1">One</string>
+    <string name="voice_speak_rest">Nice work. Rest %1$d seconds. Next up: %2$s.</string>
+    <string name="voice_speak_prepare">Get ready for %1$s.</string>
+    <string name="voice_speak_completed">Workout complete. You burned about %1$d calories in %2$d minutes. Great job.</string>
+    <string name="voice_speak_paused">Workout paused.</string>
+    <string name="voice_speak_resumed">Let\'s keep going!</string>
+    <string name="voice_speak_enabled">Voice coach on.</string>
+    <string name="voice_speak_fallback">No connection: I switched to a voice that works offline.</string>
+    <string name="voice_preview_phrase">Hi, I\'m your FitCasa coach. Starting with squats. Let\'s go!</string>
+    <string-array name="voice_encouragements">
+        <item>Let\'s go!</item>
+        <item>You\'ve got this!</item>
+        <item>Keep it up!</item>
+        <item>Nice pace!</item>
+        <item>Stay with it!</item>
+    </string-array>
+
+    <!-- Data: body parts -->
+    <string name="body_part_full_name">Full Body</string>
+    <string name="body_part_full_subtitle">Total calorie burn and all-round endurance</string>
+    <string name="body_part_chest_name">Chest</string>
+    <string name="body_part_chest_subtitle">Chest strength, shoulders and pushing</string>
+    <string name="body_part_core_name">Abs &amp; Core</string>
+    <string name="body_part_core_subtitle">Definition, stability and posture</string>
+    <string name="body_part_legs_name">Legs &amp; Glutes</string>
+    <string name="body_part_legs_subtitle">Lower-body power and balance</string>
+    <string name="body_part_arms_name">Arms</string>
+    <string name="body_part_arms_subtitle">Biceps, triceps and forearms</string>
+    <string name="body_part_back_name">Back &amp; Shoulders</string>
+    <string name="body_part_back_subtitle">Posture correction and posterior chain</string>
+    <string name="body_part_stick_name">Stick &amp; Mobility</string>
+    <string name="body_part_stick_subtitle">Joint mobility, posture and strength with a stick</string>
+
+    <!-- Data: intensity -->
+    <string name="intensity_beginner_name">Beginner</string>
+    <string name="intensity_beginner_desc">Controlled moves, easy intervals and long rests to start without injuries.</string>
+    <string name="intensity_intermediate_name">Intermediate</string>
+    <string name="intensity_intermediate_desc">Dynamic pace, constant muscle tension and moderate rests to progress.</string>
+    <string name="intensity_advanced_name">Advanced</string>
+    <string name="intensity_advanced_desc">Maximum intensity, high work density and short rests for the toughest challenge.</string>
+
+    <!-- Data: sex -->
+    <string name="sex_woman">Female</string>
+    <string name="sex_man">Male</string>
+    <string name="sex_unspecified">Prefer not to say</string>
 </resources>

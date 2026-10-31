@@ -22,11 +22,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.data.model.Exercise
+import com.example.ui.breathingTips
+import com.example.ui.instructions
 
 /**
  * Guía escrita para los ejercicios que todavía no tienen animación vectorial.
@@ -59,7 +63,7 @@ fun ExerciseGuideCard(
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
-                text = "CÓMO SE HACE",
+                text = stringResource(R.string.exercise_how_to),
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.sp,
@@ -67,7 +71,7 @@ fun ExerciseGuideCard(
             )
         }
 
-        exercise.instructions.take(3).forEachIndexed { index, step ->
+        exercise.instructions().take(3).forEachIndexed { index, step ->
             Row(verticalAlignment = Alignment.Top) {
                 Box(
                     modifier = Modifier
@@ -96,7 +100,7 @@ fun ExerciseGuideCard(
         }
 
         Text(
-            text = exercise.breathingTips,
+            text = exercise.breathingTips(),
             fontSize = 12.sp,
             lineHeight = 15.sp,
             fontWeight = FontWeight.Medium,

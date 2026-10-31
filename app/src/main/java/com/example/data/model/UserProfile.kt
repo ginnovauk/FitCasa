@@ -1,10 +1,13 @@
 package com.example.data.model
 
+import androidx.annotation.StringRes
+import com.example.R
+
 /** Sexo biológico usado por la fórmula de metabolismo basal. */
-enum class Sex(val id: String, val displayName: String) {
-    MUJER("mujer", "Mujer"),
-    HOMBRE("hombre", "Hombre"),
-    SIN_ESPECIFICAR("sin_especificar", "Sin especificar")
+enum class Sex(val id: String, @StringRes val nameRes: Int) {
+    MUJER("mujer", R.string.sex_woman),
+    HOMBRE("hombre", R.string.sex_man),
+    SIN_ESPECIFICAR("sin_especificar", R.string.sex_unspecified)
 }
 
 /**
