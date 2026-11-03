@@ -49,7 +49,7 @@ fun WorkoutSummaryScreen(
     modifier: Modifier = Modifier
 ) {
     val plan = state.plan
-    val durationMinutes = (state.elapsedTotalSeconds / 60).coerceAtLeast(1)
+    val durationMinutes = state.elapsedTotalSeconds / 60
     val durationSeconds = state.elapsedTotalSeconds % 60
     val formattedDuration = String.format("%02d:%02d", durationMinutes, durationSeconds)
 

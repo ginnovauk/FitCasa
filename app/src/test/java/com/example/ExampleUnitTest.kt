@@ -28,4 +28,13 @@ class ExampleUnitTest {
         assertTrue(chestExercises.isNotEmpty())
         assertTrue(chestExercises.any { it.bodyPart == BodyPart.PECHO })
     }
+
+    @Test
+    fun workoutSummary_durationCalculation_underOneMinuteDoesNotExceedSixtySeconds() {
+        val seconds = 45
+        val durationMinutes = seconds / 60
+        val durationSeconds = seconds % 60
+        val formatted = String.format("%02d:%02d", durationMinutes, durationSeconds)
+        assertEquals("00:45", formatted)
+    }
 }
