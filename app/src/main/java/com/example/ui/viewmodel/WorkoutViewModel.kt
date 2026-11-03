@@ -19,6 +19,7 @@ import com.example.data.model.IntensityLevel
 import com.example.data.model.UserProfile
 import com.example.data.model.WorkoutPlan
 import com.example.data.repository.WorkoutRepository
+import com.example.util.AudioCueMode
 import com.example.util.VoiceCoachUiState
 import com.example.util.WorkoutSoundCuePlayer
 import com.example.util.WorkoutVoiceCoach
@@ -135,6 +136,19 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     fun previewSoundCue() {
         soundCuePlayer.previewBeep()
+    }
+
+    /**
+     * Aplica el modo de avisos elegido (voz, pitidos, ambos o silencio)
+     * ajustando los dos interruptores a la vez.
+     */
+    fun setAudioCueMode(mode: AudioCueMode) {
+        if (voiceCoach.uiState.value.isEnabled != mode.voiceOn) {
+            voiceCoach.toggleVoice()
+        }
+        if (soundCuePlayer.isEnabled != mode.beepsOn) {
+            toggleSoundCues()
+        }
     }
 
     private val _activeWorkoutState = MutableStateFlow(ActiveWorkoutUiState())

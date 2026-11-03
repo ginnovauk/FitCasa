@@ -69,6 +69,7 @@ import com.example.ui.components.RestIntervalOverlay
 import com.example.ui.components.VoiceCoachSettingsSheet
 import com.example.ui.displayName
 import com.example.ui.viewmodel.ActiveWorkoutUiState
+import com.example.util.AudioCueMode
 import com.example.util.VoiceCoachUiState
 
 @Composable
@@ -79,6 +80,7 @@ fun ActiveWorkoutScreen(
     isSoundCuesEnabled: Boolean = true,
     onToggleSoundCues: () -> Unit = {},
     onPreviewSoundCue: () -> Unit = {},
+    onSelectAudioCueMode: (AudioCueMode) -> Unit = {},
     onToggleVoiceCoach: () -> Unit,
     onSelectVoice: (String) -> Unit,
     onSelectVoiceRate: (Float) -> Unit,
@@ -449,6 +451,7 @@ fun ActiveWorkoutScreen(
                 isSoundCuesEnabled = isSoundCuesEnabled,
                 onToggleSoundCues = onToggleSoundCues,
                 onPreviewSoundCue = onPreviewSoundCue,
+                onSelectAudioCueMode = onSelectAudioCueMode,
                 onDismiss = { showVoiceSettings = false },
                 onToggleEnabled = onToggleVoiceCoach,
                 onSelectVoice = onSelectVoice,

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -46,6 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.R
+import com.example.util.AudioCueMode
 import com.example.util.VoiceCoachUiState
 import com.example.util.VoiceOption
 import kotlin.math.abs
@@ -60,6 +62,7 @@ fun VoiceCoachSettingsSheet(
     isSoundCuesEnabled: Boolean = true,
     onToggleSoundCues: () -> Unit = {},
     onPreviewSoundCue: () -> Unit = {},
+    onSelectAudioCueMode: (AudioCueMode) -> Unit = {},
     onDismiss: () -> Unit,
     onToggleEnabled: () -> Unit,
     onSelectVoice: (String) -> Unit,
@@ -140,6 +143,14 @@ fun VoiceCoachSettingsSheet(
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(18.dp))
+            SectionTitle(stringResource(R.string.cue_mode_title))
+            Spacer(modifier = Modifier.height(8.dp))
+            CueModeSelector(
+                selected = AudioCueMode.from(state.isEnabled, isSoundCuesEnabled),
+                onSelect = onSelectAudioCueMode
+            )
 
             if (state.errorMessage != null) {
                 Spacer(modifier = Modifier.height(16.dp))
@@ -351,6 +362,93 @@ private fun SectionTitle(text: String) {
         letterSpacing = 1.sp,
         color = MaterialTheme.colorScheme.primary
     )
+}
+
+/**
+ * Selector de los cuatro modos de aviso (voz, pitidos, ambos o silencio).
+ * Va en dos filas para que las etiquetas quepan sin cortarse.
+ */
+@Composable
+private fun CueModeSelector(
+    selected: AudioCueMode,
+    onSelect: (AudioCueMode) -> Unit
+) {
+    val modes = listOf(
+        AudioCueMode.VOICE,
+        AudioCueMode.BEEPS,
+        AudioCueMode.BOTH,
+        AudioCueMode.NONE
+    )
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        modes.chunked(2).forEach { rowModes ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                rowModes.forEach { mode ->
+                    CueModeChip(
+                        mode = mode,
+                        isSelected = mode == selected,
+                        onClick = { onSelect(mode) },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CueModeChip(
+    mode: AudioCueMode,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier
+            .selectable(selected = isSelected, onClick = onClick)
+            .testTag("cue_mode_${mode.name}"),
+        shape = RoundedCornerShape(14.dp),
+        color = if (isSelected) {
+            MaterialTheme.colorScheme.primaryContainer
+        } else {
+            MaterialTheme.colorScheme.surface
+        },
+        border = BorderStroke(
+            width = if (isSelected) 2.dp else 1.dp,
+            color = if (isSelected) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.outline
+            }
+        )
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(mode.labelRes()),
+                fontSize = 13.sp,
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                color = if (isSelected) {
+                    MaterialTheme.colorScheme.onPrimaryContainer
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                }
+            )
+        }
+    }
+}
+
+/** Etiqueta localizada de cada modo de aviso. */
+private fun AudioCueMode.labelRes(): Int = when (this) {
+    AudioCueMode.VOICE -> R.string.cue_mode_voice
+    AudioCueMode.BEEPS -> R.string.cue_mode_beeps
+    AudioCueMode.BOTH -> R.string.cue_mode_both
+    AudioCueMode.NONE -> R.string.cue_mode_none
 }
 
 @Composable

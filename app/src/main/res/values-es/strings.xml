@@ -267,4 +267,11 @@
     <string name="sound_cues_title">Pitidos de cuenta atrás</string>
     <string name="sound_cues_desc">Avisos acústicos en los últimos 3 segundos y al cambiar de ejercicio</string>
     <string name="sound_cues_test">Probar pitido</string>
+
+    <!-- Modo de avisos -->
+    <string name="cue_mode_title">Modo de avisos</string>
+    <string name="cue_mode_voice">Solo voz</string>
+    <string name="cue_mode_beeps">Solo pitidos</string>
+    <string name="cue_mode_both">Ambos</string>
+    <string name="cue_mode_none">Silencio</string>
 </resources>

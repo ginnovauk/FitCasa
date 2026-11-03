@@ -253,6 +253,7 @@ fun FitCasaApp(
                         isSoundCuesEnabled = isSoundCuesEnabled,
                         onToggleSoundCues = { viewModel.toggleSoundCues() },
                         onPreviewSoundCue = { viewModel.previewSoundCue() },
+                        onSelectAudioCueMode = { viewModel.setAudioCueMode(it) },
                         onToggleVoiceCoach = { viewModel.toggleVoiceCoach() },
                         onSelectVoice = { viewModel.selectVoiceOption(it) },
                         onSelectVoiceRate = { viewModel.setVoiceRate(it) },

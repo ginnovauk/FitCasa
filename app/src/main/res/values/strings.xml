@@ -270,4 +270,11 @@
     <string name="sound_cues_title">Countdown beeps</string>
     <string name="sound_cues_desc">Acoustic beeps on the last 3 seconds and when switching exercises</string>
     <string name="sound_cues_test">Test beep</string>
+
+    <!-- Audio cue mode -->
+    <string name="cue_mode_title">Alert mode</string>
+    <string name="cue_mode_voice">Voice only</string>
+    <string name="cue_mode_beeps">Beeps only</string>
+    <string name="cue_mode_both">Both</string>
+    <string name="cue_mode_none">Silent</string>
 </resources>
