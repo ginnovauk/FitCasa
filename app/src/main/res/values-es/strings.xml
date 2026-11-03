@@ -262,4 +262,9 @@
     <string name="sex_woman">Mujer</string>
     <string name="sex_man">Hombre</string>
     <string name="sex_unspecified">Sin especificar</string>
+
+    <!-- Efectos de sonido -->
+    <string name="sound_cues_title">Pitidos de cuenta atrás</string>
+    <string name="sound_cues_desc">Avisos acústicos en los últimos 3 segundos y al cambiar de ejercicio</string>
+    <string name="sound_cues_test">Probar pitido</string>
 </resources>

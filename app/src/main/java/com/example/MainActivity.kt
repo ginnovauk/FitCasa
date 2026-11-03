@@ -109,6 +109,7 @@ fun FitCasaApp(
     val totalMinutes by viewModel.totalMinutes.collectAsStateWithLifecycle()
     val totalCalories by viewModel.totalCalories.collectAsStateWithLifecycle()
     val streakDays by viewModel.streakDays.collectAsStateWithLifecycle()
+    val isSoundCuesEnabled by viewModel.isSoundCuesEnabled.collectAsStateWithLifecycle()
     val voiceState by viewModel.voiceCoachState.collectAsStateWithLifecycle()
     val currentVoiceMessage by viewModel.currentVoiceMessage.collectAsStateWithLifecycle()
 
@@ -249,6 +250,9 @@ fun FitCasaApp(
                         state = activeState,
                         voiceState = voiceState,
                         currentVoiceMessage = currentVoiceMessage,
+                        isSoundCuesEnabled = isSoundCuesEnabled,
+                        onToggleSoundCues = { viewModel.toggleSoundCues() },
+                        onPreviewSoundCue = { viewModel.previewSoundCue() },
                         onToggleVoiceCoach = { viewModel.toggleVoiceCoach() },
                         onSelectVoice = { viewModel.selectVoiceOption(it) },
                         onSelectVoiceRate = { viewModel.setVoiceRate(it) },

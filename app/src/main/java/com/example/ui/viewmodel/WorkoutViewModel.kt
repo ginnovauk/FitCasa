@@ -20,6 +20,7 @@ import com.example.data.model.UserProfile
 import com.example.data.model.WorkoutPlan
 import com.example.data.repository.WorkoutRepository
 import com.example.util.VoiceCoachUiState
+import com.example.util.WorkoutSoundCuePlayer
 import com.example.util.WorkoutVoiceCoach
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -65,11 +66,13 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private var timerJob: Job? = null
     private val vibrator: Vibrator?
     private val voiceCoach: WorkoutVoiceCoach
+    private val soundCuePlayer: WorkoutSoundCuePlayer
 
     init {
         val database = WorkoutDatabase.getDatabase(application)
         repository = WorkoutRepository(database.workoutDao())
         voiceCoach = WorkoutVoiceCoach(application)
+        soundCuePlayer = WorkoutSoundCuePlayer(application)
 
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val manager = application.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
@@ -116,6 +119,22 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     fun previewVoice() {
         voiceCoach.previewVoice()
+    }
+
+    private val _isSoundCuesEnabled = MutableStateFlow(soundCuePlayer.isEnabled)
+    val isSoundCuesEnabled: StateFlow<Boolean> = _isSoundCuesEnabled.asStateFlow()
+
+    fun toggleSoundCues() {
+        val newState = !soundCuePlayer.isEnabled
+        soundCuePlayer.isEnabled = newState
+        _isSoundCuesEnabled.value = newState
+        if (newState) {
+            soundCuePlayer.playCountdownBeep()
+        }
+    }
+
+    fun previewSoundCue() {
+        soundCuePlayer.previewBeep()
     }
 
     private val _activeWorkoutState = MutableStateFlow(ActiveWorkoutUiState())
@@ -231,6 +250,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             app.getString(R.string.unit_reps, exercise.defaultReps)
         }
         voiceCoach.speakExerciseStart(exercise.localizedName(), repOrDuration)
+        soundCuePlayer.playStartOrCompleteTone()
         _activeWorkoutState.update {
             it.copy(
                 isWaitingToStart = false,
@@ -277,6 +297,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                         voiceCoach.speakTenSecondsLeft()
                     } else if (newRemaining in 1..3) {
                         vibrateShort(60)
+                        soundCuePlayer.playCountdownBeep()
                         voiceCoach.speakCountdownNumber(newRemaining)
                     }
                 } else {
@@ -288,10 +309,12 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                         }
                     } else if (newRemaining in 1..3) {
                         vibrateShort(50)
+                        soundCuePlayer.playCountdownBeep()
                     }
                 }
 
                 if (newRemaining <= 0) {
+                    soundCuePlayer.playStartOrCompleteTone()
                     handleStepFinished(currentState, newElapsed)
                 } else {
                     _activeWorkoutState.update {
@@ -352,6 +375,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private fun finishWorkout(state: ActiveWorkoutUiState, totalSeconds: Int, completedExercises: Int) {
         timerJob?.cancel()
         vibrateTriple()
+        soundCuePlayer.playStartOrCompleteTone()
 
         val plan = state.plan ?: return
         val calculatedCalories = (plan.estimatedCalories * (completedExercises.toFloat() / plan.exercises.size.toFloat()))
@@ -524,6 +548,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         super.onCleared()
         timerJob?.cancel()
         voiceCoach.shutdown()
+        soundCuePlayer.release()
     }
 }
 

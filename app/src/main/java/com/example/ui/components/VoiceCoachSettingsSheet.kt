@@ -57,6 +57,9 @@ import kotlin.math.abs
 @Composable
 fun VoiceCoachSettingsSheet(
     state: VoiceCoachUiState,
+    isSoundCuesEnabled: Boolean = true,
+    onToggleSoundCues: () -> Unit = {},
+    onPreviewSoundCue: () -> Unit = {},
     onDismiss: () -> Unit,
     onToggleEnabled: () -> Unit,
     onSelectVoice: (String) -> Unit,
@@ -83,6 +86,60 @@ fun VoiceCoachSettingsSheet(
                 .verticalScroll(rememberScrollState())
         ) {
             VoiceHeader(state = state, onToggleEnabled = onToggleEnabled)
+
+            Spacer(modifier = Modifier.height(18.dp))
+            SectionTitle(stringResource(R.string.sound_cues_title))
+            Spacer(modifier = Modifier.height(8.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                ),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f).padding(end = 12.dp)) {
+                        Text(
+                            text = stringResource(R.string.sound_cues_title),
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = stringResource(R.string.sound_cues_desc),
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            lineHeight = 16.sp
+                        )
+                        if (isSoundCuesEnabled) {
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = stringResource(R.string.sound_cues_test),
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier
+                                    .clickable { onPreviewSoundCue() }
+                                    .padding(vertical = 4.dp)
+                                    .testTag("test_sound_cue_button")
+                            )
+                        }
+                    }
+                    Switch(
+                        checked = isSoundCuesEnabled,
+                        onCheckedChange = { onToggleSoundCues() },
+                        modifier = Modifier.testTag("sound_cues_switch")
+                    )
+                }
+            }
 
             if (state.errorMessage != null) {
                 Spacer(modifier = Modifier.height(16.dp))

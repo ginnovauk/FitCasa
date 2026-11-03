@@ -76,6 +76,9 @@ fun ActiveWorkoutScreen(
     state: ActiveWorkoutUiState,
     voiceState: VoiceCoachUiState,
     currentVoiceMessage: String?,
+    isSoundCuesEnabled: Boolean = true,
+    onToggleSoundCues: () -> Unit = {},
+    onPreviewSoundCue: () -> Unit = {},
     onToggleVoiceCoach: () -> Unit,
     onSelectVoice: (String) -> Unit,
     onSelectVoiceRate: (Float) -> Unit,
@@ -443,6 +446,9 @@ fun ActiveWorkoutScreen(
         if (showVoiceSettings) {
             VoiceCoachSettingsSheet(
                 state = voiceState,
+                isSoundCuesEnabled = isSoundCuesEnabled,
+                onToggleSoundCues = onToggleSoundCues,
+                onPreviewSoundCue = onPreviewSoundCue,
                 onDismiss = { showVoiceSettings = false },
                 onToggleEnabled = onToggleVoiceCoach,
                 onSelectVoice = onSelectVoice,

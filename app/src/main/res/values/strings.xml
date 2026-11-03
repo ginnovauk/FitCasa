@@ -265,4 +265,9 @@
     <string name="sex_woman">Female</string>
     <string name="sex_man">Male</string>
     <string name="sex_unspecified">Prefer not to say</string>
+
+    <!-- Sound effects -->
+    <string name="sound_cues_title">Countdown beeps</string>
+    <string name="sound_cues_desc">Acoustic beeps on the last 3 seconds and when switching exercises</string>
+    <string name="sound_cues_test">Test beep</string>
 </resources>
