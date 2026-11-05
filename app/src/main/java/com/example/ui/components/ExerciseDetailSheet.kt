@@ -72,7 +72,11 @@ fun ExerciseDetailSheet(
                 ExerciseMediaView(
                     exercise = exercise,
                     isPaused = false,
-                    modifier = Modifier.fillMaxWidth()
+                    // Misma proporción que la tarjeta del entrenamiento: si la
+                    // ficha usa una tarjeta cuadrada, el zoom recorta distinto.
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(240.dp)
                 )
 
                 Spacer(modifier = Modifier.height(18.dp))

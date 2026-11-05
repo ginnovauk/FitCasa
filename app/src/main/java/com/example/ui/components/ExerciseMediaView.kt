@@ -36,6 +36,12 @@ import org.json.JSONObject
 /** Metadatos: lienzo claro u oscuro recomendado para cada animación. */
 private const val LOTTIE_CANVAS_ASSET = "exercises/lottie/canvas.json"
 
+/** Fotograma inicial del bucle (0-1): evita los fundidos de entrada. */
+private const val START_FRACTION = 0.35f
+
+/** Pausa máxima en el último fotograma antes de repetir el bucle, en milisegundos. */
+private const val LOOP_HOLD_MS = 300.0
+
 /**
  * Ajuste de presentación de cada animación: lienzo con contraste, zoom y
  * punto de anclaje. Las animaciones vienen diseñadas sobre un fondo concreto
@@ -103,16 +109,25 @@ fun ExerciseMediaView(
         // animaciones del sistema: hay teléfonos con esa escala a 0 (ahorro de
         // batería o accesibilidad) y Lottie se quedaría congelado.
         val durationMs = (composition?.duration ?: 0f).toDouble()
-        var progress by remember(composition) { mutableFloatStateOf(0f) }
-        var elapsedMs by remember(composition) { mutableDoubleStateOf(0.0) }
+        var progress by remember(composition) { mutableFloatStateOf(START_FRACTION) }
+        // Arranca en un fotograma visible: varias animaciones empiezan con un
+        // fundido y la tarjeta se veía vacía hasta que el bucle avanzaba.
+        var elapsedMs by remember(composition) {
+            mutableDoubleStateOf(durationMs * START_FRACTION)
+        }
         LaunchedEffect(composition, isPaused, durationMs) {
             if (composition == null || durationMs <= 0.0 || isPaused) return@LaunchedEffect
+            val holdMs = minOf(LOOP_HOLD_MS, durationMs * 0.15)
+            val cycleMs = durationMs + holdMs
             var lastFrame = withFrameNanos { it }
             while (true) {
                 withFrameNanos { now ->
                     elapsedMs += (now - lastFrame) / 1_000_000.0
                     lastFrame = now
-                    progress = ((elapsedMs % durationMs) / durationMs).toFloat()
+                    // Pausa breve en el último fotograma antes de repetir.
+                    progress = ((elapsedMs % cycleMs) / durationMs)
+                        .coerceIn(0.0, 1.0)
+                        .toFloat()
                 }
             }
         }
