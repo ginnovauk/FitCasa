@@ -80,6 +80,8 @@ Para que suene bien, instala las voces del idioma desde **Ajustes del teléfono 
 2. Deja que Gradle sincronice y corrija incompatibilidades si hace falta.
 3. Ejecuta en un emulador o dispositivo con Android 7.0 (API 24) o superior.
 
+> La interfaz está pensada para usarse en vertical: la app se mantiene en retrato para no cortar el cronómetro ni los controles del entrenamiento.
+
 ### Instalar el APK sin Android Studio
 
 El APK de depuración se genera con:
