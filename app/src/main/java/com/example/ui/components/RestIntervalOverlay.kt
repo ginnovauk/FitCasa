@@ -3,6 +3,7 @@ package com.example.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -46,131 +47,185 @@ fun RestIntervalOverlay(
     onSkipRest: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
+    BoxWithConstraints(
         modifier = modifier
             .fillMaxSize()
             // Opaco: con alfa se transparentaba la pantalla del ejercicio y se
             // leían dos capas de texto a la vez.
-            .background(MaterialTheme.colorScheme.background)
-            .padding(24.dp),
+            .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
+        val isLandscape = maxWidth > maxHeight
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(if (isLandscape) 16.dp else 24.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Icon(
-                imageVector = Icons.Default.SelfImprovement,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(48.dp)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = stringResource(R.string.rest_title),
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 1.5.sp,
-                color = MaterialTheme.colorScheme.primary
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = "$remainingSeconds",
-                fontSize = 72.sp,
-                fontWeight = FontWeight.Black,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-
-            Text(
-                text = stringResource(R.string.rest_seconds_left),
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            Spacer(modifier = Modifier.height(28.dp))
-
-            // Next exercise card preview
-            if (nextExercise != null) {
-                Card(
+            // En horizontal el descanso se reparte en dos columnas para que los
+            // botones de +20 s y saltar no queden fuera de pantalla.
+            if (isLandscape) {
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(18.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f)
-                    )
+                    horizontalArrangement = Arrangement.spacedBy(24.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Box(
+                        modifier = Modifier.weight(1f),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        RestCountdown(remainingSeconds = remainingSeconds)
+                    }
+
                     Column(
-                        modifier = Modifier.padding(16.dp),
+                        modifier = Modifier.weight(1f),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = stringResource(R.string.rest_next),
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary,
-                            letterSpacing = 1.sp
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = nextExercise.displayName(),
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = if (nextExercise.isTimeBased) {
-                                stringResource(R.string.unit_seconds_short, nextExercise.defaultDurationSeconds)
-                            } else {
-                                stringResource(R.string.unit_reps, nextExercise.defaultReps)
-                            },
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        NextExerciseCard(nextExercise = nextExercise)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        RestActions(
+                            onAdd20Seconds = onAdd20Seconds,
+                            onSkipRest = onSkipRest
                         )
                     }
                 }
-            }
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // Action buttons: +20s and Skip
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                OutlinedButton(
-                    onClick = onAdd20Seconds,
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(52.dp)
-                        .testTag("add_20s_rest_button"),
-                    shape = RoundedCornerShape(14.dp)
+            } else {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(stringResource(R.string.rest_add20), fontWeight = FontWeight.SemiBold)
-                }
-
-                Button(
-                    onClick = onSkipRest,
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(52.dp)
-                        .testTag("skip_rest_button"),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                    shape = RoundedCornerShape(14.dp)
-                ) {
-                    Text(stringResource(R.string.rest_skip), fontWeight = FontWeight.Bold)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Icon(Icons.Default.FastForward, contentDescription = null, modifier = Modifier.size(18.dp))
+                    RestCountdown(remainingSeconds = remainingSeconds)
+                    Spacer(modifier = Modifier.height(28.dp))
+                    NextExerciseCard(nextExercise = nextExercise)
+                    Spacer(modifier = Modifier.height(32.dp))
+                    RestActions(
+                        onAdd20Seconds = onAdd20Seconds,
+                        onSkipRest = onSkipRest
+                    )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun RestCountdown(remainingSeconds: Int) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Icon(
+            imageVector = Icons.Default.SelfImprovement,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(48.dp)
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = stringResource(R.string.rest_title),
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 1.5.sp,
+            color = MaterialTheme.colorScheme.primary
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = "$remainingSeconds",
+            fontSize = 72.sp,
+            fontWeight = FontWeight.Black,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
+        Text(
+            text = stringResource(R.string.rest_seconds_left),
+            fontSize = 14.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+private fun NextExerciseCard(nextExercise: Exercise?) {
+    if (nextExercise == null) return
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(18.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f)
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(R.string.rest_next),
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.secondary,
+                letterSpacing = 1.sp
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = nextExercise.displayName(),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = if (nextExercise.isTimeBased) {
+                    stringResource(R.string.unit_seconds_short, nextExercise.defaultDurationSeconds)
+                } else {
+                    stringResource(R.string.unit_reps, nextExercise.defaultReps)
+                },
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+@Composable
+private fun RestActions(
+    onAdd20Seconds: () -> Unit,
+    onSkipRest: () -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        OutlinedButton(
+            onClick = onAdd20Seconds,
+            modifier = Modifier
+                .weight(1f)
+                .height(52.dp)
+                .testTag("add_20s_rest_button"),
+            shape = RoundedCornerShape(14.dp)
+        ) {
+            Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(stringResource(R.string.rest_add20), fontWeight = FontWeight.SemiBold)
+        }
+
+        Button(
+            onClick = onSkipRest,
+            modifier = Modifier
+                .weight(1f)
+                .height(52.dp)
+                .testTag("skip_rest_button"),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+            shape = RoundedCornerShape(14.dp)
+        ) {
+            Text(stringResource(R.string.rest_skip), fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.width(4.dp))
+            Icon(Icons.Default.FastForward, contentDescription = null, modifier = Modifier.size(18.dp))
         }
     }
 }

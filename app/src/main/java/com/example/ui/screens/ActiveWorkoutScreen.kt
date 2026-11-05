@@ -8,9 +8,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -114,15 +116,23 @@ fun ActiveWorkoutScreen(
     val currentEx = state.currentExercise
     val plan = state.plan
 
-    Box(
+    BoxWithConstraints(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
+        // En horizontal el contenido se reparte en dos columnas: la
+        // demostración a la izquierda y el cronómetro con los controles a la
+        // derecha. En vertical se mantiene la columna de siempre.
+        val isLandscape = maxWidth > maxHeight
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp, vertical = 14.dp),
+                .padding(
+                    horizontal = 20.dp,
+                    vertical = if (isLandscape) 6.dp else 14.dp
+                ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Top Nav Row: Exit, Title, Voice Coach Toggle, Info
@@ -245,180 +255,87 @@ fun ActiveWorkoutScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
-
-            // Exercise Title & Reps/Duration Info
-            if (currentEx != null) {
-                if (currentEx.isWarmUp) {
-                    Surface(
-                        shape = RoundedCornerShape(8.dp),
-                        color = MaterialTheme.colorScheme.tertiaryContainer,
-                        modifier = Modifier.padding(bottom = 6.dp)
+            if (isLandscape) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .padding(top = 4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        Text(
-                            text = stringResource(R.string.workout_warmup),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Black,
-                            letterSpacing = 1.sp,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer,
-                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 3.dp)
+                        WorkoutHeader(exercise = currentEx)
+                        Spacer(modifier = Modifier.height(6.dp))
+                        WorkoutMedia(
+                            exercise = currentEx,
+                            isPaused = state.isPaused,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                                .heightIn(min = 90.dp)
+                        )
+                    }
+
+                    Column(
+                        modifier = Modifier
+                            .width(300.dp)
+                            .fillMaxHeight(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        WaitingHint(visible = state.isWaitingToStart)
+                        CircularTimerView(
+                            remainingSeconds = state.remainingSeconds,
+                            totalSeconds = state.totalSecondsForCurrentStep,
+                            isPaused = state.isPaused || state.isWaitingToStart,
+                            diameter = 150.dp,
+                            modifier = Modifier.testTag("circular_timer")
+                        )
+                        WorkoutControls(
+                            state = state,
+                            onPreviousExercise = onPreviousExercise,
+                            onTogglePause = onTogglePause,
+                            onStartStep = onStartStep,
+                            onNextExercise = onNextExercise,
+                            compact = true
                         )
                     }
                 }
-
-                Text(
-                    text = currentEx.displayName(),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Surface(
-                    shape = RoundedCornerShape(12.dp),
-                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-                ) {
-                    Text(
-                        text = if (currentEx.isTimeBased) {
-                            stringResource(R.string.workout_seconds_suggested, currentEx.defaultDurationSeconds)
-                        } else {
-                            stringResource(R.string.unit_reps, currentEx.defaultReps)
-                        },
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            // Demostración vectorial: ocupa el espacio libre entre el título y
-            // el temporizador, sin empujar los controles fuera. Los ejercicios
-            // sin animación dejan ese hueco para que el temporizador no baile.
-            val currentExercise = currentEx
-            if (currentExercise != null && currentExercise.lottieAsset != null) {
-                ExerciseMediaView(
-                    exercise = currentExercise,
+            } else {
+                Spacer(modifier = Modifier.height(10.dp))
+                WorkoutHeader(exercise = currentEx)
+                Spacer(modifier = Modifier.height(10.dp))
+                WorkoutMedia(
+                    exercise = currentEx,
                     isPaused = state.isPaused,
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
                         .heightIn(min = 160.dp)
-                        .testTag("exercise_media_container")
                 )
-            } else if (currentExercise != null) {
-                // Sin animación: los pasos escritos ocupan el mismo hueco, así
-                // la pantalla no queda vacía y el temporizador no se mueve.
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    ExerciseGuideCard(
-                        exercise = currentExercise,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .testTag("exercise_guide_card")
-                    )
-                }
-            } else {
-                Spacer(modifier = Modifier.weight(1f))
-            }
-
-            Spacer(modifier = Modifier.height(14.dp))
-
-            // Aviso de que el cronómetro espera: el tiempo no corre hasta que el
-            // usuario está colocado y pulsa play.
-            if (state.isWaitingToStart) {
-                Text(
-                    text = stringResource(R.string.workout_waiting_hint),
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .padding(bottom = 6.dp)
-                        .testTag("waiting_to_start_hint")
+                Spacer(modifier = Modifier.height(14.dp))
+                WaitingHint(visible = state.isWaitingToStart)
+                CircularTimerView(
+                    remainingSeconds = state.remainingSeconds,
+                    totalSeconds = state.totalSecondsForCurrentStep,
+                    isPaused = state.isPaused || state.isWaitingToStart,
+                    modifier = Modifier.testTag("circular_timer")
                 )
-            }
-
-            // Interactive Circular Countdown Timer
-            CircularTimerView(
-                remainingSeconds = state.remainingSeconds,
-                totalSeconds = state.totalSecondsForCurrentStep,
-                isPaused = state.isPaused || state.isWaitingToStart,
-                modifier = Modifier.testTag("circular_timer")
-            )
-
-            // Controls Row (Previous, Play/Pause, Next)
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 20.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Previous Exercise
-                FilledIconButton(
-                    onClick = onPreviousExercise,
-                    enabled = state.currentExerciseIndex > 0,
-                    modifier = Modifier
-                        .size(54.dp)
-                        .testTag("prev_exercise_button"),
-                    colors = IconButtonDefaults.filledIconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    ),
-                    shape = CircleShape
-                ) {
-                    Icon(Icons.Default.SkipPrevious, contentDescription = stringResource(R.string.workout_prev), modifier = Modifier.size(26.dp))
-                }
-
-                // Main Play/Pause Button
-                FilledIconButton(
-                    onClick = if (state.isWaitingToStart) onStartStep else onTogglePause,
-                    modifier = Modifier
-                        .size(72.dp)
-                        .testTag("toggle_pause_button"),
-                    colors = IconButtonDefaults.filledIconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    shape = CircleShape
-                ) {
-                    Icon(
-                        imageVector = if (state.isPaused || state.isWaitingToStart) {
-                            Icons.Default.PlayArrow
-                        } else {
-                            Icons.Default.Pause
-                        },
-                        contentDescription = when {
-                            state.isWaitingToStart -> stringResource(R.string.workout_start_exercise)
-                            state.isPaused -> stringResource(R.string.workout_resume)
-                            else -> stringResource(R.string.workout_pause)
-                        },
-                        modifier = Modifier.size(36.dp)
-                    )
-                }
-
-                // Next Exercise
-                FilledIconButton(
-                    onClick = onNextExercise,
-                    modifier = Modifier
-                        .size(54.dp)
-                        .testTag("next_exercise_button"),
-                    colors = IconButtonDefaults.filledIconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    ),
-                    shape = CircleShape
-                ) {
-                    Icon(Icons.Default.SkipNext, contentDescription = stringResource(R.string.workout_next), modifier = Modifier.size(26.dp))
-                }
+                WorkoutControls(
+                    state = state,
+                    onPreviousExercise = onPreviousExercise,
+                    onTogglePause = onTogglePause,
+                    onStartStep = onStartStep,
+                    onNextExercise = onNextExercise,
+                    compact = false
+                )
             }
         }
 
@@ -483,6 +400,195 @@ fun ActiveWorkoutScreen(
                         Text(stringResource(R.string.workout_exit_cancel))
                     }
                 }
+            )
+        }
+    }
+}
+
+/** Badge de calentamiento, nombre del ejercicio y duración/reps sugeridas. */
+@Composable
+private fun WorkoutHeader(exercise: Exercise?) {
+    if (exercise == null) return
+
+    if (exercise.isWarmUp) {
+        Surface(
+            shape = RoundedCornerShape(8.dp),
+            color = MaterialTheme.colorScheme.tertiaryContainer,
+            modifier = Modifier.padding(bottom = 6.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.workout_warmup),
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Black,
+                letterSpacing = 1.sp,
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                modifier = Modifier.padding(horizontal = 10.dp, vertical = 3.dp)
+            )
+        }
+    }
+
+    Text(
+        text = exercise.displayName(),
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colorScheme.onBackground
+    )
+
+    Spacer(modifier = Modifier.height(4.dp))
+
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+    ) {
+        Text(
+            text = if (exercise.isTimeBased) {
+                stringResource(R.string.workout_seconds_suggested, exercise.defaultDurationSeconds)
+            } else {
+                stringResource(R.string.unit_reps, exercise.defaultReps)
+            },
+            fontSize = 12.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+        )
+    }
+}
+
+/**
+ * Demostración vectorial (o los pasos escritos si no hay animación). Ocupa el
+ * espacio libre entre la cabecera y el cronómetro.
+ */
+@Composable
+private fun WorkoutMedia(
+    exercise: Exercise?,
+    isPaused: Boolean,
+    modifier: Modifier = Modifier
+) {
+    if (exercise == null) {
+        Spacer(modifier = modifier)
+        return
+    }
+
+    if (exercise.lottieAsset != null) {
+        ExerciseMediaView(
+            exercise = exercise,
+            isPaused = isPaused,
+            modifier = modifier.testTag("exercise_media_container")
+        )
+    } else {
+        Box(modifier = modifier, contentAlignment = Alignment.Center) {
+            ExerciseGuideCard(
+                exercise = exercise,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("exercise_guide_card")
+            )
+        }
+    }
+}
+
+/** Aviso de que el cronómetro espera al play del usuario. */
+@Composable
+private fun WaitingHint(visible: Boolean) {
+    if (!visible) return
+
+    Text(
+        text = stringResource(R.string.workout_waiting_hint),
+        fontSize = 13.sp,
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier
+            .padding(bottom = 6.dp)
+            .testTag("waiting_to_start_hint")
+    )
+}
+
+/** Fila de controles: anterior, play/pausa y siguiente. */
+@Composable
+private fun WorkoutControls(
+    state: ActiveWorkoutUiState,
+    onPreviousExercise: () -> Unit,
+    onTogglePause: () -> Unit,
+    onStartStep: () -> Unit,
+    onNextExercise: () -> Unit,
+    compact: Boolean
+) {
+    val sideSize = if (compact) 46.dp else 54.dp
+    val mainSize = if (compact) 60.dp else 72.dp
+    val sideIcon = if (compact) 22.dp else 26.dp
+    val mainIcon = if (compact) 30.dp else 36.dp
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = if (compact) 2.dp else 20.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Previous Exercise
+        FilledIconButton(
+            onClick = onPreviousExercise,
+            enabled = state.currentExerciseIndex > 0,
+            modifier = Modifier
+                .size(sideSize)
+                .testTag("prev_exercise_button"),
+            colors = IconButtonDefaults.filledIconButtonColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+            ),
+            shape = CircleShape
+        ) {
+            Icon(
+                Icons.Default.SkipPrevious,
+                contentDescription = stringResource(R.string.workout_prev),
+                modifier = Modifier.size(sideIcon)
+            )
+        }
+
+        // Main Play/Pause Button
+        FilledIconButton(
+            onClick = if (state.isWaitingToStart) onStartStep else onTogglePause,
+            modifier = Modifier
+                .size(mainSize)
+                .testTag("toggle_pause_button"),
+            colors = IconButtonDefaults.filledIconButtonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            ),
+            shape = CircleShape
+        ) {
+            Icon(
+                imageVector = if (state.isPaused || state.isWaitingToStart) {
+                    Icons.Default.PlayArrow
+                } else {
+                    Icons.Default.Pause
+                },
+                contentDescription = when {
+                    state.isWaitingToStart -> stringResource(R.string.workout_start_exercise)
+                    state.isPaused -> stringResource(R.string.workout_resume)
+                    else -> stringResource(R.string.workout_pause)
+                },
+                modifier = Modifier.size(mainIcon)
+            )
+        }
+
+        // Next Exercise
+        FilledIconButton(
+            onClick = onNextExercise,
+            modifier = Modifier
+                .size(sideSize)
+                .testTag("next_exercise_button"),
+            colors = IconButtonDefaults.filledIconButtonColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+            ),
+            shape = CircleShape
+        ) {
+            Icon(
+                Icons.Default.SkipNext,
+                contentDescription = stringResource(R.string.workout_next),
+                modifier = Modifier.size(sideIcon)
             )
         }
     }

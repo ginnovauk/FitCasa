@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.R
@@ -30,8 +31,11 @@ fun CircularTimerView(
     remainingSeconds: Int,
     totalSeconds: Int,
     isPaused: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    diameter: Dp = 190.dp
 ) {
+    val scale = diameter.value / 190f
+
     val progress = if (totalSeconds > 0) {
         (remainingSeconds.toFloat() / totalSeconds.toFloat()).coerceIn(0f, 1f)
     } else 0f
@@ -49,11 +53,11 @@ fun CircularTimerView(
     val trackColor = MaterialTheme.colorScheme.surfaceVariant
 
     Box(
-        modifier = modifier.size(190.dp),
+        modifier = modifier.size(diameter),
         contentAlignment = Alignment.Center
     ) {
-        Canvas(modifier = Modifier.size(180.dp)) {
-            val strokeWidth = 12.dp.toPx()
+        Canvas(modifier = Modifier.size((diameter.value * 0.947f).dp)) {
+            val strokeWidth = 12.dp.toPx() * scale
             val arcSize = size.width - strokeWidth
             val topLeft = Offset(strokeWidth / 2f, strokeWidth / 2f)
 
@@ -83,7 +87,7 @@ fun CircularTimerView(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = "$remainingSeconds",
-                fontSize = 54.sp,
+                fontSize = (54f * scale).coerceAtLeast(28f).sp,
                 fontWeight = FontWeight.Black,
                 color = activeColor
             )
@@ -94,7 +98,7 @@ fun CircularTimerView(
                 } else {
                     stringResource(R.string.timer_seconds)
                 },
-                fontSize = 12.sp,
+                fontSize = (12f * scale).coerceAtLeast(8f).sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.2.sp,
                 color = if (isPaused) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant
