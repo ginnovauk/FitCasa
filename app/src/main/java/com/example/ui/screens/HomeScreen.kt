@@ -54,7 +54,6 @@ import androidx.compose.ui.unit.sp
 import com.example.R
 import com.example.data.local.WorkoutEntity
 import com.example.data.model.IntensityLevel
-import com.example.data.model.WorkoutPlan
 import com.example.ui.components.WeeklyCaloriesChart
 import com.example.ui.displayTitle
 import com.example.ui.rememberAppLocale
@@ -69,8 +68,7 @@ fun HomeScreen(
     totalCalories: Int,
     recentWorkouts: List<WorkoutEntity>,
     onOpenProfile: () -> Unit,
-    onStartQuickWorkout: (WorkoutPlan) -> Unit,
-    onNavigateToBuilder: () -> Unit,
+    onStartQuickWorkout: () -> Unit,
     onNavigateToHistory: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -261,9 +259,7 @@ fun HomeScreen(
                         }
 
                         Button(
-                            onClick = {
-                                onNavigateToBuilder()
-                            },
+                            onClick = onStartQuickWorkout,
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.White,
                                 contentColor = MaterialTheme.colorScheme.primary

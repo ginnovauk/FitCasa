@@ -253,6 +253,21 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         startTimerLoop()
     }
 
+    /**
+     * Rutina recomendada de la portada: 10 minutos de cuerpo completo para
+     * principiantes. Se genera en el momento de pulsar "Entrenar" para que las
+     * kcal salgan con el perfil actual.
+     */
+    fun startRecommendedWorkout() {
+        val plan = repository.generateWorkoutPlan(
+            bodyPart = BodyPart.CUERPO_COMPLETO,
+            intensity = IntensityLevel.PRINCIPIANTE,
+            targetDurationMinutes = RECOMMENDED_DURATION_MINUTES,
+            profile = _profile.value
+        )
+        startWorkout(plan)
+    }
+
     /** El usuario ya está en posición: empieza a contar el ejercicio actual. */
     fun startCurrentStep() {
         val state = _activeWorkoutState.value
@@ -567,3 +582,6 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 }
 
 private const val TICK_MS = 1000L
+
+/** Duración de la rutina recomendada de la portada (solo trabajo principal). */
+private const val RECOMMENDED_DURATION_MINUTES = 10

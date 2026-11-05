@@ -49,7 +49,7 @@ import java.io.FileOutputStream
  */
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Config(sdk = [36], qualifiers = "w411dp-h891dp-xhdpi")
+@Config(sdk = [36], qualifiers = "es-rES-w411dp-h891dp-xhdpi")
 class ScreenshotTest {
 
     @get:Rule
@@ -116,7 +116,6 @@ class ScreenshotTest {
             recentWorkouts = history,
             onOpenProfile = {},
             onStartQuickWorkout = {},
-            onNavigateToBuilder = {},
             onNavigateToHistory = {}
         )
     }

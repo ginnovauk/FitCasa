@@ -10,9 +10,9 @@ App Android de entrenamiento en casa **sin equipamiento**: rutinas por zona del 
 
 FitCasa is a home workout app for Android with **no equipment and no account**: choose a body part, an intensity level and how much time you have, and it builds a routine with a timer, rests, technique demonstrations and a voice coach. Everything runs offline and your history stays on the phone.
 
-- **Home**: streak, minutes and calories, plus shortcuts to each body part.
+- **Home**: streak, minutes and calories, plus one-tap start of the recommended 10-minute routine.
 - **Routines**: three-step setup, generated plan and exercise list with step-by-step instructions.
-- **Exercise library**: 46 bodyweight moves (10 of them with a broomstick) with instructions, breathing tips, common mistakes and their own animation.
+- **Exercise library**: 46 bodyweight moves (10 of them with a broomstick) with instructions, breathing tips, common mistakes and a vector animation (43 unique clips; a few moves share one).
 - **Active workout**: circular timer, skippable rests, vibration, screen kept on and a voice coach that speaks the app language.
 - **Progress**: local history (Room), no sign-up, sessions can be deleted.
 - **Languages**: English and Spanish. Switch inside the app from the profile icon (System / Español / English); on Android 13+ it also appears in the system language settings.
@@ -36,7 +36,7 @@ Download the latest APK from [Releases](https://github.com/ginnovauk/FitCasa/rel
 
 ## Qué incluye
 
-- **Inicio**: racha de días, minutos y calorías acumuladas, acceso rápido a zonas del cuerpo e historial reciente.
+- **Inicio**: racha de días, minutos y calorías acumuladas, acceso directo a la rutina recomendada de 10 minutos e historial reciente.
 - **Rutinas**: configuración en 3 pasos (zona, intensidad y duración), generación del plan y lista de ejercicios con instrucciones.
 - **Entrenamiento activo**: cronómetro circular, descansos con opción de saltar o añadir 20 s, vibración, pantalla siempre encendida y entrenador por voz.
 - **Progreso**: historial local con Room (sin registro ni cuenta) y borrado de sesiones.
@@ -45,7 +45,7 @@ Download the latest APK from [Releases](https://github.com/ginnovauk/FitCasa/rel
 
 46 ejercicios sin equipamiento (los de palo solo necesitan un bastón o una escoba): 10 de espalda, 10 con palo, 9 de brazos, 7 de cuerpo completo, 4 de piernas, 3 de pecho y 3 de abdomen.
 
-Los 46 tienen demostración propia en formato vectorial (Lottie) empaquetada en la app, así que funcionan sin conexión y se ven nítidas en cualquier pantalla. Cada una se acompaña de las instrucciones paso a paso, la respiración y los errores comunes.
+Los 46 tienen demostración en formato vectorial (Lottie) empaquetada en la app, así que funcionan sin conexión y se ven nítidas en cualquier pantalla. Son 43 animaciones únicas: algunos ejercicios comparten la misma. Cada una se acompaña de las instrucciones paso a paso, la respiración y los errores comunes.
 
 **Créditos:** parte de las animaciones provienen de LottieFiles bajo la *Lottie Simple License* (permite uso comercial) y el resto están dibujadas para FitCasa, sin material de terceros. Ver `app/src/main/assets/exercises/lottie/NOTICE.txt`.
 
@@ -94,7 +94,7 @@ Queda en `app/build/outputs/apk/debug/app-debug.apk`. Para instalarlo en el tel�
 
 ## Sin servicios externos
 
-La app **no usa Firebase, ni cuentas, ni claves de API**: todo funciona en el teléfono y sin conexión (rutinas, animaciones, voz, historial). La única parte que necesita internet es la descarga de voces en español del sistema.
+La app **no usa Firebase, ni cuentas, ni claves de API**: todo funciona en el teléfono y sin conexión (rutinas, animaciones, voz, historial). Ni siquiera declara el permiso de INTERNET; la única parte que usa la red es la app de voz del sistema cuando descargas voces en español.
 
 ## Estructura
 

@@ -35,6 +35,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -73,6 +74,14 @@ enum class ScreenState {
     SUMMARY
 }
 
+/**
+ * Tras restaurar el estado, una pantalla de entrenamiento o de resumen solo
+ * tiene sentido si el ViewModel conserva el plan. Si el proceso murió, el plan
+ * se perdió y hay que volver a la pestaña principal.
+ */
+internal fun restoredScreen(screen: ScreenState, hasPlan: Boolean): ScreenState =
+    if (screen != ScreenState.TABS && !hasPlan) ScreenState.TABS else screen
+
 class MainActivity : ComponentActivity() {
 
     /** En Android 12 y anteriores el idioma elegido en la app se aplica aquí. */
@@ -96,9 +105,11 @@ class MainActivity : ComponentActivity() {
 fun FitCasaApp(
     viewModel: WorkoutViewModel = viewModel()
 ) {
-    var currentScreen by remember { mutableStateOf(ScreenState.TABS) }
-    var selectedTab by remember { mutableStateOf(MainTab.HOME) }
-    var showProfileSheet by remember { mutableStateOf(false) }
+    // rememberSaveable: al girar el móvil la Activity se recrea y, sin esto,
+    // la app volvía a Inicio mientras la sesión seguía corriendo en el ViewModel.
+    var currentScreen by rememberSaveable { mutableStateOf(ScreenState.TABS) }
+    var selectedTab by rememberSaveable { mutableStateOf(MainTab.HOME) }
+    var showProfileSheet by rememberSaveable { mutableStateOf(false) }
 
     val context = LocalContext.current
     var appLanguage by remember { mutableStateOf(AppLanguage.current(context)) }
@@ -124,6 +135,13 @@ fun FitCasaApp(
         if (activeState.isCompleted && currentScreen == ScreenState.ACTIVE_WORKOUT) {
             currentScreen = ScreenState.SUMMARY
         }
+    }
+
+    // Si el sistema mata el proceso, la pantalla se restaura pero el ViewModel
+    // vuelve vacío: sin plan no hay entrenamiento ni resumen que enseñar, así
+    // que es mejor volver a Inicio que dejar una pantalla en blanco.
+    LaunchedEffect(currentScreen, activeState.plan) {
+        currentScreen = restoredScreen(currentScreen, hasPlan = activeState.plan != null)
     }
 
     // Handle back button for secondary tabs
@@ -199,12 +217,9 @@ fun FitCasaApp(
                                 totalCalories = totalCalories,
                                 recentWorkouts = history,
                                 onOpenProfile = { showProfileSheet = true },
-                                onStartQuickWorkout = { plan ->
-                                    viewModel.startWorkout(plan)
+                                onStartQuickWorkout = {
+                                    viewModel.startRecommendedWorkout()
                                     currentScreen = ScreenState.ACTIVE_WORKOUT
-                                },
-                                onNavigateToBuilder = {
-                                    selectedTab = MainTab.BUILDER
                                 },
                                 onNavigateToHistory = {
                                     selectedTab = MainTab.HISTORY
