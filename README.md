@@ -34,6 +34,11 @@ Download the latest APK from [Releases](https://github.com/ginnovauk/FitCasa/rel
   </tr>
 </table>
 
+<p align="center">
+  <img src="docs/screenshots/07-horizontal.png" width="720" alt="Entrenamiento en horizontal: animación a la izquierda y cronómetro con controles a la derecha"><br>
+  <sub>Horizontal: la app no bloquea el giro</sub>
+</p>
+
 ## Qué incluye
 
 - **Inicio**: racha de días, minutos y calorías acumuladas, acceso directo a la rutina recomendada de 10 minutos e historial reciente.
