@@ -12,8 +12,8 @@ android {
     applicationId = "com.aistudio.homeworkout.zqvmep"
     minSdk = 24
     targetSdk = 36
-    versionCode = 14
-    versionName = "0.7.0"
+    versionCode = 16
+    versionName = "0.8.1"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }

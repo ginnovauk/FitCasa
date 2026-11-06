@@ -416,26 +416,26 @@ fun ExerciseListItem(
                     onClick = onMoveUp,
                     enabled = canMoveUp,
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(48.dp)
                         .testTag("move_up_${exercise.id}")
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowUp,
                         contentDescription = stringResource(R.string.builder_move_up, exercise.displayName()),
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(24.dp)
                     )
                 }
                 IconButton(
                     onClick = onMoveDown,
                     enabled = canMoveDown,
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(48.dp)
                         .testTag("move_down_${exercise.id}")
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowDown,
                         contentDescription = stringResource(R.string.builder_move_down, exercise.displayName()),
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }

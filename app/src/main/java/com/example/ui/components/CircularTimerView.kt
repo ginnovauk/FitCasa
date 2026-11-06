@@ -24,6 +24,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.LiveRegionMode
 import com.example.R
 
 @Composable
@@ -89,7 +92,10 @@ fun CircularTimerView(
                 text = "$remainingSeconds",
                 fontSize = (54f * scale).coerceAtLeast(28f).sp,
                 fontWeight = FontWeight.Black,
-                color = activeColor
+                color = activeColor,
+                modifier = Modifier.semantics {
+                    liveRegion = LiveRegionMode.Polite
+                }
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
