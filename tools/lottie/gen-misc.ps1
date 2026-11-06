@@ -38,7 +38,7 @@ $fr = @(0, 16, 30, 46, 60)
 $W = 900; $H = 900
 $shX = 440; $shY = 380
 $hipX = 455; $hipY = 545
-$squatDx = -30; $squatDy = 80
+$squatDx = -15; $squatDy = 45
 
 $suelo = StaticLayer 'suelo' 1 @(
   (Filled 'suelo' (Rect 470 864 760 24 12) $script:matDark),
@@ -75,11 +75,11 @@ $kneeF = @(($hipX + 30), ($hipY + 163))
 $ankF  = @(($hipX + 46), ($hipY + 309))
 $thighF = ChildLayer 'muslo_lejos' 5 2 @(
   (Limb 'muslo' $hipF[0] $hipF[1] $kneeF[0] $kneeF[1] 56 $script:pantsBk)
-) (RotKeys $fr @(0, -34, -34, 0, 0)) @($hipF[0], $hipF[1])
+) (RotKeys $fr @(0, -17, -17, 0, 0)) @($hipF[0], $hipF[1])
 $calfF = ChildLayer 'pantorrilla_lejos' 6 5 @(
   (Limb 'pantorrilla' $kneeF[0] $kneeF[1] $ankF[0] $ankF[1] 42 $script:pantsBk),
   (Limb 'pie' $ankF[0] $ankF[1] ($ankF[0] + 50) ($ankF[1] + 6) 30 $script:shoe)
-) (RotKeys $fr @(0, 72, 72, 0, 0)) @($kneeF[0], $kneeF[1])
+) (RotKeys $fr @(0, 36, 36, 0, 0)) @($kneeF[0], $kneeF[1])
 
 # brazo cercano
 $uArm = ChildLayer 'brazo_sup' 7 2 @(
@@ -96,13 +96,13 @@ $kneeN = @(($hipX + 22), ($hipY + 161))
 $ankN  = @(($hipX + 40), ($hipY + 301))
 $thigh = ChildLayer 'muslo' 9 2 @(
   (Limb 'muslo' $hipX $hipY $kneeN[0] $kneeN[1] 60 $script:pants)
-) (RotKeys $fr @(0, -35, -35, 0, 0)) @($hipX, $hipY)
+) (RotKeys $fr @(0, -18, -18, 0, 0)) @($hipX, $hipY)
 $calf = ChildLayer 'pantorrilla' 10 9 @(
   (Limb 'pantorrilla' $kneeN[0] $kneeN[1] $ankN[0] $ankN[1] 44 $script:pantsBk)
-) (RotKeys $fr @(0, 68, 68, 0, 0)) @($kneeN[0], $kneeN[1])
+) (RotKeys $fr @(0, 34, 34, 0, 0)) @($kneeN[0], $kneeN[1])
 $foot = ChildLayer 'pie' 11 10 @(
   (Limb 'pie' $ankN[0] $ankN[1] ($ankN[0] + 50) ($ankN[1] + 6) 32 $script:shoe)
-) (RotKeys $fr @(0, -27, -27, 0, 0)) @($ankN[0], $ankN[1])
+) (RotKeys $fr @(0, -14, -14, 0, 0)) @($ankN[0], $ankN[1])
 
 Write-Anim 'towel_squat_row' $W $H 30 @(
   $suelo, $root, $uArmF, $fArmF, $thighF, $calfF, $uArm, $fArm, $thigh, $calf, $foot

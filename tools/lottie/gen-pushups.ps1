@@ -118,3 +118,5 @@ function PushUp([string]$name, [bool]$kneeling, [double]$bodyRot) {
 PushUp 'push_ups_knees' $true -5.5
 # Diamante: piernas rectas, mas recorrido.
 PushUp 'push_ups_diamond' $false -6.5
+# Estandar: misma mecanica que la diamante, con un recorrido algo menor.
+PushUp 'push_ups_standard' $false -5.8

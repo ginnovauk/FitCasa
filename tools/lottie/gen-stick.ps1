@@ -1,4 +1,4 @@
-﻿# Rutas portables: el repo se deduce de la ubicacion del script y los
+# Rutas portables: el repo se deduce de la ubicacion del script y los
 # temporales de revision van a %TEMP%, nunca dentro del repo.
 $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $work = Join-Path $env:TEMP 'fitcasa-lottie'
@@ -106,9 +106,31 @@ function FrontLegs([double]$hipY = 610) {
     (Limb 'muslo_lejano' 338 $hipY 322 738 56 $script:pantsBk),
     (Limb 'pantorrilla_lejana' 322 738 316 846 42 $script:pantsBk),
     (Limb 'pie_lejano' 316 846 366 856 30 $script:shoe),
+    (Limb 'suela_lejana' 316 858 366 864 8 @(0.25, 0.27, 0.30, 1)),
     (Limb 'muslo' 382 $hipY 398 738 60 $script:pants),
     (Limb 'pantorrilla' 398 738 404 846 44 $script:pants),
-    (Limb 'pie' 404 846 454 856 32 $script:shoe)
+    (Limb 'pie' 404 846 454 856 32 $script:shoe),
+    (Limb 'suela' 404 858 454 864 8 @(0.25, 0.27, 0.30, 1))
+  )
+}
+
+# Cabeza de frente con cara: ojos, cejas, nariz, boca, orejas y flequillo.
+# Se usa en todas las animaciones de frente para que el personaje no cambie
+# de cara según el ejercicio.
+function FrontHead([double]$x = 360, [double]$y = 356) {
+  @(
+    (Filled 'cabello' (Ellipse $x ($y - 26) 104 80) $script:hair),
+    (Filled 'cara' (Ellipse $x $y 92 92) $script:skin),
+    (Filled 'coleta' (Rect ($x - 60) ($y - 14) 72 26 13) $script:hair),
+    (Filled 'flequillo' (Ellipse $x ($y - 30) 90 34) $script:hair),
+    (Filled 'oreja_izq' (Ellipse ($x - 46) ($y + 4) 14 22) $script:skinBk),
+    (Filled 'oreja_der' (Ellipse ($x + 46) ($y + 4) 14 22) $script:skinBk),
+    (Filled 'ojo_izq' (Ellipse ($x - 18) ($y - 2) 10 7) $script:hair),
+    (Filled 'ojo_der' (Ellipse ($x + 18) ($y - 2) 10 7) $script:hair),
+    (Filled 'ceja_izq' (Rect ($x - 26) ($y - 15) 18 4 2) $script:hair),
+    (Filled 'ceja_der' (Rect ($x + 8) ($y - 15) 18 4 2) $script:hair),
+    (Filled 'nariz' (Ellipse $x ($y + 10) 12 9) $script:skinBk),
+    (Filled 'boca' (Rect $x ($y + 22) 16 4 2) $script:shirtBk)
   )
 }
 
@@ -117,12 +139,11 @@ function FrontTorso {
   @(
     (Limb 'tronco' 360 420 360 600 132 $script:shirt),
     (Filled 'pelvis' (Rect 360 612 120 78 36) $script:pants),
-    (Limb 'cuello' 360 410 360 388 46 $script:skin),
-    (Filled 'cabello' (Ellipse 360 330 104 80) $script:hair),
-    (Filled 'cara' (Ellipse 360 356 92 92) $script:skin),
-    (Filled 'coleta' (Rect 300 342 72 26 13) $script:hair),
-    (Filled 'ojo' (Ellipse 392 360 10 7) $script:hair)
-  )
+    (Limb 'manga_izq' 298 428 320 468 42 $script:shirtBk),
+    (Limb 'manga_der' 422 428 400 468 42 $script:shirtBk),
+    (Filled 'cintura' (Rect 360 606 128 14 7) $script:pantsBk),
+    (Limb 'cuello' 360 410 360 388 46 $script:skin)
+  ) + (FrontHead)
 }
 
 # ---------- 1. PASES DE PALO SOBRE LA CABEZA ----------
@@ -163,12 +184,8 @@ $root2Shapes = @(
   (Limb 'brazo_der' 424 432 454 470 34 $script:skin),
   (Limb 'antebrazo_der' 454 470 472 420 30 $script:skin),
   (Hand 472 420 $script:skin),
-  (Limb 'cuello' 360 410 360 388 46 $script:skin),
-  (Filled 'cabello' (Ellipse 360 330 104 80) $script:hair),
-  (Filled 'cara' (Ellipse 360 356 92 92) $script:skin),
-  (Filled 'coleta' (Rect 300 342 72 26 13) $script:hair),
-  (Filled 'ojo' (Ellipse 392 360 10 7) $script:hair)
-)
+  (Limb 'cuello' 360 410 360 388 46 $script:skin)
+) + (FrontHead)
 $root2 = ShapeLayer 'tronco' 3 $root2Shapes (RotKeys $fr2 @(0, 5, 0, -5, 0)) @(360, 610)
 $root2.ks.s = ScaleKeys $fr2 @(100, 62, 100, 62, 100) @(100, 100, 100, 100, 100)
 $body2 = StaticLayer 'cuerpo' 2 @(
@@ -219,12 +236,8 @@ $root4Shapes = @(
   (Limb 'antebrazo_der' 450 370 472 300 30 $script:skin),
   (Hand 472 300 $script:skin),
   (Stick 248 300 472 300 12),
-  (Limb 'cuello' 360 410 360 388 46 $script:skin),
-  (Filled 'cabello' (Ellipse 360 330 104 80) $script:hair),
-  (Filled 'cara' (Ellipse 360 356 92 92) $script:skin),
-  (Filled 'coleta' (Rect 300 342 72 26 13) $script:hair),
-  (Filled 'ojo' (Ellipse 392 360 10 7) $script:hair)
-)
+  (Limb 'cuello' 360 410 360 388 46 $script:skin)
+) + (FrontHead)
 $root4 = ShapeLayer 'tronco' 3 $root4Shapes (RotKeys $fr4 @(0, -20, 0, 20, 0)) @(360, 610)
 $body4 = StaticLayer 'cuerpo' 2 @(
   (Limb 'muslo_lejano' 338 610 322 738 56 $script:pantsBk),
@@ -295,12 +308,8 @@ $root6Shapes = @(
   (Limb 'antebrazo_der' 450 470 475 414 30 $script:skin),
   (Hand 475 414 $script:skin),
   (Filled 'pelvis' (Rect 360 612 120 78 36) $script:pants),
-  (Limb 'cuello' 360 410 360 388 46 $script:skin),
-  (Filled 'cabello' (Ellipse 360 330 104 80) $script:hair),
-  (Filled 'cara' (Ellipse 360 356 92 92) $script:skin),
-  (Filled 'coleta' (Rect 300 342 72 26 13) $script:hair),
-  (Filled 'ojo' (Ellipse 392 360 10 7) $script:hair)
-)
+  (Limb 'cuello' 360 410 360 388 46 $script:skin)
+) + (FrontHead)
 $root6 = MoveLayer 'tronco' 5 $root6Shapes (MoveKeys $fr6 @(
     @(0, 0), @(0, 45), @(0, 45), @(0, 0), @(0, 0)
   )) @(0, 0)
@@ -343,12 +352,8 @@ $body7 = StaticLayer 'cuerpo' 2 ((FrontLegs) + @(
   (Limb 'brazo_izq' 296 432 262 500 32 $script:skin),
   (Limb 'antebrazo_izq' 262 500 322 556 28 $script:skin),
   (Hand 322 556 $script:skin),
-  (Limb 'cuello' 360 410 360 388 46 $script:skin),
-  (Filled 'cabello' (Ellipse 360 330 104 80) $script:hair),
-  (Filled 'cara' (Ellipse 360 356 92 92) $script:skin),
-  (Filled 'coleta' (Rect 300 342 72 26 13) $script:hair),
-  (Filled 'ojo' (Ellipse 392 360 10 7) $script:hair)
-))
+  (Limb 'cuello' 360 410 360 388 46 $script:skin)
+) + (FrontHead))
 $arm7 = ShapeLayer 'brazo_palo' 4 @(
   (Stick 560 320 560 544 12),
   (Limb 'brazo' 424 432 560 432 34 $script:skin),
@@ -400,12 +405,8 @@ for ($i = 0; $i -lt $fr9.Count; $i++) {
 $body9 = StaticLayer 'cuerpo' 2 ((FrontLegs) + @(
   (Filled 'pelvis' (Rect 360 612 120 78 36) $script:pants),
   (Limb 'tronco' 360 420 360 600 132 $script:shirt),
-  (Limb 'cuello' 360 410 360 388 46 $script:skin),
-  (Filled 'cabello' (Ellipse 360 330 104 80) $script:hair),
-  (Filled 'cara' (Ellipse 360 356 92 92) $script:skin),
-  (Filled 'coleta' (Rect 300 342 72 26 13) $script:hair),
-  (Filled 'ojo' (Ellipse 392 360 10 7) $script:hair)
-))
+  (Limb 'cuello' 360 410 360 388 46 $script:skin)
+) + (FrontHead))
 $stick9 = ShapeLayer 'palo' 3 @(
   (Stick 170 460 550 460 12),
   (Limb 'banda' 330 458 358 458 17 $script:stickHi)

@@ -1,16 +1,14 @@
 Licencias / Licenses
 ====================
 
-Las animaciones vectoriales (archivos .json de esta carpeta) provienen en su
-mayoria de la biblioteca gratuita de LottieFiles y se usan bajo la "Lottie
-Simple License" (https://lottiefiles.com/page/license), que permite el uso
-comercial, la modificacion y la distribucion dentro de una aplicacion, sin
-atribucion obligatoria. Las demas son creaciones propias de FitCasa.
+Las animaciones vectoriales (archivos .json de esta carpeta) provienen en parte
+de la biblioteca gratuita de LottieFiles y se usan bajo la "Lottie Simple
+License" (https://lottiefiles.com/page/license), que permite el uso comercial,
+la modificacion y la distribucion dentro de una aplicacion, sin atribucion
+obligatoria. Las demas son creaciones propias de FitCasa.
 
 Autoras y autores (atribucion voluntaria):
 
-  - Push Up .............. Oyinloluwa
-  - Plank ................ Daksh
   - Jumping Jack ......... Dinh Bui Xuan
   - Squat Reach .......... Dinh Bui Xuan
   - Burpee and Jump ...... Dinh Bui Xuan
@@ -32,6 +30,8 @@ Animaciones propias (dibujadas para FitCasa, sin material de terceros):
   - Superman Lumbar ....... propia (FitCasa)
   - Flexiones con rodillas  propia (FitCasa)
   - Flexiones diamante .... propia (FitCasa)
+  - Flexiones estándar .... propia (FitCasa)
+  - Plancha abdominal ..... propia (FitCasa)
   - Flexiones en la pared . propia (FitCasa)
   - Escaladores ........... propia (FitCasa)
   - Abdominales bicicleta . propia (FitCasa)

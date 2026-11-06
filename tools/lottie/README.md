@@ -1,6 +1,6 @@
 # Animaciones Lottie propias de FitCasa
 
-Generador de las 26 animaciones vectoriales que no vienen de LottieFiles
+Generador de las 28 animaciones vectoriales que no vienen de LottieFiles
 (calentamiento, abdomen, pecho, tríceps, espalda, cuerpo completo y palo). Los
 JSON resultantes están en `app/src/main/assets/exercises/lottie/`.
 
@@ -16,7 +16,8 @@ Cada `gen-*.ps1` reescribe sus JSON completos:
 | --- | --- |
 | `gen-abs.ps1` | `bicycle_crunches`, `reverse_plank_leg_lift` |
 | `gen-prone.ps1` | `mountain_climbers`, `prone_elbow_lift`, `scapula_push_up` |
-| `gen-pushups.ps1` | `push_ups_knees`, `push_ups_diamond` |
+| `gen-pushups.ps1` | `push_ups_knees`, `push_ups_diamond`, `push_ups_standard` |
+| `gen-plank.ps1` | `plank` |
 | `gen-triceps.ps1` | `triceps_dips_floor`, `kneeling_triceps_extension`, `side_push_up`, `body_up` |
 | `gen-wallpush.ps1` | `wall_push_ups` |
 | `gen-misc.ps1` | `towel_squat_row`, `warmup_ankle_circles`, `warmup_wrist_circles` |
